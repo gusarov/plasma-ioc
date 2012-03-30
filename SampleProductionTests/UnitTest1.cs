@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using MySpring;
-
 using SampleProduction;
 
 using TurboFac;
@@ -15,7 +13,7 @@ namespace SampleProductionTests
 	[TestClass]
 	public class UnitTest1
 	{
-		readonly ISpringContainer _spring = SpringContainer.Root;
+		readonly ITurboContainer _spring = TurboContainer.Root;
 
 		public UnitTest1()
 		{

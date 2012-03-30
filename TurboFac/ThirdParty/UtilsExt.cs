@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace TurboFac
+namespace TurboFac.ThirdParty
 {
 	static class UtilsExt
 	{
