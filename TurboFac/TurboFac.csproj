@@ -54,7 +54,7 @@
     <Compile Include="MetaRegister\TurboFacMetaRegisterExtension.cs" />
     <Compile Include="TurboFacAttribute.cs" />
     <Compile Include="TypedLazyWrapper.cs" />
-    <Compile Include="_Todo.cs" />
+    <Compile Include="_todo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

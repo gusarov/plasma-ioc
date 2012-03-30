@@ -1,13 +1,15 @@
 using System.ComponentModel;
 using System;
 
+using TurboFac;
+
 #if NET3
 using MyUtils;
 #endif
 
 
-namespace TurboFac
-{
+//namespace TurboFac
+//{
 	public static class TurboContainerExt
 	{
 		/// <summary>
@@ -230,4 +232,4 @@ namespace TurboFac
 			return new Lazy<object>(() => instance()); // thread safe
 		}
 	}
-}
+//}

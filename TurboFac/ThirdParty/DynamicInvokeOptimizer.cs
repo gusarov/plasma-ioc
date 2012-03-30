@@ -148,7 +148,7 @@ namespace TurboFac.ThirdParty
 					// next sample lead us to only one acceptable bounding object type. Wtih 'object' this signature delegate can be bound to any classes
 					argsList.Add(typeof(object));
 					// and such approach lead to problems, because a first who bound with Action<X, a,b,c> register this dynamic method and next call Action<Y, a,b,c> will fail.
-					// TODO How about custom delegates instead of Action<int>. How about Func with return value at first argument?
+					// T O D O How about custom delegates instead of Action<int>. How about Func with return value at first argument?
 					// argsList.Add(unboundDelegateType.GetGenericArguments()[0]);
 				}
 				argsList.AddRange(methodInfo.GetParameters().Select(x => x.ParameterType));

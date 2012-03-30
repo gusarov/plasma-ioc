@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 
 #if NET3
@@ -10,9 +11,8 @@ namespace TurboFac
 	/// <summary>
 	/// Convert Lazy&lt;object&gt; to &lt;T&gt; with T provided as Type
 	/// </summary>
-	public class TypedLazyWrapper
+	internal class TypedLazyWrapper
 	{
-		// TODO optimize reflection!
 		static readonly MethodInfo _method = typeof(TypedLazyWrapper).GetMethod("Init", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
 
 		readonly Lazy<object> _lazyObject;
@@ -28,6 +28,24 @@ namespace TurboFac
 		protected void Init<T>()
 		{
 			Lazy = new Lazy<T>(() => (T)_lazyObject.Value);
+		}
+
+		internal static object Create(Type type, Lazy<object> serviceLazy)
+		{
+			// TODO optimize reflection!
+			Func<Lazy<object>, object> typedLazyFactory;
+			if (_typedLazyFactory.TryGetValue(type, out typedLazyFactory))
+			{
+				return typedLazyFactory(serviceLazy);
+			}
+			return new TypedLazyWrapper(type, serviceLazy).Lazy;
+		}
+
+		static readonly Dictionary<Type, Func<Lazy<object>, object>> _typedLazyFactory = new Dictionary<Type, Func<Lazy<object>, object>>();
+
+		public static void Register<T>(Type type, Func<Lazy<object>, Lazy<T>> factory)
+		{
+			_typedLazyFactory[type] = factory;
 		}
 	}
 }

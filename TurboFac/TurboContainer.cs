@@ -50,6 +50,7 @@ namespace TurboFac
 
 		class ServiceEntry
 		{
+			readonly Lazy<object> _serviceGetLazy;
 			readonly Lazy<object> _instance;
 			readonly TurboContainer _provider;
 
@@ -62,7 +63,7 @@ namespace TurboFac
 				_instance = instance;
 				_provider = provider;
 
-				if (instance.IsValueCreated)
+				if (instance.IsValueCreated) // TODO if instance already created - no plumbing occurs!
 				{
 					if (instance.Value != null)
 					{
@@ -81,9 +82,7 @@ namespace TurboFac
 				get { return _instance.IsValueCreated ? _instance.Value : null; }
 			}
 
-			readonly Lazy<object> _serviceGetLazy;
-
-			public Lazy<object> Lazy
+			public Lazy<object> Instance
 			{
 				get { return _serviceGetLazy; }
 			}
@@ -304,7 +303,7 @@ namespace TurboFac
 			{
 				return _parentProvider.TryGetLazy(type);
 			}
-			return result != null ? result.Lazy : null;
+			return result != null ? result.Instance : null;
 		}
 
 		Lazy<object> GetLazyCore(Type type)
@@ -573,7 +572,7 @@ namespace TurboFac
 
 			if (parameterType.IsGenericType && parameterType.GetGenericTypeDefinition() == typeof(Lazy<>))
 			{
-				return new TypedLazyWrapper(parameterType.GetGenericArguments()[0], serviceLazy).Lazy;
+				return TypedLazyWrapper.Create(parameterType.GetGenericArguments()[0], serviceLazy);
 			}
 
 			if(parameterType.IsAssignableFrom(serviceLazy.GetType()))
