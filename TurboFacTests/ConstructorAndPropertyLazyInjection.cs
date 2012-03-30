@@ -16,6 +16,8 @@ namespace TurboFacTests
 		{
 			DataLazyConstructorInjection.Created = 0;
 			DataLazyPropertyInjection.Created = 0;
+			DataFuncConstructorInjection.Created = 0;
+			DataFuncPropertyInjection.Created = 0;
 			MyService.Instantiated = 0;
 		}
 
@@ -34,6 +36,29 @@ namespace TurboFacTests
 			Assert.AreEqual(0, MyService.Instantiated);
 			Assert.IsInstanceOfType(sample, typeof(DataLazyConstructorInjection));
 			Assert.AreEqual(0, MyService.Instantiated);
+			Assert.IsInstanceOfType(sample.MyService, typeof(MyService));
+			Assert.AreEqual(1, MyService.Instantiated);
+			Assert.IsInstanceOfType(sample.MyService, typeof(MyService));
+			Assert.AreEqual(1, MyService.Instantiated);
+		}
+
+		[TestMethod]
+		public void Should_inject_all_deps_to_ctor_func()
+		{
+			// Setup
+			_sut.Add<DataFuncConstructorInjection>();
+			// Execute
+			Assert.AreEqual(0, DataFuncConstructorInjection.Created);
+			Assert.AreEqual(0, MyService.Instantiated);
+			var sample = _sut.Get<DataFuncConstructorInjection>();
+			Assert.AreEqual(0, MyService.Instantiated);
+			// Verify
+			Assert.AreEqual(1, DataFuncConstructorInjection.Created);
+			Assert.AreEqual(0, MyService.Instantiated);
+			Assert.IsInstanceOfType(sample, typeof(DataFuncConstructorInjection));
+			Assert.AreEqual(0, MyService.Instantiated);
+			Assert.IsInstanceOfType(sample.MyService, typeof(MyService));
+			Assert.AreEqual(1, MyService.Instantiated);
 			Assert.IsInstanceOfType(sample.MyService, typeof(MyService));
 			Assert.AreEqual(1, MyService.Instantiated);
 		}
@@ -56,6 +81,30 @@ namespace TurboFacTests
 			Assert.IsFalse(sample.LazyService.IsValueCreated);
 			Assert.AreEqual(0, MyService.Instantiated);
 			Assert.IsInstanceOfType(sample.LazyService.Value, typeof(MyService));
+			Assert.AreEqual(1, MyService.Instantiated);
+			Assert.IsInstanceOfType(sample.LazyService.Value, typeof(MyService));
+			Assert.AreEqual(1, MyService.Instantiated);
+		}
+
+		[TestMethod]
+		public void Should_inject_all_deps_to_prop_func()
+		{
+			// Setup
+			_sut.Add<DataFuncPropertyInjection>();
+			// Execute
+			Assert.AreEqual(0, DataFuncPropertyInjection.Created);
+			Assert.AreEqual(0, MyService.Instantiated);
+			var sample = _sut.Get<DataFuncPropertyInjection>();
+			Assert.AreEqual(0, MyService.Instantiated);
+			// Verify
+			Assert.AreEqual(1, DataFuncPropertyInjection.Created);
+			Assert.AreEqual(0, MyService.Instantiated);
+			Assert.IsInstanceOfType(sample, typeof(DataFuncPropertyInjection));
+			Assert.IsNotNull(sample.LazyService);
+			Assert.AreEqual(0, MyService.Instantiated);
+			Assert.IsInstanceOfType(sample.LazyService(), typeof(MyService));
+			Assert.AreEqual(1, MyService.Instantiated);
+			Assert.IsInstanceOfType(sample.LazyService(), typeof(MyService));
 			Assert.AreEqual(1, MyService.Instantiated);
 		}
 	}

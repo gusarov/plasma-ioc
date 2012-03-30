@@ -32,7 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="MetaCreator">
-      <HintPath>..\..\_components\MetaCreator\MetaCreator.dll</HintPath>
+      <HintPath>..\..\_distrib\MetaCreator\MetaCreator.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

@@ -116,10 +116,10 @@ namespace TurboFac
 				{
 					if (pro.GetIndexParameters().Length == 0 && pro.CanRead && pro.CanWrite)
 					{
-						if (pro.PropertyType.IsInterface || pro.PropertyType.IsAbstract || IsLazy(pro.PropertyType))
+						if (pro.PropertyType.IsInterface || pro.PropertyType.IsAbstract || IsLazyOrFunc(pro.PropertyType))
 						{
 							// IEnumerable<T> and all generics
-							if (pro.PropertyType.IsGenericType && pro.PropertyType.GetGenericTypeDefinition()!=typeof(Lazy<>))
+							if (pro.PropertyType.IsGenericType && !IsLazyOrFunc(pro.PropertyType))
 							{
 								continue;
 							}
@@ -137,9 +137,12 @@ namespace TurboFac
 				}
 			}
 
-			static bool IsLazy(Type propertyType)
+			static bool IsLazyOrFunc(Type propertyType)
 			{
-				return propertyType.IsGenericType && propertyType.GetGenericTypeDefinition() == typeof(Lazy<>);
+				return
+					propertyType.IsGenericType &&
+					(propertyType.GetGenericTypeDefinition() == typeof(Lazy<>) ||
+					propertyType.GetGenericTypeDefinition() == typeof(Func<>));
 			}
 		}
 
@@ -538,6 +541,10 @@ namespace TurboFac
 				{
 					requestType = parameterType.GetGenericArguments()[0];
 				}
+				else if (parameterType.GetGenericTypeDefinition() == typeof(Func<>))
+				{
+					requestType = parameterType.GetGenericArguments()[0];
+				}
 			}
 
 			// request
@@ -573,6 +580,11 @@ namespace TurboFac
 			if (parameterType.IsGenericType && parameterType.GetGenericTypeDefinition() == typeof(Lazy<>))
 			{
 				return TypedLazyWrapper.Create(parameterType.GetGenericArguments()[0], serviceLazy);
+			}
+
+			if (parameterType.IsGenericType && parameterType.GetGenericTypeDefinition() == typeof(Func<>))
+			{
+				return TypedFuncWrapper.Create(parameterType.GetGenericArguments()[0], serviceLazy);
 			}
 
 			if(parameterType.IsAssignableFrom(serviceLazy.GetType()))

@@ -27,6 +27,28 @@ namespace TurboFacTests
 			Assert.AreEqual(0, MyService.Instantiated);
 			Assert.IsInstanceOfType(typed.Value, typeof(MyService));
 			Assert.AreEqual(1, MyService.Instantiated);
+			Assert.IsInstanceOfType(typed.Value, typeof(MyService));
+			Assert.AreEqual(1, MyService.Instantiated);
+
+		}
+		[TestMethod]
+		public void Should_convert_lazy_object_to_typed_func()
+		{
+			MyService.Instantiated = 0;
+
+			var sut = new TypedFuncWrapper(typeof(IMyService), new Lazy<object>(() => new MyService()));
+
+			var result = sut.Func;
+
+			Assert.IsInstanceOfType(result, typeof(Func<IMyService>));
+
+			var typed = (Func<IMyService>)result;
+
+			Assert.AreEqual(0, MyService.Instantiated);
+			Assert.IsInstanceOfType(typed(), typeof(MyService));
+			Assert.AreEqual(1, MyService.Instantiated);
+			Assert.IsInstanceOfType(typed(), typeof(MyService));
+			Assert.AreEqual(1, MyService.Instantiated);
 
 		}
 	}

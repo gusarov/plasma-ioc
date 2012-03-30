@@ -34,13 +34,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="MySpring4">
-      <HintPath>..\..\_components\MyUtils\MySpring4.dll</HintPath>
-    </Reference>
-    <Reference Include="MyUtils4, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9ccf460fa6b88228, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\_components\MyUtils\MyUtils4.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -67,7 +60,7 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\..\..\_components\MetaCreator\MetaCreator.targets" />
+  <Import Project="..\_components\MetaCreator\MetaCreator.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

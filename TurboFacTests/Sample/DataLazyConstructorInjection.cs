@@ -6,8 +6,6 @@ namespace TurboFacTests.Sample
 	{
 		public static int Created;
 
-
-
 		readonly Lazy<IMyService> _lazyService;
 
 		public IMyService MyService
@@ -21,6 +19,24 @@ namespace TurboFacTests.Sample
 			_lazyService = lazyService;
 		}
 
+	}
+
+	class DataFuncConstructorInjection
+	{
+		public static int Created;
+
+		readonly Func<IMyService> _lazyService;
+
+		public IMyService MyService
+		{
+			get { return _lazyService(); }
+		}
+
+		public DataFuncConstructorInjection(Func<IMyService> lazyService)
+		{
+			Created++;
+			_lazyService = lazyService;
+		}
 
 	}
 }

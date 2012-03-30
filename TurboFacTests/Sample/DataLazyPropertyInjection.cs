@@ -17,4 +17,18 @@ namespace TurboFacTests.Sample
 			Created++;
 		}
 	}
+
+	class DataFuncPropertyInjection
+	{
+		public Func<IMyService> LazyService { get; set; }
+
+		public static int Created;
+
+		public DataFuncPropertyInjection()
+		{
+			Created++;
+		}
+	}
+
+
 }
