@@ -6,6 +6,7 @@ using System.Text;
 using SampleProduction;
 
 using TurboFac;
+using TurboFac.Meta;
 
 namespace SampleProductionTests
 {

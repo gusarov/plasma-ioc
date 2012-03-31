@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="AppConfigUsage.cs" />
     <Compile Include="AutoPlumbing.cs" />
+    <Compile Include="BaseContainer.cs" />
     <Compile Include="ConstructorAndPropertyLazyInjection.cs" />
     <Compile Include="ContainerHierarchy.cs" />
     <Compile Include="LazyConverter.cs" />

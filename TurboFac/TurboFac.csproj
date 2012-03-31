@@ -31,9 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MetaCreator, Version=1.6.4472.42827, Culture=neutral, PublicKeyToken=e1cf46ee434cd7e7, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\metacreator\_release\MetaCreator.dll</HintPath>
+    <Reference Include="MetaCreator">
+      <HintPath>..\_components\MetaCreator\MetaCreator.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
