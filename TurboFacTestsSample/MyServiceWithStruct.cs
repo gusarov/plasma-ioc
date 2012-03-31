@@ -1,8 +1,11 @@
 using System;
 
+using TurboFac;
+
 namespace TurboFacTests.Sample
 {
-	class MyServiceWithStruct
+	[TurboReg]
+	public class MyServiceWithStruct
 	{
 		public MyServiceWithStruct(Guid id)
 		{
@@ -11,7 +14,8 @@ namespace TurboFacTests.Sample
 	}
 
 #if NET4
-	class MyServiceWithOptionalStruct
+	[TurboReg]
+	public class MyServiceWithOptionalStruct
 	{
 		readonly bool _val;
 
@@ -26,7 +30,8 @@ namespace TurboFacTests.Sample
 		}
 	}
 
-	class MyServiceWithOptionalString
+	[TurboReg]
+	public class MyServiceWithOptionalString
 	{
 		readonly string _val;
 

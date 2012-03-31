@@ -2,6 +2,7 @@
 
 namespace TurboFacTests.Sample
 {
+	[TurboReg]
 	public class MySubGroup
 	{
 		readonly ITurboProvider _provider;

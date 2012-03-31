@@ -167,6 +167,7 @@ using MyUtils;
 			{
 				throw new ArgumentNullException("container");
 			}
+			// TODO Eliminate lazy double wrapping: Lazy<T>(Lazy<object>(Lazy<T>()))
 			container.Add(typeof(T), CreateLazy(instanceFactory));
 		}
 

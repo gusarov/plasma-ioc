@@ -1,5 +1,8 @@
+using TurboFac;
+
 namespace TurboFacTests.Sample
 {
+	[TurboReg]
 	public class MyService : IMyService
 	{
 		public static int Instantiated;

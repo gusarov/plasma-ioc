@@ -4,7 +4,9 @@
 //{
 	namespace TurboFac
 	{
-		//[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1019:DefineAccessorsForAttributeArguments"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Impl"), AttributeUsage(AttributeTargets.Interface|AttributeTargets.Class|AttributeTargets.Parameter|AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
+		// [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1019:DefineAccessorsForAttributeArguments")]
+		// [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Impl")]
+		[AttributeUsage(AttributeTargets.Interface|AttributeTargets.Class|AttributeTargets.Parameter|AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
 		public sealed class DefaultImplAttribute : Attribute
 		{
 			Type _type;

@@ -3,29 +3,29 @@
 namespace TurboFacTests.Sample
 {
 	[DefaultImpl(typeof(MyInmemStorage))]
-	interface IMyStorage
+	public interface IMyStorage
 	{
 	}
 
-	class MyInmemStorage : IMyStorage
+	public class MyInmemStorage : IMyStorage
 	{
 	}
 
-	class MyPipeStorage : IMyStorage
+	public class MyPipeStorage : IMyStorage
 	{
 	}
 
-	class MyFileStorage : IMyStorage
+	public class MyFileStorage : IMyStorage
 	{
 	}
 
-	class MyNodeHost
+	public class MyNodeHost
 	{
 		[DefaultImpl(typeof(MyFileStorage))]
 		public IMyStorage Storage { get; set; }
 	}
 
-	class MyObjectMan
+	public class MyObjectMan
 	{
 		readonly IMyStorage _storage;
 

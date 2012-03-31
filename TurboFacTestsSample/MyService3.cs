@@ -1,7 +1,10 @@
 using System;
 
+using TurboFac;
+
 namespace TurboFacTests.Sample
 {
+	[TurboReg]
 	public class MyService3 : IMyService3
 	{
 		readonly IMyPerformer _performer;

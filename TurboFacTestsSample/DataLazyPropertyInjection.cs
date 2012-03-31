@@ -1,12 +1,15 @@
 using System;
 
+using TurboFac;
+
 #if NET3
 using MyUtils;
 #endif
 
 namespace TurboFacTests.Sample
 {
-	class DataLazyPropertyInjection
+	[TurboReg]
+	public class DataLazyPropertyInjection
 	{
 		public Lazy<IMyService> LazyService { get; set; }
 
@@ -18,7 +21,8 @@ namespace TurboFacTests.Sample
 		}
 	}
 
-	class DataFuncPropertyInjection
+	[TurboReg]
+	public class DataFuncPropertyInjection
 	{
 		public Func<IMyService> LazyService { get; set; }
 

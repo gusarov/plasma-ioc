@@ -1,8 +1,11 @@
 using System;
 
+using TurboFac;
+
 namespace TurboFacTests.Sample
 {
-	class MyServiceWithStructPro
+	[TurboReg]
+	public class MyServiceWithStructPro
 	{
 		public MyServiceWithStructPro()
 		{

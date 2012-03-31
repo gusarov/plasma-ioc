@@ -4,13 +4,14 @@ namespace TurboFacTests.Sample
 {
 #if NET4
 	[DefaultImpl(typeof(MyServiceWithOptionalArguments))]
-	interface IMyServiceWithOptionalArguments
+	public interface IMyServiceWithOptionalArguments
 	{
 		IMyStorage Storage { get; }
 		IMyWorker Worker { get; }
 	}
 
-	class MyServiceWithOptionalArguments : IMyServiceWithOptionalArguments 
+	[TurboReg]
+	public class MyServiceWithOptionalArguments : IMyServiceWithOptionalArguments 
 	{
 		readonly IMyStorage _storage;
 		readonly IMyWorker _worker;

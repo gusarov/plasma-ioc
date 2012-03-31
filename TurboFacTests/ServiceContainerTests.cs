@@ -9,9 +9,8 @@ using TurboFacTests.Sample;
 namespace TurboFacTests
 {
 	[TestClass]
-	public class ServiceContainerTests
+	public class ServiceContainerTests : BaseContainer
 	{
-		readonly ITurboContainer _sut = new TurboContainer();
 
 		[TestMethod]
 		public void Should_allow_store_instance_of_service()

@@ -2,6 +2,7 @@
 
 namespace TurboFacTests.Sample
 {
+	[TurboReg]
 	public class MyServiceWithSeveralCtors
 	{
 		readonly IMyService _service1;

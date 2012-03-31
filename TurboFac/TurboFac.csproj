@@ -31,8 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MetaCreator">
-      <HintPath>..\..\_distrib\MetaCreator\MetaCreator.dll</HintPath>
+    <Reference Include="MetaCreator, Version=1.6.4472.42827, Culture=neutral, PublicKeyToken=e1cf46ee434cd7e7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\metacreator\_release\MetaCreator.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -44,14 +45,15 @@
     <Compile Include="Internal\TurboConfigSection.cs" />
     <Compile Include="ITurboContainer.cs" />
     <Compile Include="ITurboProvider.cs" />
-    <Compile Include="MetaProxy\ProxyGenerator.cs" />
+    <Compile Include="Meta\ProxyGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReflectionPermission.cs" />
     <Compile Include="ThirdParty\DynamicInvokeOptimizer.cs" />
     <Compile Include="TurboContainer.cs" />
     <Compile Include="TurboFacException.cs" />
     <Compile Include="TurboContainerExt.cs" />
     <Compile Include="ThirdParty\UtilsExt.cs" />
-    <Compile Include="MetaRegister\TurboFacMetaRegisterExtension.cs" />
+    <Compile Include="Meta\TurboFacMetaRegisterExtension.cs" />
     <Compile Include="TurboFacAttribute.cs" />
     <Compile Include="TypedLazyWrapper.cs" />
     <Compile Include="_todo.cs" />

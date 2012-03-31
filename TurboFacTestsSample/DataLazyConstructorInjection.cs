@@ -1,8 +1,11 @@
 ﻿using System;
 
+using TurboFac;
+
 namespace TurboFacTests.Sample
 {
-	class DataLazyConstructorInjection
+	[TurboReg]
+	public class DataLazyConstructorInjection
 	{
 		public static int Created;
 
@@ -21,7 +24,8 @@ namespace TurboFacTests.Sample
 
 	}
 
-	class DataFuncConstructorInjection
+	[TurboReg]
+	public class DataFuncConstructorInjection
 	{
 		public static int Created;
 

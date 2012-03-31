@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -14,6 +15,20 @@ namespace TurboFac
 {
 	public sealed class TurboContainer : ITurboContainer
 	{
+		static ReflectionPermission _defaultReflectionPermission = ReflectionPermission.DebuggerBreakIfAttached;
+		public static ReflectionPermission DefaultReflectionPermission
+		{
+			get { return _defaultReflectionPermission; }
+			set { _defaultReflectionPermission = value; }
+		}
+
+		ReflectionPermission? _reflectionPermission;
+		public ReflectionPermission ReflectionPermission
+		{
+			get { return _reflectionPermission ?? DefaultReflectionPermission; }
+			set { _reflectionPermission = value; }
+		}
+
 		static readonly TurboContainer _root = new TurboContainer();
 
 		public static TurboContainer Root
@@ -112,6 +127,7 @@ namespace TurboFac
 			// TODO infinite recursion by implementation ctor
 			void Plumb(object instance)
 			{
+				_provider.ValidateReflectionPermissions();
 				foreach (var pro in instance.GetType().GetProperties(BindingFlags.SetProperty | BindingFlags.GetProperty | BindingFlags.Public | BindingFlags.Instance))
 				{
 					if (pro.GetIndexParameters().Length == 0 && pro.CanRead && pro.CanWrite)
@@ -324,11 +340,9 @@ namespace TurboFac
 				// try register in current container
 				if (tryAutoReg && type.IsInterface)
 				{
-					try
-					{
+					//try {
 						Add(type);
-					}
-					catch (TurboFacException) {}
+					//} catch (TurboFacException) {}
 					result = GetLazyCore(type, false);
 				}
 				//throw new TurboFacException("Service does not exists");
@@ -356,9 +370,11 @@ namespace TurboFac
 			}
 			ValidateImplementationType(type);
 
+			ValidateReflectionPermissions();
 			return new Lazy<object>(() =>
 			{
 				ConstructorInfo ci;
+				ValidateReflectionPermissions();
 				var args = GetConstructorArguments(type, out ci);
 #if PocketPC
 				return ci.Invoke(args);
@@ -391,10 +407,11 @@ namespace TurboFac
 		/// </summary>
 		/// <param name="type"></param>
 		/// <returns></returns>
-		static object Default(Type type)
+		object Default(Type type)
 		{
 			if (type.IsValueType)
 			{
+				ValidateReflectionPermissions();
 				return Activator.CreateInstance(type);
 			}
 			return null;
@@ -456,6 +473,13 @@ namespace TurboFac
 
 		object[] GetConstructorArguments(Type type, out ConstructorInfo ci)
 		{
+			ValidateReflectionPermissions();
+			ci = GetConstructor(type);
+			return ci.GetParameters().Select(x=>GetParameter(x)).ToArray();
+		}
+
+		internal static ConstructorInfo GetConstructor(Type type)
+		{
 			var ctors = type.GetConstructors(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static);
 			if (ctors.Length != 1)
 			{
@@ -470,8 +494,7 @@ namespace TurboFac
 					throw new TurboFacException(string.Format(CultureInfo.CurrentCulture, "Ambiguous constructor for type '{0}'", type.Name));
 				}
 			}
-			ci = ctors.Single();
-			return ci.GetParameters().Select(x=>GetParameter(x)).ToArray();
+			return ctors.Single();
 		}
 
 		object GetParameter(ParameterInfo parameter)
@@ -519,6 +542,8 @@ namespace TurboFac
 
 		object GetParameter(Type parameterType, IEnumerable<Attribute> attributes, bool isOptional, object defaultValue)
 		{
+			ValidateReflectionPermissions();
+
 			// validate
 			if (!IsValidImplementationType(parameterType))
 			{
@@ -579,11 +604,13 @@ namespace TurboFac
 
 			if (parameterType.IsGenericType && parameterType.GetGenericTypeDefinition() == typeof(Lazy<>))
 			{
+				ValidateReflectionPermissions();
 				return TypedLazyWrapper.Create(parameterType.GetGenericArguments()[0], serviceLazy);
 			}
 
 			if (parameterType.IsGenericType && parameterType.GetGenericTypeDefinition() == typeof(Func<>))
 			{
+				ValidateReflectionPermissions();
 				return TypedFuncWrapper.Create(parameterType.GetGenericArguments()[0], serviceLazy);
 			}
 
@@ -599,14 +626,41 @@ namespace TurboFac
 			throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, "Can not provide value for {0}", parameterType));
 		}
 
-		static IEnumerable<Type> GetAdditionalIfaces(Type type)
+		[DebuggerStepThrough]
+		void ValidateReflectionPermissions()
+		{
+			const string message = "TurboContainer - Reflection based action";
+			switch (ReflectionPermission)
+			{
+				case ReflectionPermission.Allow:
+					break;
+				case ReflectionPermission.Log:
+					Trace.TraceError(message);
+					break;
+				case ReflectionPermission.DebuggerBreakIfAttached:
+					if (Debugger.IsAttached)
+					{
+						Debugger.Break();
+					}
+					break;
+				case ReflectionPermission.DebugAssertion:
+					Debug.Fail(message);
+					break;
+				case ReflectionPermission.Throw:
+					throw new TurboFacException(message);
+				default:
+					throw new ArgumentOutOfRangeException();
+			}
+		}
+
+		internal static IEnumerable<Type> GetAdditionalIfaces(Type type)
 		{
 			if (!type.IsInterface)
 			{
 				var ifaces = type.GetInterfaces();
-				if (ifaces.Count() == 1)
+				if (ifaces.Length == 1)
 				{
-					yield return ifaces.Single();
+					yield return ifaces[0];
 				}
 			}
 		}
