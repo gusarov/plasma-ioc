@@ -2,7 +2,7 @@ using TurboFac;
 
 namespace TurboFacTests.Sample
 {
-	[TurboReg]
+	[RegisterService]
 	public class MyService2 : IMyService, IMyService2
 	{
 		readonly IMyService _subService;

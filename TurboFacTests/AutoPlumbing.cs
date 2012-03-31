@@ -7,9 +7,8 @@ using TurboFacTests.Sample;
 namespace TurboFacTests
 {
 	[TestClass]
-	public class AutoPlumbing
+	public class AutoPlumbing : BaseContainer
 	{
-		readonly ITurboContainer _sut = new TurboContainer();
 
 		[TestMethod]
 		public void Should_glue_two_ifaces_on_the_fly()

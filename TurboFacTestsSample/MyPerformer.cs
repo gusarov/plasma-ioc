@@ -2,7 +2,7 @@
 
 namespace TurboFacTests.Sample
 {
-	[TurboReg]
+	[RegisterService]
 	public class MyPerformer : IMyPerformer
 	{
 	}

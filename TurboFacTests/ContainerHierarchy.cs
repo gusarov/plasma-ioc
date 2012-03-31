@@ -7,9 +7,8 @@ using TurboFacTests.Sample;
 namespace TurboFacTests
 {
 	[TestClass]
-	public class ContainerHierarchy
+	public class ContainerHierarchy : BaseContainer
 	{
-		readonly ITurboContainer _sut = new TurboContainer();
 
 		[TestMethod]
 		public void Should_allow_to_have_several_subcontainers_with_common_and_different_instances()

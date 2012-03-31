@@ -8,9 +8,10 @@ using MyUtils;
 
 namespace TurboFacTests.Sample
 {
-	[TurboReg]
+	[RegisterService]
 	public class DataLazyPropertyInjection
 	{
+		[Inject]
 		public Lazy<IMyService> LazyService { get; set; }
 
 		public static int Created;
@@ -21,9 +22,10 @@ namespace TurboFacTests.Sample
 		}
 	}
 
-	[TurboReg]
+	[RegisterService]
 	public class DataFuncPropertyInjection
 	{
+		[Inject]
 		public Func<IMyService> LazyService { get; set; }
 
 		public static int Created;

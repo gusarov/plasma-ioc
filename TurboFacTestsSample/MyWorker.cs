@@ -2,7 +2,7 @@ using TurboFac;
 
 namespace TurboFacTests.Sample
 {
-	[TurboReg]
+	[RegisterService]
 	public class MyWorker : IMyWorker
 	{
 		public int Test

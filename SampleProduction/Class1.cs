@@ -17,7 +17,7 @@ namespace SampleProduction
 		IEnumerable<Movie> GetAll();
 	}
 
-	[TurboReg]
+	[RegisterService]
 	public class MovieFinder : IMovieFinder
 	{
 		public IEnumerable<Movie> GetAll()
@@ -29,7 +29,7 @@ namespace SampleProduction
 		}
 	}
 
-	[TurboReg]
+	[RegisterService]
 	public class MovieLister
 	{
 		readonly IMovieFinder _movieFinder;

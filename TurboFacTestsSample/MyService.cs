@@ -2,7 +2,7 @@ using TurboFac;
 
 namespace TurboFacTests.Sample
 {
-	[TurboReg]
+	[RegisterService]
 	public class MyService : IMyService
 	{
 		public static int Instantiated;
@@ -17,6 +17,7 @@ namespace TurboFacTests.Sample
 			return Worker.Test;
 		}
 
+		[Inject]
 		public IMyWorker Worker { get; set; }
 
 

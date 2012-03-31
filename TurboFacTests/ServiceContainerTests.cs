@@ -40,6 +40,7 @@ namespace TurboFacTests
 			Assert.AreEqual(null, _sut.TryGet<MyService>());
 		}
 
+#if !PRE
 		[TestMethod]
 		public void Should_allow_check_exitance()
 		{
@@ -49,6 +50,14 @@ namespace TurboFacTests
 			Assert.IsNotNull( _sut.TryGet(typeof(IMyService)));
 			Assert.IsNotNull( _sut.TryGet<IMyService>());
 		}
+#else
+		[TestMethod]
+		public void Should_allow_check_exitance()
+		{
+			Assert.IsNotNull(_sut.TryGet(typeof(IMyService)));
+			Assert.IsNotNull(_sut.TryGet<IMyService>());
+		}
+#endif
 
 		[TestMethod]
 		[ExpectedException(typeof(TurboFacException))]
@@ -107,7 +116,9 @@ namespace TurboFacTests
 		{
 			// Setup
 			MyService.Instantiated = 0;
+#if !PRE
 			_sut.Add<IMyService>(); // register lazy service factoryMethod by interface type
+#endif
 			Assert.AreEqual(0, MyService.Instantiated);
 			// Execute
 			var ms = _sut.Get<IMyService>();
@@ -119,7 +130,9 @@ namespace TurboFacTests
 		public void Should_create_factory_automatically_by_class()
 		{
 			// Setup
+#if !PRE
 			_sut.Add<MyService>();
+#endif
 			// Execute
 			var ms1 = _sut.Get<IMyService>();
 			var ms2 = _sut.Get<IMyService>();
@@ -132,7 +145,9 @@ namespace TurboFacTests
 		public void Should_create_factory_automatically_by_class_and_iface()
 		{
 			// Setup
+#if !PRE
 			_sut.Add<IMyService2, MyService2>();
+#endif
 			// Execute
 			var ms1 = _sut.Get<IMyService2>();
 			Assert.IsInstanceOfType(ms1, typeof(MyService2));
@@ -201,7 +216,9 @@ namespace TurboFacTests
 		{
 			// Setup
 			// automatic
-			_sut.Add<MyNodeHost>();
+#if !PRE
+			_sut.Add<MyNodeHost>(); 
+#endif
 
 			// Execute
 			var nodeHost = _sut.Get<MyNodeHost>();
@@ -214,8 +231,10 @@ namespace TurboFacTests
 		public void Should_provide_default_impl_suggestion_on_ctor_injection_only_if_there_are_no_impl()
 		{
 			// Setup
+#if !PRE
 			_sut.Add<MyNodeHost>();
 			_sut.Add<MyPipeStorage>();
+#endif
 
 			// Execute
 			var nodeHost = _sut.Get<MyNodeHost>();
@@ -229,7 +248,9 @@ namespace TurboFacTests
 		{
 			// Setup
 			// automatic
+#if !PRE
 			_sut.Add<MyObjectMan>();
+#endif
 
 			// Execute
 			var nodeHost = _sut.Get<MyObjectMan>();
@@ -267,7 +288,9 @@ namespace TurboFacTests
 		[ExpectedException(typeof(TurboFacException))]
 		public void Should_not_allow_register_value_types()
 		{
+#if !PRE
 			_sut.Add<IComparable, MyStruct>();
+#endif
 		}
 
 		[TestMethod]
@@ -288,7 +311,9 @@ namespace TurboFacTests
 		public void Should_allow_construct_class_with_struct_parameters()
 		{
 			// Setup
+#if !PRE
 			_sut.Add<MyServiceWithStruct>();
+#endif
 			// Execute
 			// Verify
 			_sut.Get<MyServiceWithStruct>();
@@ -298,7 +323,9 @@ namespace TurboFacTests
 		public void Should_allow_construct_class_with_string_parameters()
 		{
 			// Setup
+#if !PRE
 			_sut.Add<MyServiceWithString>();
+#endif
 			// Execute
 			// Verify
 			_sut.Get<MyServiceWithString>();
@@ -308,7 +335,9 @@ namespace TurboFacTests
 		public void Should_allow_construct_class_with_string_and_struct_properties()
 		{
 			// Setup
+#if !PRE
 			_sut.Add<MyServiceWithStructPro>();
+#endif
 			// Execute
 			// Verify
 			var test = _sut.Get<MyServiceWithStructPro>();
@@ -347,7 +376,9 @@ namespace TurboFacTests
 		{
 			// Setup
 			// Execute
+#if !PRE
 			_sut.Add<MyServiceWithOptionalStruct>();
+#endif
 			var test = _sut.Get<MyServiceWithOptionalStruct>();
 			// Verify
 			Assert.AreEqual(true, test.Val);
@@ -358,7 +389,9 @@ namespace TurboFacTests
 		{
 			// Setup
 			// Execute
+#if !PRE
 			_sut.Add<MyServiceWithOptionalString>();
+#endif
 			var test = _sut.Get<MyServiceWithOptionalString>();
 			// Verify
 			Assert.AreEqual("test", test.Val);
@@ -369,7 +402,9 @@ namespace TurboFacTests
 		[TestMethod]
 		public void Should_create_service_by_apropriate_ctor()
 		{
+#if !PRE
 			_sut.Add<MyServiceWithSeveralCtors>();
+#endif
 			var test = _sut.Get<MyServiceWithSeveralCtors>();
 			Assert.IsNotNull(test);
 			Assert.IsNotNull(test.Service1);

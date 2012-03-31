@@ -42,7 +42,7 @@ namespace TurboFacTests
 		public void Init()
 		{
 			// Setup
-			_sut = new TurboContainer();
+			_sut = new TurboContainer() {ReflectionPermission = ReflectionPermission.Allow};
 			Instantiated = 0;
 		}
 

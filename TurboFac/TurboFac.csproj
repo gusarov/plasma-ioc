@@ -53,7 +53,9 @@
     <Compile Include="TurboContainerExt.cs" />
     <Compile Include="ThirdParty\UtilsExt.cs" />
     <Compile Include="Meta\TurboFacMetaRegisterExtension.cs" />
-    <Compile Include="TurboFacAttribute.cs" />
+    <Compile Include="Mining.cs" />
+    <Compile Include="TurboRegAttribute.cs" />
+    <Compile Include="Internal\TypeAutoPlumber.cs" />
     <Compile Include="TypedLazyWrapper.cs" />
     <Compile Include="_todo.cs" />
   </ItemGroup>

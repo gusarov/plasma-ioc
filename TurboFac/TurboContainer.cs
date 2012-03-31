@@ -6,6 +6,8 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 
+using TurboFac.Internal;
+
 #if NET3
 using MyUtils;
 #endif
@@ -38,11 +40,23 @@ namespace TurboFac
 
 		public TurboContainer()
 		{
+			__mining = new ReflectionMining(this);
+
 			// current instance returns allways itself for interfaces
 			this.Add<ITurboProvider>(this);
 			this.Add<ITurboContainer>(this);
 
 			//LoadAppConfig();
+		}
+
+		readonly Mining __mining;
+		Mining Mining
+		{
+			get
+			{
+				// ValidateReflectionPermissions();
+				return __mining;
+			}
 		}
 
 //		private void LoadAppConfig()
@@ -69,7 +83,7 @@ namespace TurboFac
 			readonly Lazy<object> _instance;
 			readonly TurboContainer _provider;
 
-			public ServiceEntry(Lazy<object> instance, TurboContainer provider)
+			public ServiceEntry(TurboContainer provider, Lazy<object> instance)
 			{
 				if (instance == null)
 				{
@@ -124,42 +138,64 @@ namespace TurboFac
 			}
 
 			// TODO extract to another class
-			// TODO infinite recursion by implementation ctor
+			// TODO infinite recursion by implementation ci
 			void Plumb(object instance)
 			{
-				_provider.ValidateReflectionPermissions();
-				foreach (var pro in instance.GetType().GetProperties(BindingFlags.SetProperty | BindingFlags.GetProperty | BindingFlags.Public | BindingFlags.Instance))
+				if (!TypeAutoPlumberRegister.TryPlumb(instance, _provider))
 				{
-					if (pro.GetIndexParameters().Length == 0 && pro.CanRead && pro.CanWrite)
+					PlumbReflectionBased(instance);
+				}
+			}
+
+			void PlumbReflectionBased(object instance)
+			{
+				_provider.ValidateReflectionPermissions();
+				foreach (var pro in GetPlumbingProperties(instance.GetType()))
+				{
+					if (pro.GetValue(instance, null) == null)
 					{
-						if (pro.PropertyType.IsInterface || pro.PropertyType.IsAbstract || IsLazyOrFunc(pro.PropertyType))
-						{
-							// IEnumerable<T> and all generics
-							if (pro.PropertyType.IsGenericType && !IsLazyOrFunc(pro.PropertyType))
-							{
-								continue;
-							}
-							// IEnumerable
-							if (typeof(IEnumerable).IsAssignableFrom(pro.PropertyType))
-							{
-								continue;
-							}
-							if (pro.GetValue(instance, null) == null)
-							{
-								pro.SetValue(instance, _provider.GetParameter(pro), null);
-							}
-						}
+						pro.SetValue(instance, _provider.Mining.GetArgument(pro), null);
 					}
 				}
 			}
 
-			static bool IsLazyOrFunc(Type propertyType)
+		}
+
+		internal static IEnumerable<PropertyInfo> GetPlumbingProperties(Type type)
+		{
+			foreach (var pro in type.GetProperties(BindingFlags.SetProperty | BindingFlags.GetProperty | BindingFlags.Public | BindingFlags.Instance)
+				.Where(x =>
+				       x.GetCustomAttributes(typeof(InjectAttribute), true).Any()
+				       || x.GetCustomAttributes(typeof(DefaultImplAttribute), true).Any()
+				)
+				)
 			{
-				return
-					propertyType.IsGenericType &&
-					(propertyType.GetGenericTypeDefinition() == typeof(Lazy<>) ||
-					propertyType.GetGenericTypeDefinition() == typeof(Func<>));
+				if (pro.GetIndexParameters().Length == 0 && pro.CanRead && pro.CanWrite)
+				{
+					if (pro.PropertyType.IsInterface || pro.PropertyType.IsAbstract || IsLazyOrFunc(pro.PropertyType))
+					{
+						// IEnumerable<T> and all generics
+						if (pro.PropertyType.IsGenericType && !IsLazyOrFunc(pro.PropertyType))
+						{
+							continue;
+						}
+						// IEnumerable
+						if (typeof(IEnumerable).IsAssignableFrom(pro.PropertyType))
+						{
+							continue;
+						}
+						yield return pro;
+					}
+				}
 			}
+		}
+
+		static bool IsLazyOrFunc(Type propertyType)
+		{
+			return
+				propertyType.IsGenericType &&
+				(propertyType.GetGenericTypeDefinition() == typeof(Lazy<>) ||
+				 propertyType.GetGenericTypeDefinition() == typeof(Func<>));
 		}
 
 		#region Interface
@@ -187,7 +223,8 @@ namespace TurboFac
 
 		public void Add(Type type, Type implementation)
 		{
-			PerformAdd(type, new ServiceEntry(DefaultFactory(implementation), this));
+			ValidateReflectionPermissions();
+			PerformAdd(type, new ServiceEntry(this, new Lazy<object>(() => Mining.DefaultFactory(implementation))));
 		}
 
 //		public void Add(Type type, Func<object> instanceFactory)
@@ -197,7 +234,7 @@ namespace TurboFac
 
 		public void Add(Type type, Lazy<object> instanceFactory)
 		{
-			PerformAdd(type, new ServiceEntry(instanceFactory, this));
+			PerformAdd(type, new ServiceEntry(this, instanceFactory));
 		}
 
 //		public void Add<T>(Type type, Lazy<T> instanceFactory)
@@ -212,7 +249,8 @@ namespace TurboFac
 
 		public void Add(Type type)
 		{
-			PerformAdd(type, new ServiceEntry(DefaultFactory(type), this));
+			ValidateReflectionPermissions();
+			PerformAdd(type, new ServiceEntry(this, (Lazy<object>)Mining.DefaultFactory(type)));
 		}
 
 //		public void Add(Type type, object instance)
@@ -272,7 +310,7 @@ namespace TurboFac
 					{
 						_isDisposed = true;
 
-						var services = _services.Values.Select(x => x.InstanceCache).Concat(new[] {_parentProvider}).Where(x => x != null).Distinct().OfType<IDisposable>().ToArray();
+						var services = _services.Values.Select(x => x.InstanceCache)/*.Concat(new[] {_parentProvider})*/.Where(x => x != null).Distinct().OfType<IDisposable>().ToArray();
 
 						var asyncs = services.Select(x => new Action<IDisposable>(y => y.Dispose()).BeginInvoke(x, null, null)).ToArray();
 						foreach (var asyncResult in asyncs)
@@ -284,26 +322,26 @@ namespace TurboFac
 			}
 		}
 
-		public static IAsyncResult DisposeAsync(IDisposable disposable)
-		{
-			if (disposable != null)
-			{
-				return new Action<IDisposable>(x => x.Dispose()).BeginInvoke(disposable, null, null);
-			}
-			return null;
-		}
-
-		static void WaitAll(IEnumerable<IAsyncResult> asyncResults)
-		{
-			if (asyncResults != null)
-			{
-				var handlesArray = asyncResults.Select(x => x.AsyncWaitHandle).ToArray();
-				foreach (var waitHandle in handlesArray)
-				{
-					waitHandle.WaitOne();
-				}
-			}
-		}
+//		static IAsyncResult DisposeAsync(IDisposable disposable)
+//		{
+//			if (disposable != null)
+//			{
+//				return new Action<IDisposable>(x => x.Dispose()).BeginInvoke(disposable, null, null);
+//			}
+//			return null;
+//		}
+//
+//		static void WaitAll(IEnumerable<IAsyncResult> asyncResults)
+//		{
+//			if (asyncResults != null)
+//			{
+//				var handlesArray = asyncResults.Select(x => x.AsyncWaitHandle).ToArray();
+//				foreach (var waitHandle in handlesArray)
+//				{
+//					waitHandle.WaitOne();
+//				}
+//			}
+//		}
 
 		#endregion
 
@@ -313,9 +351,13 @@ namespace TurboFac
 		/// </summary>
 		/// <param name="type"></param>
 		/// <returns></returns>
-		Lazy<object> TryGetLazyCore(Type type)
+		internal Lazy<object> TryGetLazyCore(Type type)
 		{
 			Aspect();
+			if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Lazy<>) || type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Func<>))
+			{
+				throw new TurboFacException("Do not request type by Lazy<T> or Func<T>. Specify requested type explicitly. Result is lazy anyway.");
+			}
 			ServiceEntry result;
 			_services.TryGetValue(type, out result);
 			if (result == null && _parentProvider != null)
@@ -325,12 +367,12 @@ namespace TurboFac
 			return result != null ? result.Instance : null;
 		}
 
-		Lazy<object> GetLazyCore(Type type)
+		internal Lazy<object> GetLazyCore(Type type)
 		{
 			return GetLazyCore(type, true);
 		}
 
-		Lazy<object> GetLazyCore(Type type, bool tryAutoReg)
+		internal Lazy<object> GetLazyCore(Type type, bool tryAutoReg)
 		{
 			Aspect();
 			var result = TryGetLazyCore(type);
@@ -354,67 +396,22 @@ namespace TurboFac
 			return result;
 		}
 
-		Lazy<object> DefaultFactory(Type type)
-		{
-			if (type.IsInterface || type.IsAbstract)
-			{
-				var dsia = (DefaultImplAttribute)type.GetCustomAttributes(typeof(DefaultImplAttribute), true).FirstOrDefault();
-				if (dsia != null)
-				{
-					type = dsia.TargetType;
-				}
-				else
-				{
-					throw new TurboFacException(string.Format(CultureInfo.CurrentCulture, "Can not register service for type '{0}'. Specify instance, factory, or use DefaultImplAttribute", type.Name));
-				}
-			}
-			ValidateImplementationType(type);
-
-			ValidateReflectionPermissions();
-			return new Lazy<object>(() =>
-			{
-				ConstructorInfo ci;
-				ValidateReflectionPermissions();
-				var args = GetConstructorArguments(type, out ci);
-#if PocketPC
-				return ci.Invoke(args);
-#else
-				return Activator.CreateInstance(type, args);
-#endif
-			});
-		}
-
 		/// <summary>
 		/// reference type and not string
 		/// </summary>
 		/// <param name="type"></param>
 		/// <returns></returns>
-		static bool IsValidImplementationType(Type type)
+		internal static bool IsValidImplementationType(Type type)
 		{
 			return !type.IsValueType && type != typeof(string);
 		}
 
-		static void ValidateImplementationType(Type type)
+		internal static void ValidateImplementationType(Type type)
 		{
 			if (!IsValidImplementationType(type))
 			{
 				throw new TurboFacException("Can not register string or value type implementation");
 			}
-		}
-
-		/// <summary>
-		/// default(T) from type
-		/// </summary>
-		/// <param name="type"></param>
-		/// <returns></returns>
-		object Default(Type type)
-		{
-			if (type.IsValueType)
-			{
-				ValidateReflectionPermissions();
-				return Activator.CreateInstance(type);
-			}
-			return null;
 		}
 
 		void PerformAdd(Type type, ServiceEntry entry)
@@ -463,7 +460,7 @@ namespace TurboFac
 		{
 			if (!type.IsInterface)
 			{
-				var ifaces = GetAdditionalIfaces(type);
+				var ifaces = Mining.GetAdditionalIfaces(type);
 				foreach (var iface in ifaces)
 				{
 					_services[iface] = entry;
@@ -471,163 +468,8 @@ namespace TurboFac
 			}
 		}
 
-		object[] GetConstructorArguments(Type type, out ConstructorInfo ci)
-		{
-			ValidateReflectionPermissions();
-			ci = GetConstructor(type);
-			return ci.GetParameters().Select(x=>GetParameter(x)).ToArray();
-		}
-
-		internal static ConstructorInfo GetConstructor(Type type)
-		{
-			var ctors = type.GetConstructors(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static);
-			if (ctors.Length != 1)
-			{
-				if (ctors.Length == 0)
-				{
-					throw new TurboFacException(string.Format(CultureInfo.CurrentCulture, "No constructor for type '{0}'", type.Name));
-				}
-
-				ctors = ctors.Where(x => x.GetCustomAttributes(typeof(DefaultConstructorAttribute), false).Any()).ToArray();
-				if (ctors.Length != 1)
-				{
-					throw new TurboFacException(string.Format(CultureInfo.CurrentCulture, "Ambiguous constructor for type '{0}'", type.Name));
-				}
-			}
-			return ctors.Single();
-		}
-
-		object GetParameter(ParameterInfo parameter)
-		{
-			return GetParameter(parameter.ParameterType, parameter,
-#if NET4
-				parameter.IsOptional,
-				parameter.RawDefaultValue
-#else
-				false,
-				null
-#endif
- );
-		}
-
-		object GetParameter(PropertyInfo property)
-		{
-			return GetParameter(property.PropertyType, property);
-		}
-
-		object GetParameter(Type parameterType, ICustomAttributeProvider attributes)
-		{
-			return GetParameter(parameterType, attributes, false);
-		}
-
-		object GetParameter(Type parameterType, ICustomAttributeProvider attributes, bool isOptional)
-		{
-			return GetParameter(parameterType, attributes, isOptional, null);
-		}
-
-		object GetParameter(Type parameterType, ICustomAttributeProvider attributes, bool isOptional, object defaultValue )
-		{
-			return GetParameter(parameterType, attributes.GetCustomAttributes(false).Cast<Attribute>(), isOptional, defaultValue);
-		}
-
-		object GetParameter(Type parameterType, IEnumerable<Attribute> attributes)
-		{
-			return GetParameter(parameterType, attributes, false);
-		}
-
-		object GetParameter(Type parameterType, IEnumerable<Attribute> attributes, bool isOptional)
-		{
-			return GetParameter(parameterType, attributes, isOptional, null);
-		}
-
-		object GetParameter(Type parameterType, IEnumerable<Attribute> attributes, bool isOptional, object defaultValue)
-		{
-			ValidateReflectionPermissions();
-
-			// validate
-			if (!IsValidImplementationType(parameterType))
-			{
-				if (isOptional)
-				{
-					return defaultValue;
-				}
-				else
-				{
-					return Default(parameterType);
-				}
-			}
-
-			// detect requestType
-			var requestType = parameterType;
-
-			if (parameterType.IsGenericType)
-			{
-				if (parameterType.GetGenericTypeDefinition() == typeof(Lazy<>))
-				{
-					requestType = parameterType.GetGenericArguments()[0];
-				}
-				else if (parameterType.GetGenericTypeDefinition() == typeof(Func<>))
-				{
-					requestType = parameterType.GetGenericArguments()[0];
-				}
-			}
-
-			// request
-
-			var suggesstionAttribute = attributes.OfType<DefaultImplAttribute>().SingleOrDefault<DefaultImplAttribute>();
-			var suggestedType = suggesstionAttribute == null ? null : suggesstionAttribute.TargetType;
-
-			if (suggestedType != null)
-			{
-				var now = TryGetLazyCore(requestType);
-				if (now == null)
-				{
-					Add(requestType, suggestedType);
-				}
-			}
-
-			Lazy<object> serviceLazy;
-			if (isOptional)
-			{
-				serviceLazy = TryGetLazyCore(requestType);
-				if (serviceLazy == null)
-				{
-					return null;
-				}
-			}
-			else
-			{
-				serviceLazy = GetLazyCore(requestType);
-			}
-
-			// convert to parameterType
-
-			if (parameterType.IsGenericType && parameterType.GetGenericTypeDefinition() == typeof(Lazy<>))
-			{
-				ValidateReflectionPermissions();
-				return TypedLazyWrapper.Create(parameterType.GetGenericArguments()[0], serviceLazy);
-			}
-
-			if (parameterType.IsGenericType && parameterType.GetGenericTypeDefinition() == typeof(Func<>))
-			{
-				ValidateReflectionPermissions();
-				return TypedFuncWrapper.Create(parameterType.GetGenericArguments()[0], serviceLazy);
-			}
-
-			if(parameterType.IsAssignableFrom(serviceLazy.GetType()))
-			{
-				return serviceLazy;
-			}
-			var value = serviceLazy.Value;
-			if (parameterType.IsAssignableFrom(value.GetType()))
-			{
-				return value;
-			}
-			throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, "Can not provide value for {0}", parameterType));
-		}
-
 		[DebuggerStepThrough]
-		void ValidateReflectionPermissions()
+		internal void ValidateReflectionPermissions()
 		{
 			const string message = "TurboContainer - Reflection based action";
 			switch (ReflectionPermission)
@@ -650,18 +492,6 @@ namespace TurboFac
 					throw new TurboFacException(message);
 				default:
 					throw new ArgumentOutOfRangeException();
-			}
-		}
-
-		internal static IEnumerable<Type> GetAdditionalIfaces(Type type)
-		{
-			if (!type.IsInterface)
-			{
-				var ifaces = type.GetInterfaces();
-				if (ifaces.Length == 1)
-				{
-					yield return ifaces[0];
-				}
 			}
 		}
 	}

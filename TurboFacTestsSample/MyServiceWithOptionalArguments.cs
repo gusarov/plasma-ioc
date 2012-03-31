@@ -10,7 +10,7 @@ namespace TurboFacTests.Sample
 		IMyWorker Worker { get; }
 	}
 
-	[TurboReg]
+	[RegisterService]
 	public class MyServiceWithOptionalArguments : IMyServiceWithOptionalArguments 
 	{
 		readonly IMyStorage _storage;

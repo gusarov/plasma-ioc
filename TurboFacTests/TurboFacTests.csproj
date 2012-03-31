@@ -57,10 +57,6 @@
     <Compile Include="_AssemblyInit1.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TurboFacTestsPrecompiler\TurboFacTests.Precompiler.csproj">
-      <Project>{3E063343-E863-48BC-A45D-5CD79CF79A0B}</Project>
-      <Name>TurboFacTests.Precompiler</Name>
-    </ProjectReference>
     <ProjectReference Include="..\TurboFacTestsSample\TurboFacTests.Sample.csproj">
       <Project>{FB7D6860-E28A-4F27-AA08-C5850D2AEB4F}</Project>
       <Name>TurboFacTests.Sample</Name>

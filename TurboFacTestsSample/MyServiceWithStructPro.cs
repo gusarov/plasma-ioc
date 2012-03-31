@@ -4,7 +4,7 @@ using TurboFac;
 
 namespace TurboFacTests.Sample
 {
-	[TurboReg]
+	[RegisterService]
 	public class MyServiceWithStructPro
 	{
 		public MyServiceWithStructPro()

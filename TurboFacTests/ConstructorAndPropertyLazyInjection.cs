@@ -7,9 +7,8 @@ using TurboFacTests.Sample;
 namespace TurboFacTests
 {
 	[TestClass]
-	public class ConstructorAndPropertyLazyInjection
+	public class ConstructorAndPropertyLazyInjection : BaseContainer
 	{
-		readonly ITurboContainer _sut = new TurboContainer();
 
 		[TestInitialize]
 		public void Init()
@@ -25,7 +24,9 @@ namespace TurboFacTests
 		public void Should_inject_all_deps_to_ctor()
 		{
 			// Setup
+#if !PRE
 			_sut.Add<DataLazyConstructorInjection>();
+#endif
 			// Execute
 			Assert.AreEqual(0, DataLazyConstructorInjection.Created);
 			Assert.AreEqual(0, MyService.Instantiated);
@@ -46,7 +47,10 @@ namespace TurboFacTests
 		public void Should_inject_all_deps_to_ctor_func()
 		{
 			// Setup
+#if !PRE
 			_sut.Add<DataFuncConstructorInjection>();
+			
+#endif
 			// Execute
 			Assert.AreEqual(0, DataFuncConstructorInjection.Created);
 			Assert.AreEqual(0, MyService.Instantiated);
@@ -67,7 +71,9 @@ namespace TurboFacTests
 		public void Should_inject_all_deps_to_prop()
 		{
 			// Setup
+#if !PRE
 			_sut.Add<DataLazyPropertyInjection>();
+#endif
 			// Execute
 			Assert.AreEqual(0, DataLazyPropertyInjection.Created);
 			Assert.AreEqual(0, MyService.Instantiated);
@@ -90,7 +96,9 @@ namespace TurboFacTests
 		public void Should_inject_all_deps_to_prop_func()
 		{
 			// Setup
+#if !PRE
 			_sut.Add<DataFuncPropertyInjection>();
+#endif
 			// Execute
 			Assert.AreEqual(0, DataFuncPropertyInjection.Created);
 			Assert.AreEqual(0, MyService.Instantiated);
