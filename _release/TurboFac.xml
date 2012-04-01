@@ -1,0 +1,217 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TurboFac</name>
+    </assembly>
+    <members>
+        <member name="T:TurboFac.RegisterServiceAttribute">
+            <summary>
+            Mark classes for automatic registration
+            </summary>
+        </member>
+        <member name="M:TurboFac.Mining.Default(System.Type)">
+            <summary>
+            Return default instance (null or empty structure)
+            </summary>
+        </member>
+        <member name="M:TurboFac.Mining.DefaultFactory(System.Type)">
+            <summary>
+            How instantiate specified type
+            </summary>
+        </member>
+        <member name="M:TurboContainerExt.Get``1(TurboFac.ITurboProvider)">
+            <summary>
+            Get a service of registered type. On failure: throw exception.
+            </summary>
+            <exception cref="T:TurboFac.TurboFacException">Service is not registered</exception>
+        </member>
+        <member name="M:TurboContainerExt.TryGet``1(TurboFac.ITurboProvider)">
+            <summary>
+            Try get service of registered type and return null on failure
+            </summary>
+        </member>
+        <member name="M:TurboContainerExt.Get``1(TurboFac.ITurboContainer,System.Func{``0})">
+            <summary>
+            Try get service of registered type or register by factory
+            </summary>
+        </member>
+        <member name="M:TurboContainerExt.Add``1(TurboFac.ITurboContainer)">
+            <summary>
+            Register service with default lazy factory
+            </summary>
+            <typeparam name="T">Registering type, e.g. MyServiceImpl</typeparam>
+            <param name="container"></param>
+        </member>
+        <member name="M:TurboContainerExt.Add``1(TurboFac.ITurboContainer,``0)">
+            <summary>
+            Register service
+            </summary>
+            <typeparam name="T">Registering type, e.g. IMyService</typeparam>
+            <param name="container"></param>
+            <param name="instance">Service instance</param>
+        </member>
+        <member name="M:TurboContainerExt.Add``1(TurboFac.ITurboContainer,System.Func{``0})">
+            <summary>
+            Register service factory
+            </summary>
+            <typeparam name="T">Registering type, e.g. IMyService</typeparam>
+            <param name="container"></param>
+            <param name="instanceFactory">Service factory</param>
+        </member>
+        <member name="M:TurboContainerExt.Add``1(TurboFac.ITurboContainer,System.Lazy{``0})">
+            <summary>
+            Register service lazy
+            </summary>
+            <typeparam name="T">Registering type, e.g. IMyService</typeparam>
+            <param name="container"></param>
+            <param name="instanceFactory">Service lazy instance</param>
+        </member>
+        <member name="M:TurboContainerExt.Add``2(TurboFac.ITurboContainer,System.Lazy{``1})">
+            <summary>
+            Register service lazy
+            </summary>
+            <typeparam name="T">Registering type, e.g. IMyService</typeparam>
+            <typeparam name="TImpl">Service implementation, e.g. MyServiceImpl</typeparam>
+            <param name="container"></param>
+            <param name="instanceFactory">Service lazy instance</param>
+        </member>
+        <member name="M:TurboContainerExt.Add``2(TurboFac.ITurboContainer)">
+            <summary>
+            Register service with default factory
+            </summary>
+            <typeparam name="T">Registering type, e.g. IMyService</typeparam>
+            <typeparam name="TImpl">Service implementation, e.g. MyServiceImpl</typeparam>
+            <param name="container"></param>
+        </member>
+        <member name="T:TurboFac.DefaultImplAttribute">
+            <summary>
+            Suggest this implementation type or assembly qualified type name.
+            </summary>
+        </member>
+        <member name="T:TurboFac.InjectAttribute">
+            <summary>
+            Allow property injection here. Automatic property injection is not safe, consider explicit specification
+            </summary>
+        </member>
+        <member name="T:TurboFac.ITurboContainer">
+            <summary>
+            TurboFac Service Container
+            </summary>
+        </member>
+        <member name="T:TurboFac.ITurboProvider">
+            <summary>
+            TurboFac Service Provider
+            </summary>
+        </member>
+        <member name="M:TurboFac.ITurboProvider.Get(System.Type)">
+            <summary>
+            Get a service of registered type
+            </summary>
+            <exception cref="!:TurboException">Service is not registered</exception>
+        </member>
+        <member name="M:TurboFac.ITurboProvider.GetLazy(System.Type)">
+            <summary>
+            Get a lazy service of registered type
+            </summary>
+            <exception cref="T:TurboFac.TurboFacException">Service is not registered</exception>
+        </member>
+        <member name="M:TurboFac.ITurboProvider.TryGet(System.Type)">
+            <summary>
+            Try get service of registered type and return null on failure
+            </summary>
+        </member>
+        <member name="M:TurboFac.ITurboProvider.TryGetLazy(System.Type)">
+            <summary>
+            Try get lazy service of registered type and return null on failure
+            </summary>
+        </member>
+        <member name="M:TurboFac.TurboContainer.TryGetLazyCore(System.Type)">
+            <summary>
+            Get from current container or from parent chain
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TurboFac.TurboContainer.IsValidImplementationType(System.Type)">
+            <summary>
+            reference type and not string
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="P:TurboFac.TurboContainer.ServiceEntry.InstanceCache">
+            <summary>
+            Service instance or null if not instantiated yet
+            </summary>
+        </member>
+        <member name="M:TurboFac.ThirdParty.DynamicInvokeOptimizer.Equals(System.Object,System.Object)">
+            <summary>Do not call this method.</summary>
+        </member>
+        <member name="M:TurboFac.ThirdParty.DynamicInvokeOptimizer.ReferenceEquals(System.Object,System.Object)">
+            <summary>Do not call this method.</summary>
+        </member>
+        <member name="M:TurboFac.ThirdParty.DynamicInvokeOptimizer.Compile``1(System.Reflection.MethodInfo)">
+            <summary>
+            Create lightweight method and delegate to that method.
+            For instance methods define another first object parameter in delegate.
+            </summary>
+            <typeparam name="TDelegate"></typeparam>
+            <param name="methodInfo"></param>
+            <returns>Compiled strongly typed delegate</returns>
+            <example>
+            <code>
+            class TestClass
+            {
+                public int TestMethod(int arg)
+                {
+                    return arg * arg;
+                }
+            }
+            
+            class TestInvokator
+            {
+                void Main()
+                {
+                    typeof(TestClass).GetMethod("TestMethod").Compile&lt;Func&lt;object, int, int&gt;&gt;
+                }
+            }
+            </code>
+            </example>
+        </member>
+        <member name="T:TurboFac.TypedLazyWrapper">
+            <summary>
+            Convert Lazy&lt;object&gt; to &lt;T&gt; with T provided as Type
+            </summary>
+        </member>
+        <member name="T:TurboFac.DefaultConstructorAttribute">
+            <summary>
+            Suggest this constructor for automatic registration or instantiating
+            </summary>
+        </member>
+        <member name="T:TurboFac.Internal.TypeAutoPlumberRegister">
+            <summary>
+            Register of plumbing code - property injectors
+            </summary>
+        </member>
+        <member name="M:TurboFac.Internal.TypeAutoPlumberRegister.Register``1(System.Action{TurboFac.ITurboContainer,``0})">
+            <summary>
+            Add an action for property injection
+            </summary>
+        </member>
+        <member name="M:TurboFac.Internal.TypeAutoPlumberRegister.Register``1(System.Action{TurboFac.ITurboContainer,System.Object})">
+            <summary>
+            Add an action for property injection
+            </summary>
+        </member>
+        <member name="M:TurboFac.Internal.TypeAutoPlumberRegister.RegisterNone``1">
+            <summary>
+            Express the fact that no property injection exists for this type
+            </summary>
+        </member>
+        <member name="M:TurboFac.Internal.TypeAutoPlumberRegister.TryPlumb(System.Object,TurboFac.ITurboContainer)">
+            <summary>
+            Inject dependencies from container
+            </summary>
+        </member>
+    </members>
+</doc>

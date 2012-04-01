@@ -7,4 +7,10 @@ namespace TurboFacTests.Sample
 	{
 		bool MyMethod();
 	}
+
+	[DefaultImpl(typeof(MyService4))]
+	public interface IMyService4
+	{
+		bool MyMethod();
+	}
 }

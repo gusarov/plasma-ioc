@@ -19,12 +19,14 @@ namespace TurboFacTests.Sample
 	{
 	}
 
+	[RegisterService]
 	public class MyNodeHost
 	{
 		[DefaultImpl(typeof(MyFileStorage))]
 		public IMyStorage Storage { get; set; }
 	}
 
+	[RegisterService]
 	public class MyObjectMan
 	{
 		readonly IMyStorage _storage;

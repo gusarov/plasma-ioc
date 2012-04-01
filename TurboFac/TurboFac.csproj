@@ -29,6 +29,7 @@
     <DefineConstants>TRACE;NET4</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\TurboFac.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="MetaCreator">
@@ -60,6 +61,12 @@
     <Compile Include="_todo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>if "$(ConfigurationName)" == "Release" (
+  echo .pdb &gt; ~e.lst
+  xcopy /d /y /exclude:~e.lst "$(TargetDir)$(ProjectName).*" "$(SolutionDir)_release\" 
+)</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

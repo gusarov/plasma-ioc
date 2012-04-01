@@ -147,6 +147,9 @@ namespace TurboFacTests
 			// Setup
 #if !PRE
 			_sut.Add<IMyService2, MyService2>();
+#else
+			// todo decide about multiple interfaces
+			_sut.Add<IMyService2>(() => new MyService2(_sut.Get<IMyService>()));
 #endif
 			// Execute
 			var ms1 = _sut.Get<IMyService2>();
@@ -284,14 +287,14 @@ namespace TurboFacTests
 			#endregion
 		}
 
+#if !PRE
 		[TestMethod]
 		[ExpectedException(typeof(TurboFacException))]
 		public void Should_not_allow_register_value_types()
 		{
-#if !PRE
 			_sut.Add<IComparable, MyStruct>();
-#endif
 		}
+#endif
 
 		[TestMethod]
 		[ExpectedException(typeof(TurboFacException))]

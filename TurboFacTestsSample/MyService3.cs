@@ -23,4 +23,16 @@ namespace TurboFacTests.Sample
 			return _performer != null;
 		}
 	}
+
+	[RegisterService]
+	public class MyService4 : IMyService4
+	{
+		[Inject]
+		public IMyPerformer Performer { get; set; }
+
+		public bool MyMethod()
+		{
+			return Performer != null;
+		}
+	}
 }
