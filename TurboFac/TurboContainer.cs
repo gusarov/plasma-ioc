@@ -224,6 +224,7 @@ namespace TurboFac
 		public void Add(Type type, Type implementation)
 		{
 			ValidateReflectionPermissions();
+			ValidateImplementationType(implementation);
 			PerformAdd(type, new ServiceEntry(this, new Lazy<object>(() => Mining.DefaultFactory(implementation))));
 		}
 
@@ -250,7 +251,8 @@ namespace TurboFac
 		public void Add(Type type)
 		{
 			ValidateReflectionPermissions();
-			PerformAdd(type, new ServiceEntry(this, (Lazy<object>)Mining.DefaultFactory(type)));
+			ValidateImplementationType(type);
+			PerformAdd(type, new ServiceEntry(this, new Lazy<object>(() => Mining.DefaultFactory(type))));
 		}
 
 //		public void Add(Type type, object instance)
