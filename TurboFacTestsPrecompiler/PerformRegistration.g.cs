@@ -15,8 +15,6 @@ namespace TurboFacTests.Precompiler
 			
 			
 			
-// msrrjxxn, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-// TurboFacTests.Sample, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
 c.Add<IMyPerformer>(()=>new MyPerformer());
 c.Add<IMyStorage>(()=>new MyInmemStorage());
 c.Add<MyNodeHost>(()=>new MyNodeHost());
