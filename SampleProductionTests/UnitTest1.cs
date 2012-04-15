@@ -4,19 +4,20 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using SampleProduction;
+using Plasma;
 
-using TurboFac;
+using SampleProduction;
 
 namespace SampleProductionTests
 {
 	[TestClass]
 	public class UnitTest1
 	{
-		readonly ITurboContainer _spring = TurboContainer.Root;
+		readonly IPlasmaContainer _spring = PlasmaContainer.Root;
 
 		public UnitTest1()
 		{
+			PlasmaContainer.DefaultReflectionPermission = ReflectionPermission.Throw;
 			AutoStub.RegisterAll(_spring);
 		}
 

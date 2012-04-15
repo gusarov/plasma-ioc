@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{B44C92D6-F448-419B-B697-C5D9183E81B6}</ProjectGuid>
+    <ProjectGuid>{FB7D6860-E28A-4F27-AA08-C5850D2AEB4F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SampleProduction</RootNamespace>
-    <AssemblyName>SampleProduction</AssemblyName>
+    <RootNamespace>PlasmaTests.Sample</RootNamespace>
+    <AssemblyName>PlasmaTests.Sample</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -18,7 +18,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NET4</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -26,21 +26,35 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;NET4</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="DataLazyConstructorInjection.cs" />
+    <Compile Include="DataLazyPropertyInjection.cs" />
+    <Compile Include="IMyPerformer.cs" />
+    <Compile Include="IMyService.cs" />
+    <Compile Include="IMyService2.cs" />
+    <Compile Include="IMyService3.cs" />
+    <Compile Include="IMyStorage.cs" />
+    <Compile Include="IMyWorker.cs" />
+    <Compile Include="MyPerformer.cs" />
+    <Compile Include="MyService.cs" />
+    <Compile Include="MyService2.cs" />
+    <Compile Include="MyService3.cs" />
+    <Compile Include="MyServiceWithOptionalArguments.cs" />
+    <Compile Include="MyServiceWithString.cs" />
+    <Compile Include="MyServiceWithStruct.cs" />
+    <Compile Include="MyServiceWithStructPro.cs" />
+    <Compile Include="MyServiceWithTwoCtors.cs" />
+    <Compile Include="MySubGroup.cs" />
+    <Compile Include="MyWorker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

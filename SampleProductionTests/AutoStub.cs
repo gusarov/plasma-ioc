@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using SampleProduction;
+using Plasma;
 
-using TurboFac;
-using TurboFac.Meta;
+using SampleProduction;
 
 namespace SampleProductionTests
 {
@@ -16,7 +15,7 @@ namespace SampleProductionTests
 		static object ref1 = typeof(MovieFinder);
 		*/
 
-		public static void RegisterAll(ITurboContainer c)
+		public static void RegisterAll(IPlasmaContainer c)
 		{
 			/*# RegisterAll */
 		}

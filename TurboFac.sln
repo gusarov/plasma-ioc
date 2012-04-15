@@ -12,15 +12,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		TurboFac.vsmdi = TurboFac.vsmdi
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TurboFac", "TurboFac\TurboFac.csproj", "{7EC2C99D-CD8E-4C20-8820-8CC953F4EED1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plasma", "Plasma\Plasma.csproj", "{7EC2C99D-CD8E-4C20-8820-8CC953F4EED1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TurboFacTests", "TurboFacTests\TurboFacTests.csproj", "{26144301-219F-4A21-9EAD-91DA823C3A08}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlasmaTests", "PlasmaTests\PlasmaTests.csproj", "{26144301-219F-4A21-9EAD-91DA823C3A08}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TurboFacTestsPrecompiled", "TurboFacTests\TurboFacTestsPrecompiled.csproj", "{801595E2-88F2-4E76-81D0-D7AEB48C2B20}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlasmaTestsPrecompiled", "PlasmaTests\PlasmaTestsPrecompiled.csproj", "{801595E2-88F2-4E76-81D0-D7AEB48C2B20}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TurboFacTests.Precompiler", "TurboFacTestsPrecompiler\TurboFacTests.Precompiler.csproj", "{3E063343-E863-48BC-A45D-5CD79CF79A0B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlasmaTests.Precompiler", "PlasmaTestsPrecompiler\PlasmaTests.Precompiler.csproj", "{3E063343-E863-48BC-A45D-5CD79CF79A0B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TurboFacTests.Sample", "TurboFacTestsSample\TurboFacTests.Sample.csproj", "{FB7D6860-E28A-4F27-AA08-C5850D2AEB4F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlasmaTests.Sample", "PlasmaTests.Sample\PlasmaTests.Sample.csproj", "{FB7D6860-E28A-4F27-AA08-C5850D2AEB4F}"
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
