@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System;
 
 using Plasma;
+using Plasma.ThirdParty;
 
 #if NET3
 using MyUtils;

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System;
 using System.ComponentModel;
 
+using Plasma.ThirdParty;
+
 #if NET3
 using MyUtils;
 #endif

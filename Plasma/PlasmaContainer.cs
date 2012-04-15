@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 
 using Plasma.Internal;
+using Plasma.ThirdParty;
 
 #if NET3
 using MyUtils;

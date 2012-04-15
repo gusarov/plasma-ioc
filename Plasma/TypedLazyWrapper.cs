@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
+using Plasma.ThirdParty;
+
 #if NET3
 using MyUtils;
 #endif
@@ -44,7 +46,11 @@ namespace Plasma
 
 		static readonly Dictionary<Type, Func<Lazy<object>, object>> _typedLazyFactory = new Dictionary<Type, Func<Lazy<object>, object>>();
 
+#if NET4
 		public static void Register<T>(Type type, Func<Lazy<object>, Lazy<T>> factory)
+#elif NET3
+		public static void Register<T>(Type type, Func<Lazy<object>, object> factory)
+#endif
 		{
 			_typedLazyFactory[type] = factory;
 		}
@@ -82,7 +88,11 @@ namespace Plasma
 
 		static readonly Dictionary<Type, Func<Lazy<object>, object>> _typedLazyFactory = new Dictionary<Type, Func<Lazy<object>, object>>();
 
+#if NET4
 		public static void Register<T>(Type type, Func<Lazy<object>, Func<T>> factory)
+#elif NET3
+		public static void Register<T>(Type type, Func<Lazy<object>, object> factory)
+#endif
 		{
 			_typedLazyFactory[type] = factory;
 		}
