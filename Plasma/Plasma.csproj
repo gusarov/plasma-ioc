@@ -62,7 +62,9 @@
     <Compile Include="IPlasmaProvider.cs" />
     <Compile Include="Meta\ProxyGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReflectionMining.cs" />
     <Compile Include="ReflectionPermission.cs" />
+    <Compile Include="StaticMining.cs" />
     <Compile Include="ThirdParty\DynamicInvokeOptimizer.cs" />
     <Compile Include="PlasmaContainer.cs" />
     <Compile Include="PlasmaException.cs" />
