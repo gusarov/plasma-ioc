@@ -67,7 +67,7 @@
     <Compile Include="PlasmaContainer.cs" />
     <Compile Include="PlasmaException.cs" />
     <Compile Include="ThirdParty\UtilsExt.cs" />
-    <Compile Include="Meta\TurboFacMetaRegisterExtension.cs" />
+    <Compile Include="Meta\PlasmaMetaRegisterExtension.cs" />
     <Compile Include="Mining.cs" />
     <Compile Include="RegisterServiceAttribute.cs" />
     <Compile Include="Internal\TypeAutoPlumber.cs" />
