@@ -55,13 +55,15 @@
     <Compile Include="MyServiceWithTwoCtors.cs" />
     <Compile Include="MySubGroup.cs" />
     <Compile Include="MyWorker.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Plasma\Plasma.csproj">
       <Project>{7EC2C99D-CD8E-4C20-8820-8CC953F4EED1}</Project>
       <Name>Plasma</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

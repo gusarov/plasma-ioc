@@ -95,11 +95,6 @@
             
             </summary>
         </member>
-        <member name="T:Plasma.Internal.PlasmaConfigSection">
-            <summary>
-            
-            </summary>
-        </member>
         <member name="T:Plasma.DefaultConstructorAttribute">
             <summary>
             Suggest this constructor for automatic registration or instantiating
@@ -154,18 +149,6 @@
             <summary>
             Inject dependencies from container
             </summary>
-        </member>
-        <member name="T:Plasma.Meta.PlasmaMetaRegisterExtension">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:Plasma.Meta.PlasmaMetaRegisterExtension.RegisterAll(MetaCreator.IMetaWriter,System.String)">
-            <summary>
-            
-            </summary>
-            <param name="writer"></param>
-            <param name="containerVariableName"></param>
         </member>
         <member name="T:Plasma.Meta.ProxyGenerator">
             <summary>
@@ -295,6 +278,23 @@
         <member name="T:Plasma.Aop.CacheAdvise">
             <summary>
             Base class for attributive pointcuts for aspects
+            </summary>
+        </member>
+        <member name="T:Plasma.Meta.PlasmaMetaRegisterExtension">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Plasma.Meta.PlasmaMetaRegisterExtension.RegisterAll(MetaCreator.IMetaWriter,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="writer"></param>
+            <param name="containerVariableName"></param>
+        </member>
+        <member name="T:Plasma.Internal.PlasmaConfigSection">
+            <summary>
+            
             </summary>
         </member>
     </members>

@@ -9,8 +9,8 @@
     <ProjectGuid>{801595E2-88F2-4E76-81D0-D7AEB48C2B20}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TurboFacTests</RootNamespace>
-    <AssemblyName>TurboFacTestsPrecompiled</AssemblyName>
+    <RootNamespace>PlasmaTests</RootNamespace>
+    <AssemblyName>PlasmaTestsPrecompiled</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -53,7 +53,6 @@
     <Compile Include="_AssemblyInit1.cs" />
     <Compile Include="_AssemblyInit2.cs" />
     <Compile Include="LazyConverter.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceContainerLazyTests.cs" />
     <Compile Include="ServiceContainerTests.cs" />
   </ItemGroup>
@@ -71,7 +70,9 @@
       <Name>PlasmaTests.Sample</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="..\_components\MetaCreator\MetaCreator.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

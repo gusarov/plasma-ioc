@@ -57,7 +57,7 @@
     <Compile Include="Aop\IAdvise.cs" />
     <Compile Include="Aop\IMethodIntercepAdvise.cs" />
     <Compile Include="DefaultConstructorAttribute.cs" />
-    <Compile Include="Internal\TurboConfigSection.cs" />
+    <Compile Include="Internal\PlasmaConfigSection.cs" />
     <Compile Include="IPlasmaContainer.cs" />
     <Compile Include="IPlasmaProvider.cs" />
     <Compile Include="Meta\ProxyGenerator.cs" />

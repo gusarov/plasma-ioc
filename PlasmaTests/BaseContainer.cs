@@ -6,8 +6,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Plasma;
 
-using TurboFacTests;
-
 namespace PlasmaTests
 {
 	[TestClass]

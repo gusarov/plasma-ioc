@@ -6,7 +6,7 @@ using Plasma;
 
 using PlasmaTests.Precompiler;
 
-namespace TurboFacTests
+namespace PlasmaTests
 {
 	partial class _AssemblyInit
 	{

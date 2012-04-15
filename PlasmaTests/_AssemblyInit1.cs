@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Plasma;
 
-namespace TurboFacTests
+namespace PlasmaTests
 {
 	[TestClass]
 	public static partial class _AssemblyInit
