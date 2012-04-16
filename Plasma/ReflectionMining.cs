@@ -4,7 +4,11 @@ using System.Collections.Generic;
 using System;
 using System.Reflection;
 
+using Plasma.ThirdParty;
+
+#if NET3
 using MyUtils;
+#endif
 
 namespace Plasma
 {

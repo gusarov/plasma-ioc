@@ -81,6 +81,10 @@
     <PostBuildEvent>if "$(ConfigurationName)" == "Release" (
   echo .pdb &gt; ~e.lst
   xcopy /d /y /exclude:~e.lst "$(TargetDir)$(ProjectName).*" "$(SolutionDir)_release\" 
+  if exist "$(SolutionDir)..\_distrib\" (
+    md "$(SolutionDir)..\_distrib\Plasma\"
+    xcopy /d /y /exclude:~e.lst "$(TargetDir)$(ProjectName).*" "$(SolutionDir)..\_distrib\Plasma\" 
+  )
 )</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

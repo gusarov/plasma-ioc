@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>Plasma</name>
+        <name>Plasma Mobile</name>
     </assembly>
     <members>
         <member name="T:Plasma.TypedLazyWrapper">
@@ -27,28 +27,6 @@
         <member name="T:Plasma.IPlasmaProvider">
             <summary>
             Plasm Service Provider
-            </summary>
-        </member>
-        <member name="M:Plasma.IPlasmaProvider.Get(System.Type)">
-            <summary>
-            Get a service of registered type
-            </summary>
-            <exception cref="T:Plasma.PlasmaException">Service is not registered</exception>
-        </member>
-        <member name="M:Plasma.IPlasmaProvider.GetLazy(System.Type)">
-            <summary>
-            Get a lazy service of registered type
-            </summary>
-            <exception cref="T:Plasma.PlasmaException">Service is not registered</exception>
-        </member>
-        <member name="M:Plasma.IPlasmaProvider.TryGet(System.Type)">
-            <summary>
-            Try get service of registered type and return null on failure
-            </summary>
-        </member>
-        <member name="M:Plasma.IPlasmaProvider.TryGetLazy(System.Type)">
-            <summary>
-            Try get lazy service of registered type and return null on failure
             </summary>
         </member>
         <member name="M:Plasma.PlasmaContainer.TryGetLazyCore(System.Type)">
@@ -80,18 +58,6 @@
             How instantiate specified type
             </summary>
         </member>
-        <member name="T:Plasma.Meta.ProxyGenerator">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:Plasma.Meta.ProxyGenerator.UniversalProxy(MetaCreator.IMetaWriter,System.String)">
-            <summary>
-            
-            </summary>
-            <param name="writer"></param>
-            <param name="typeName"></param>
-        </member>
         <member name="T:Plasma.Aop.CacheAdvise">
             <summary>
             Base class for attributive pointcuts for aspects
@@ -121,40 +87,6 @@
             <summary>
             Allow property injection here. Automatic property injection is not safe, consider explicit specification
             </summary>
-        </member>
-        <member name="M:Plasma.ThirdParty.DynamicInvokeOptimizer.Equals(System.Object,System.Object)">
-            <summary>Do not call this method.</summary>
-        </member>
-        <member name="M:Plasma.ThirdParty.DynamicInvokeOptimizer.ReferenceEquals(System.Object,System.Object)">
-            <summary>Do not call this method.</summary>
-        </member>
-        <member name="M:Plasma.ThirdParty.DynamicInvokeOptimizer.Compile``1(System.Reflection.MethodInfo)">
-            <summary>
-            Create lightweight method and delegate to that method.
-            For instance methods define another first object parameter in delegate.
-            </summary>
-            <typeparam name="TDelegate"></typeparam>
-            <param name="methodInfo"></param>
-            <returns>Compiled strongly typed delegate</returns>
-            <example>
-            <code>
-            class TestClass
-            {
-                public int TestMethod(int arg)
-                {
-                    return arg * arg;
-                }
-            }
-            
-            class TestInvokator
-            {
-                void Main()
-                {
-                    typeof(TestClass).GetMethod("TestMethod").Compile&lt;Func&lt;object, int, int&gt;&gt;
-                }
-            }
-            </code>
-            </example>
         </member>
         <member name="M:PlasmaContainerExt.Get``1(Plasma.IPlasmaProvider)">
             <summary>
@@ -195,7 +127,7 @@
             <param name="container"></param>
             <param name="instanceFactory">Service factory</param>
         </member>
-        <member name="M:PlasmaContainerExt.Add``1(Plasma.IPlasmaContainer,System.Lazy{``0})">
+        <member name="M:PlasmaContainerExt.Add``1(Plasma.IPlasmaContainer,MyUtils.Lazy{``0})">
             <summary>
             Register service lazy
             </summary>
@@ -203,7 +135,7 @@
             <param name="container"></param>
             <param name="instanceFactory">Service lazy instance</param>
         </member>
-        <member name="M:PlasmaContainerExt.Add``2(Plasma.IPlasmaContainer,System.Lazy{``1})">
+        <member name="M:PlasmaContainerExt.Add``2(Plasma.IPlasmaContainer,MyUtils.Lazy{``1})">
             <summary>
             Register service lazy
             </summary>
@@ -249,18 +181,6 @@
             <summary>
             Inject dependencies from container
             </summary>
-        </member>
-        <member name="T:Plasma.Meta.PlasmaMetaRegisterExtension">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:Plasma.Meta.PlasmaMetaRegisterExtension.RegisterAll(MetaCreator.IMetaWriter,System.String)">
-            <summary>
-            
-            </summary>
-            <param name="writer"></param>
-            <param name="containerVariableName"></param>
         </member>
         <member name="T:Plasma.DefaultConstructorAttribute">
             <summary>
