@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.ComponentModel;
+using System.Linq;
 using System.Collections.Generic;
 using System;
 
@@ -25,7 +26,13 @@ using System;
 
 			public Type TargetType
 			{
-				get { return _type ?? ( _type = Type.GetType(_typeAqn, true)); }
+				get { return _type ?? ( _type = Type.GetType(TypeAqn, true)); }
+			}
+
+			[EditorBrowsable(EditorBrowsableState.Advanced)]
+			public string TypeAqn
+			{
+				get { return _typeAqn; }
 			}
 		}
 

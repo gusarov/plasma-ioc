@@ -28,6 +28,15 @@ namespace Plasma
 
 #if !PocketPC
 		/// <summary>
+		/// Get a service of registered type. If service does not exists - create it by suggested type
+		/// </summary>
+		[EditorBrowsable(EditorBrowsableState.Advanced)]
+		[Browsable(false)]
+#endif
+		object Get(Type type, Type suggestedImpl);
+
+#if !PocketPC
+		/// <summary>
 		/// Get a lazy service of registered type
 		/// </summary>
 		/// <exception cref="PlasmaException">Service is not registered</exception>

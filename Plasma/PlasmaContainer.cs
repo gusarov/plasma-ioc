@@ -209,6 +209,11 @@ namespace Plasma
 			return GetLazyCore(type).Value;
 		}
 
+		public object Get(Type type, Type suggestedImpl)
+		{
+			return GetLazyCore(type, suggestedImpl).Value;
+		}
+
 		public Lazy<object> GetLazy(Type type)
 		{
 			return GetLazyCore(type);
@@ -227,9 +232,12 @@ namespace Plasma
 
 		public void Add(Type type, Type implementation)
 		{
-			ValidateReflectionPermissions();
 			ValidateImplementationType(implementation);
-			PerformAdd(type, new ServiceEntry(this, new Lazy<object>(() => Mining.DefaultFactory(implementation))));
+			PerformAdd(type, new ServiceEntry(this, new Lazy<object>(() =>
+			{
+				var t = Mining.DefaultFactoryType(implementation);
+				return TypeFactoryRegister.Create(this, t) ?? Mining.DefaultFactory(t);
+			})));
 		}
 
 //		public void Add(Type type, Func<object> instanceFactory)
@@ -254,9 +262,7 @@ namespace Plasma
 
 		public void Add(Type type)
 		{
-			ValidateReflectionPermissions();
-			ValidateImplementationType(type);
-			PerformAdd(type, new ServiceEntry(this, new Lazy<object>(() => Mining.DefaultFactory(type))));
+			Add(type, type);
 		}
 
 //		public void Add(Type type, object instance)
@@ -375,10 +381,20 @@ namespace Plasma
 
 		internal Lazy<object> GetLazyCore(Type type)
 		{
-			return GetLazyCore(type, true);
+			return GetLazyCore(type, null, true);
 		}
 
 		internal Lazy<object> GetLazyCore(Type type, bool tryAutoReg)
+		{
+			return GetLazyCore(type, null, tryAutoReg);
+		}
+
+		internal Lazy<object> GetLazyCore(Type type, Type suggestedImpl)
+		{
+			return GetLazyCore(type, suggestedImpl, true);
+		}
+
+		internal Lazy<object> GetLazyCore(Type type, Type suggestedImpl, bool tryAutoReg)
 		{
 			Aspect();
 			var result = TryGetLazyCore(type);
@@ -389,9 +405,9 @@ namespace Plasma
 				if (tryAutoReg && type.IsInterface)
 				{
 					//try {
-						Add(type);
+						Add(type, suggestedImpl ?? type);
 					//} catch (PlasmaException) {}
-					result = GetLazyCore(type, false);
+					result = GetLazyCore(type, null, false);
 				}
 				//throw new PlasmaException("Service does not exists");
 			}

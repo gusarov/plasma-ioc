@@ -25,6 +25,15 @@ public static class PlasmaContainerExt
 		return (T)provider.Get(typeof(T));
 	}
 
+	public static T Get<T, TSuggest>(this IPlasmaProvider provider)
+	{
+		if (provider == null)
+		{
+			throw new ArgumentNullException("provider");
+		}
+		return (T)provider.Get(typeof(T), typeof(TSuggest));
+	}
+
 	/// <summary>
 	/// Try get service of registered type and return null on failure
 	/// </summary>

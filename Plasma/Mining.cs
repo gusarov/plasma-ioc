@@ -81,10 +81,7 @@ namespace Plasma
 			return ctors.Single();
 		}
 
-		/// <summary>
-		/// How instantiate specified type
-		/// </summary>
-		public object DefaultFactory(Type type)
+		public Type DefaultFactoryType(Type type)
 		{
 			if (type.IsInterface || type.IsAbstract)
 			{
@@ -98,6 +95,15 @@ namespace Plasma
 					throw new PlasmaException(string.Format(CultureInfo.CurrentCulture, "Can not register service for type '{0}'. Specify instance, factory, or use DefaultImplAttribute", type.Name));
 				}
 			}
+			return type;
+		}
+
+		/// <summary>
+		/// How instantiate specified type
+		/// </summary>
+		public object DefaultFactory(Type type)
+		{
+			type = DefaultFactoryType(type);
 			PlasmaContainer.ValidateImplementationType(type);
 			return DefaultFactoryCore(type);
 		}

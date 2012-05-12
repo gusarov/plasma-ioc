@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System;
 using System.Reflection;
 
+using Plasma.ThirdParty;
+
 #if NET3
 using MyUtils;
 #endif
@@ -27,7 +29,7 @@ namespace Plasma
 		{
 			var ci = GetConstructor(type);
 			var arguments = string.Join(", ", GetConstructorArguments(ci));
-			return string.Format("()=>new {0}({1})", type.CSharpTypeIdentifier(), arguments);
+			return string.Format("c => new {0}({1})", type.CSharpTypeIdentifier(), arguments);
 		}
 
 		protected override object GetArgumentDefaultOptional(object defaultValue)
@@ -37,15 +39,24 @@ namespace Plasma
 
 		protected override object GetArgumentRquestAndConvert(Type parameterType, Type requestedType, ICustomAttributeProvider info, bool isOptional)
 		{
+			var suggested = info.Attribute<DefaultImplAttribute>();
+			var suggestedType = suggested == null ? null : suggested.TargetType;
+
 			if (parameterType.IsGenericType && parameterType.GetGenericTypeDefinition() == typeof(Lazy<>))
 			{
-				return string.Format("new Lazy<{0}>(c.Get<{1}>)", Unlazy(parameterType).CSharpTypeIdentifier(), requestedType.CSharpTypeIdentifier());
+				if (suggestedType != null)
+					return string.Format("new Lazy<{0}>(c.{3}Get<{1}, {2}>)", Unlazy(parameterType).CSharpTypeIdentifier(), requestedType.CSharpTypeIdentifier(), suggestedType.CSharpTypeIdentifier(), isOptional?"Try":"");
+				return string.Format("new Lazy<{0}>(c.{2}Get<{1}>)", Unlazy(parameterType).CSharpTypeIdentifier(), requestedType.CSharpTypeIdentifier(), isOptional ? "Try" : "");
 			}
 			if (parameterType.IsGenericType && parameterType.GetGenericTypeDefinition() == typeof(Func<>))
 			{
-				return string.Format("c.Get<{0}>", requestedType.CSharpTypeIdentifier());
+				if (suggestedType != null)
+					return string.Format("c.{2}Get<{0}, {1}>", requestedType.CSharpTypeIdentifier(), suggestedType.CSharpTypeIdentifier(), isOptional ? "Try" : "");
+				return string.Format("c.{1}Get<{0}>", requestedType.CSharpTypeIdentifier(), isOptional ? "Try" : "");
 			}
-			return string.Format("c.Get<{0}>()", requestedType.CSharpTypeIdentifier());
+			if(suggestedType != null)
+				return string.Format("c.{2}Get<{0}, {1}>()", requestedType.CSharpTypeIdentifier(), suggestedType.CSharpTypeIdentifier(), isOptional ? "Try" : "");
+			return string.Format("c.{1}Get<{0}>()", requestedType.CSharpTypeIdentifier(), isOptional ? "Try" : "");
 		}
 
 		public override object[] GetConstructorArguments(ConstructorInfo ci)

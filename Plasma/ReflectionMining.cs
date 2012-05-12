@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System;
 using System.Reflection;
 
+using Plasma.Internal;
 using Plasma.ThirdParty;
 
 #if NET3

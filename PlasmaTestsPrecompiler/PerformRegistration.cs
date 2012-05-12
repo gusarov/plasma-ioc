@@ -10,7 +10,7 @@ namespace PlasmaTests.Precompiler
 {
 	public static class PerformRegistration
 	{
-		public static void Perform(IPlasmaContainer c)
+		public static void Perform()
 		{
 			/*+ static object ref1 = typeof(IMyWorker); */
 			/*@ errorremap off */

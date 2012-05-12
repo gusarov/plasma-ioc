@@ -12,7 +12,7 @@ namespace PlasmaTests
 	{
 		static partial void Init(IPlasmaContainer c)
 		{
-			PerformRegistration.Perform(c);
+			PerformRegistration.Perform();
 		}
 	}
 }

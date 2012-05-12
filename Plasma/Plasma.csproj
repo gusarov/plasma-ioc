@@ -40,7 +40,6 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Compile Include="..\_rootNamespace\DefaultImplAttribute.root.cs">
       <Link>_root\DefaultImplAttribute.root.cs</Link>
@@ -58,6 +57,7 @@
     <Compile Include="Aop\IMethodIntercepAdvise.cs" />
     <Compile Include="DefaultConstructorAttribute.cs" />
     <Compile Include="Internal\PlasmaConfigSection.cs" />
+    <Compile Include="Internal\TypeFactoryRegister.cs" />
     <Compile Include="IPlasmaContainer.cs" />
     <Compile Include="IPlasmaProvider.cs" />
     <Compile Include="Meta\ProxyGenerator.cs" />

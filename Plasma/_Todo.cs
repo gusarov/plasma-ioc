@@ -1,9 +1,14 @@
-﻿// TODO Generate NullObjectProxy (production)
-// TODO Generate StubProxy (unit testing)
-// TODO Generate Proxy (production) - virtual classes for aspects
-// TODO AOP
-// TODO service resolver - event for resolving services by external rules
-// TODO CompileTime service factories (instead of ConstructorInfo). Eliminate reflection completely
-// TODO named instanties
-// TODO TryGet for precompiled
-// TODO GetOrSuggest for precompiled
+﻿// 10. TODO CompileTime service factories (instead of ConstructorInfo). Eliminate reflection completely
+// 10. TODO service resolver - event for resolving services by external rules
+
+// 15. TODO TryGet for precompiled
+// 15. TODO GetOrSuggest for precompiled
+
+// 20. TODO named instanties
+// 30. TODO Generate Proxy (production) - virtual classes for aspects
+// 40. TODO Generate StubProxy (unit testing)
+// 50. TODO Generate NullObjectProxy (production)
+// 60. TODO AOP
+
+// TODO return at least lazy from Add methods
+// TODO !! satic code should not register everything in container!!! it is just factories!!

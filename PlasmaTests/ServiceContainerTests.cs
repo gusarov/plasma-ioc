@@ -45,13 +45,11 @@ namespace PlasmaTests
 		[TestMethod]
 		public void Should_allow_check_existence()
 		{
-#if !PRE
 			Assert.IsNull(_sut.TryGet(typeof(IMyService)));
 			Assert.IsNull(_sut.TryGet<IMyService>());
 			_sut.Get<IMyService>(); // autofactory
 			Assert.IsNotNull(_sut.TryGet(typeof(IMyService)));
 			Assert.IsNotNull(_sut.TryGet<IMyService>());
-#endif
 		}
 
 		[TestMethod]
@@ -111,9 +109,7 @@ namespace PlasmaTests
 		{
 			// Setup
 			MyService.Instantiated = 0;
-#if !PRE
 			_sut.Add<IMyService>(); // register lazy service factoryMethod by interface type
-#endif
 			Assert.AreEqual(0, MyService.Instantiated);
 			// Execute
 			var ms = _sut.Get<IMyService>();
@@ -125,9 +121,7 @@ namespace PlasmaTests
 		public void Should_create_factory_automatically_by_class()
 		{
 			// Setup
-#if !PRE
 			_sut.Add<MyService>();
-#endif
 			// Execute
 			var ms1 = _sut.Get<IMyService>();
 			var ms2 = _sut.Get<IMyService>();
@@ -140,12 +134,8 @@ namespace PlasmaTests
 		public void Should_create_factory_automatically_by_class_and_iface()
 		{
 			// Setup
-#if !PRE
 			_sut.Add<IMyService2, MyService2>();
-#else
-			// todo decide about multiple interfaces
-			_sut.Add<IMyService2>(() => new MyService2(_sut.Get<IMyService>()));
-#endif
+
 			// Execute
 			var ms1 = _sut.Get<IMyService2>();
 			Assert.IsInstanceOfType(ms1, typeof(MyService2));
@@ -214,9 +204,7 @@ namespace PlasmaTests
 		{
 			// Setup
 			// automatic
-#if !PRE
 			_sut.Add<MyNodeHost>(); 
-#endif
 
 			// Execute
 			var nodeHost = _sut.Get<MyNodeHost>();
@@ -229,10 +217,8 @@ namespace PlasmaTests
 		public void Should_provide_default_impl_suggestion_on_ctor_injection_only_if_there_are_no_impl()
 		{
 			// Setup
-#if !PRE
 			_sut.Add<MyNodeHost>();
 			_sut.Add<MyPipeStorage>();
-#endif
 
 			// Execute
 			var nodeHost = _sut.Get<MyNodeHost>();
@@ -246,9 +232,7 @@ namespace PlasmaTests
 		{
 			// Setup
 			// automatic
-#if !PRE
 			_sut.Add<MyObjectMan>();
-#endif
 
 			// Execute
 			var nodeHost = _sut.Get<MyObjectMan>();
@@ -270,6 +254,47 @@ namespace PlasmaTests
 			Assert.IsInstanceOfType(storage, typeof(MyInmemStorage));
 		}
 
+		[TestMethod]
+		public void Should_provide_suggested_impl_on_get()
+		{
+			// Setup
+			// automatic
+
+			// Execute
+			var storage = _sut.Get<IMyStorage, MyPipeStorage>();
+
+			// Verify
+			Assert.IsInstanceOfType(storage, typeof(MyPipeStorage));
+		}
+
+		[TestMethod]
+		public void Should_not_provide_suggested_impl_on_get_if_already_instantiated()
+		{
+			// Setup
+			// automatic
+
+			// Execute
+			var storage = _sut.Get<IMyStorage>();
+			storage = _sut.Get<IMyStorage, MyPipeStorage>();
+
+			// Verify
+			Assert.IsInstanceOfType(storage, typeof(MyInmemStorage));
+		}
+
+		[TestMethod]
+		public void Should_not_provide_suggested_impl_on_get_if_already_requested()
+		{
+			// Setup
+			// automatic
+
+			// Execute
+			var storage = _sut.GetLazy(typeof(IMyStorage));
+			var storage2 = _sut.Get<IMyStorage, MyPipeStorage>();
+
+			// Verify
+			Assert.IsInstanceOfType(storage2, typeof(MyInmemStorage));
+		}
+
 		struct MyStruct : IComparable
 		{
 			#region Implementation of IComparable
@@ -282,14 +307,12 @@ namespace PlasmaTests
 			#endregion
 		}
 
-#if !PRE
 		[TestMethod]
 		[ExpectedException(typeof(PlasmaException))]
 		public void Should_not_allow_register_value_types()
 		{
 			_sut.Add<IComparable, MyStruct>();
 		}
-#endif
 
 		[TestMethod]
 		[ExpectedException(typeof(PlasmaException))]
@@ -309,9 +332,8 @@ namespace PlasmaTests
 		public void Should_allow_construct_class_with_struct_parameters()
 		{
 			// Setup
-#if !PRE
 			_sut.Add<MyServiceWithStruct>();
-#endif
+
 			// Execute
 			// Verify
 			_sut.Get<MyServiceWithStruct>();
@@ -321,9 +343,8 @@ namespace PlasmaTests
 		public void Should_allow_construct_class_with_string_parameters()
 		{
 			// Setup
-#if !PRE
 			_sut.Add<MyServiceWithString>();
-#endif
+
 			// Execute
 			// Verify
 			_sut.Get<MyServiceWithString>();
@@ -333,9 +354,7 @@ namespace PlasmaTests
 		public void Should_allow_construct_class_with_string_and_struct_properties()
 		{
 			// Setup
-#if !PRE
 			_sut.Add<MyServiceWithStructPro>();
-#endif
 			// Execute
 			// Verify
 			var test = _sut.Get<MyServiceWithStructPro>();
@@ -374,9 +393,8 @@ namespace PlasmaTests
 		{
 			// Setup
 			// Execute
-#if !PRE
 			_sut.Add<MyServiceWithOptionalStruct>();
-#endif
+
 			var test = _sut.Get<MyServiceWithOptionalStruct>();
 			// Verify
 			Assert.AreEqual(true, test.Val);
@@ -387,9 +405,7 @@ namespace PlasmaTests
 		{
 			// Setup
 			// Execute
-#if !PRE
 			_sut.Add<MyServiceWithOptionalString>();
-#endif
 			var test = _sut.Get<MyServiceWithOptionalString>();
 			// Verify
 			Assert.AreEqual("test", test.Val);
@@ -400,9 +416,7 @@ namespace PlasmaTests
 		[TestMethod]
 		public void Should_create_service_by_apropriate_ctor()
 		{
-#if !PRE
 			_sut.Add<MyServiceWithSeveralCtors>();
-#endif
 			var test = _sut.Get<MyServiceWithSeveralCtors>();
 			Assert.IsNotNull(test);
 			Assert.IsNotNull(test.Service1);
