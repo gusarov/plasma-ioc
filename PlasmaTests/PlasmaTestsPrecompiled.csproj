@@ -50,6 +50,7 @@
     <Compile Include="BaseContainer.cs" />
     <Compile Include="ConstructorAndPropertyLazyInjection.cs" />
     <Compile Include="ContainerHierarchy.cs" />
+    <Compile Include="Proxy\ProxyGenerators.cs" />
     <Compile Include="_AssemblyInit1.cs" />
     <Compile Include="_AssemblyInit2.cs" />
     <Compile Include="LazyConverter.cs" />

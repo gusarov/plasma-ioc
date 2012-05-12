@@ -8,14 +8,14 @@ using PlasmaTests.Sample;
 
 namespace PlasmaTests.Precompiler
 {
-	public static class PerformRegistration
-	{
-		public static void Perform()
-		{
+//	public static class PerformRegistration
+//	{
+//		public static void Perform()
+//		{
 			/*+ static object ref1 = typeof(IMyWorker); */
 			/*@ errorremap off */
 			/*@ FileInProject */
 			/*# RegisterAll */
-		}
-	}
+//		}
+//	}
 }

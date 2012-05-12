@@ -36,8 +36,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="Proxy\SuggestedProxyMembershipProvider.cs" />
     <Compile Include="DataLazyConstructorInjection.cs" />
     <Compile Include="DataLazyPropertyInjection.cs" />
+    <Compile Include="Proxy\IMembershipProvider.cs" />
     <Compile Include="IMyPerformer.cs" />
     <Compile Include="IMyService.cs" />
     <Compile Include="IMyService2.cs" />

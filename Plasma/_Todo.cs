@@ -4,11 +4,14 @@
 // 15. TODO TryGet for precompiled
 // 15. TODO GetOrSuggest for precompiled
 
-// 20. TODO named instanties
 // 30. TODO Generate Proxy (production) - virtual classes for aspects
 // 40. TODO Generate StubProxy (unit testing)
 // 50. TODO Generate NullObjectProxy (production)
-// 60. TODO AOP
+
+// 60. TODO named instanties
+// 70. TODO AOP
 
 // TODO return at least lazy from Add methods
 // TODO !! satic code should not register everything in container!!! it is just factories!!
+
+// TODO investigate critical bug in MetaCreator .CSharpTypeIdentifier - with overlapped namespaces PlasmaTests.Sample.Proxy.SuggestedProxyMembershipProvider and Plasma.Proxy.ProxyBase

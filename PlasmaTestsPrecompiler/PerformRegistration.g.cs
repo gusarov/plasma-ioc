@@ -8,76 +8,151 @@ using PlasmaTests.Sample;
 
 namespace PlasmaTests.Precompiler
 {
-	public static class PerformRegistration
+//	public static class PerformRegistration
+//	{
+//		public static void Perform()
+//		{
+			
+			
+			
+			
+public static class PlasmaRegistration
+{
+	public static void Run()
 	{
-		public static void Perform()
-		{
-			
-			
-			
-			
+
+
 // PlasmaTests.Sample, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-Plasma.Internal.TypeFactoryRegister.Add<MyWorker>(c => new MyWorker());
-Plasma.Internal.TypeFactoryRegister.Add<MyInmemStorage>(c => new MyInmemStorage());
-Plasma.Internal.TypeFactoryRegister.Add<MyPipeStorage>(c => new MyPipeStorage());
-Plasma.Internal.TypeFactoryRegister.Add<MyFileStorage>(c => new MyFileStorage());
-Plasma.Internal.TypeFactoryRegister.Add<MyNodeHost>(c => new MyNodeHost());
-Plasma.Internal.TypeFactoryRegister.Add<MyObjectMan>(c => new MyObjectMan(c.Get<IMyStorage, MyPipeStorage>()));
-Plasma.Internal.TypeFactoryRegister.Add<MyServiceWithOptionalArguments>(c => new MyServiceWithOptionalArguments(c.Get<IMyStorage>(), c.TryGet<IMyWorker>()));
-Plasma.Internal.TypeFactoryRegister.Add<MyPerformer>(c => new MyPerformer());
-Plasma.Internal.TypeFactoryRegister.Add<DataLazyConstructorInjection>(c => new DataLazyConstructorInjection(new Lazy<IMyService>(c.Get<IMyService>)));
-Plasma.Internal.TypeFactoryRegister.Add<DataFuncConstructorInjection>(c => new DataFuncConstructorInjection(c.Get<IMyService>));
-Plasma.Internal.TypeFactoryRegister.Add<MyService>(c => new MyService());
-Plasma.Internal.TypeFactoryRegister.Add<MySubGroup>(c => new MySubGroup(c.Get<IPlasmaProvider>()));
-Plasma.Internal.TypeFactoryRegister.Add<MyServiceWithSeveralCtors>(c => new MyServiceWithSeveralCtors(c.Get<IMyService>(), c.Get<IMyService>()));
-Plasma.Internal.TypeFactoryRegister.Add<DataLazyPropertyInjection>(c => new DataLazyPropertyInjection());
-Plasma.Internal.TypeFactoryRegister.Add<DataFuncPropertyInjection>(c => new DataFuncPropertyInjection());
-Plasma.Internal.TypeFactoryRegister.Add<Class1>(c => new Class1());
-Plasma.Internal.TypeFactoryRegister.Add<MyServiceWithStructPro>(c => new MyServiceWithStructPro());
-Plasma.Internal.TypeFactoryRegister.Add<MyServiceWithStruct>(c => new MyServiceWithStruct(default(Guid)));
-Plasma.Internal.TypeFactoryRegister.Add<MyServiceWithOptionalStruct>(c => new MyServiceWithOptionalStruct());
-Plasma.Internal.TypeFactoryRegister.Add<MyServiceWithOptionalString>(c => new MyServiceWithOptionalString());
-Plasma.Internal.TypeFactoryRegister.Add<MyService3>(c => new MyService3(c.Get<IMyPerformer>()));
-Plasma.Internal.TypeFactoryRegister.Add<MyService4>(c => new MyService4());
-Plasma.Internal.TypeFactoryRegister.Add<MyService2>(c => new MyService2(c.Get<IMyService>()));
-Plasma.Internal.TypeFactoryRegister.Add<MyServiceWithString>(c => new MyServiceWithString(null));
+Plasma.Internal.TypeFactoryRegister.Add<PlasmaTests.Sample.MyWorker>(c => new PlasmaTests.Sample.MyWorker());
+Plasma.Internal.TypeFactoryRegister.Add<PlasmaTests.Sample.MyInmemStorage>(c => new PlasmaTests.Sample.MyInmemStorage());
+Plasma.Internal.TypeFactoryRegister.Add<PlasmaTests.Sample.MyPipeStorage>(c => new PlasmaTests.Sample.MyPipeStorage());
+Plasma.Internal.TypeFactoryRegister.Add<PlasmaTests.Sample.MyFileStorage>(c => new PlasmaTests.Sample.MyFileStorage());
+Plasma.Internal.TypeFactoryRegister.Add<PlasmaTests.Sample.MyNodeHost>(c => new PlasmaTests.Sample.MyNodeHost());
+Plasma.Internal.TypeFactoryRegister.Add<PlasmaTests.Sample.MyObjectMan>(c => new PlasmaTests.Sample.MyObjectMan(c.Get<PlasmaTests.Sample.IMyStorage, MyPipeStorage>()));
+Plasma.Internal.TypeFactoryRegister.Add<PlasmaTests.Sample.MyServiceWithOptionalArguments>(c => new PlasmaTests.Sample.MyServiceWithOptionalArguments(c.Get<PlasmaTests.Sample.IMyStorage>(), c.TryGet<PlasmaTests.Sample.IMyWorker>()));
+Plasma.Internal.TypeFactoryRegister.Add<PlasmaTests.Sample.MyPerformer>(c => new PlasmaTests.Sample.MyPerformer());
+Plasma.Internal.TypeFactoryRegister.Add<PlasmaTests.Sample.DataLazyConstructorInjection>(c => new PlasmaTests.Sample.DataLazyConstructorInjection(new Lazy<PlasmaTests.Sample.IMyService>(c.Get<IMyService>)));
+Plasma.Internal.TypeFactoryRegister.Add<PlasmaTests.Sample.DataFuncConstructorInjection>(c => new PlasmaTests.Sample.DataFuncConstructorInjection(c.Get<PlasmaTests.Sample.IMyService>));
+Plasma.Internal.TypeFactoryRegister.Add<PlasmaTests.Sample.MyService>(c => new PlasmaTests.Sample.MyService());
+Plasma.Internal.TypeFactoryRegister.Add<PlasmaTests.Sample.MySubGroup>(c => new PlasmaTests.Sample.MySubGroup(c.Get<Plasma.IPlasmaProvider>()));
+Plasma.Internal.TypeFactoryRegister.Add<PlasmaTests.Sample.MyServiceWithSeveralCtors>(c => new PlasmaTests.Sample.MyServiceWithSeveralCtors(c.Get<PlasmaTests.Sample.IMyService>(), c.Get<PlasmaTests.Sample.IMyService>()));
+Plasma.Internal.TypeFactoryRegister.Add<PlasmaTests.Sample.DataLazyPropertyInjection>(c => new PlasmaTests.Sample.DataLazyPropertyInjection());
+Plasma.Internal.TypeFactoryRegister.Add<PlasmaTests.Sample.DataFuncPropertyInjection>(c => new PlasmaTests.Sample.DataFuncPropertyInjection());
+Plasma.Internal.TypeFactoryRegister.Add<PlasmaTests.Sample.Class1>(c => new PlasmaTests.Sample.Class1());
+Plasma.Internal.TypeFactoryRegister.Add<PlasmaTests.Sample.MyServiceWithStructPro>(c => new PlasmaTests.Sample.MyServiceWithStructPro());
+Plasma.Internal.TypeFactoryRegister.Add<PlasmaTests.Sample.MyServiceWithStruct>(c => new PlasmaTests.Sample.MyServiceWithStruct(default(System.Guid)));
+Plasma.Internal.TypeFactoryRegister.Add<PlasmaTests.Sample.MyServiceWithOptionalStruct>(c => new PlasmaTests.Sample.MyServiceWithOptionalStruct());
+Plasma.Internal.TypeFactoryRegister.Add<PlasmaTests.Sample.MyServiceWithOptionalString>(c => new PlasmaTests.Sample.MyServiceWithOptionalString());
+Plasma.Internal.TypeFactoryRegister.Add<PlasmaTests.Sample.MyService3>(c => new PlasmaTests.Sample.MyService3(c.Get<PlasmaTests.Sample.IMyPerformer>()));
+Plasma.Internal.TypeFactoryRegister.Add<PlasmaTests.Sample.MyService4>(c => new PlasmaTests.Sample.MyService4());
+Plasma.Internal.TypeFactoryRegister.Add<PlasmaTests.Sample.MyService2>(c => new PlasmaTests.Sample.MyService2(c.Get<PlasmaTests.Sample.IMyService>()));
+Plasma.Internal.TypeFactoryRegister.Add<PlasmaTests.Sample.MyServiceWithString>(c => new PlasmaTests.Sample.MyServiceWithString(null));
+Plasma.Internal.TypeFactoryRegister.Add<PlasmaTests.Sample.Proxy.SuggestedProxyMembershipProvider>(c => new PlasmaTests.Sample.Proxy.SuggestedProxyMembershipProvider(c.Get<PlasmaTests.Sample.Proxy.IMembershipProvider>()));
 
 // Property injectors optimization
-Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<MyWorker>();
-Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<MyInmemStorage>();
-Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<MyPipeStorage>();
-Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<MyFileStorage>();
-Plasma.Internal.TypeAutoPlumberRegister.Register<MyNodeHost>((c, x)=>{
-	x.Storage = c.Get<IMyStorage, MyFileStorage>();
+Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<PlasmaTests.Sample.MyWorker>();
+Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<PlasmaTests.Sample.MyInmemStorage>();
+Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<PlasmaTests.Sample.MyPipeStorage>();
+Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<PlasmaTests.Sample.MyFileStorage>();
+Plasma.Internal.TypeAutoPlumberRegister.Register<PlasmaTests.Sample.MyNodeHost>((c, x)=>{
+	x.Storage = c.Get<PlasmaTests.Sample.IMyStorage, MyFileStorage>();
 });
-Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<MyObjectMan>();
-Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<MyServiceWithOptionalArguments>();
-Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<MyPerformer>();
-Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<DataLazyConstructorInjection>();
-Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<DataFuncConstructorInjection>();
-Plasma.Internal.TypeAutoPlumberRegister.Register<MyService>((c, x)=>{
-	x.Worker = c.Get<IMyWorker>();
+Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<PlasmaTests.Sample.MyObjectMan>();
+Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<PlasmaTests.Sample.MyServiceWithOptionalArguments>();
+Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<PlasmaTests.Sample.MyPerformer>();
+Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<PlasmaTests.Sample.DataLazyConstructorInjection>();
+Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<PlasmaTests.Sample.DataFuncConstructorInjection>();
+Plasma.Internal.TypeAutoPlumberRegister.Register<PlasmaTests.Sample.MyService>((c, x)=>{
+	x.Worker = c.Get<PlasmaTests.Sample.IMyWorker>();
 });
-Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<MySubGroup>();
-Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<MyServiceWithSeveralCtors>();
-Plasma.Internal.TypeAutoPlumberRegister.Register<DataLazyPropertyInjection>((c, x)=>{
-	x.LazyService = new Lazy<IMyService>(c.Get<IMyService>);
+Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<PlasmaTests.Sample.MySubGroup>();
+Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<PlasmaTests.Sample.MyServiceWithSeveralCtors>();
+Plasma.Internal.TypeAutoPlumberRegister.Register<PlasmaTests.Sample.DataLazyPropertyInjection>((c, x)=>{
+	x.LazyService = new Lazy<PlasmaTests.Sample.IMyService>(c.Get<IMyService>);
 });
-Plasma.Internal.TypeAutoPlumberRegister.Register<DataFuncPropertyInjection>((c, x)=>{
-	x.LazyService = c.Get<IMyService>;
+Plasma.Internal.TypeAutoPlumberRegister.Register<PlasmaTests.Sample.DataFuncPropertyInjection>((c, x)=>{
+	x.LazyService = c.Get<PlasmaTests.Sample.IMyService>;
 });
-Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<Class1>();
-Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<MyServiceWithStructPro>();
-Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<MyServiceWithStruct>();
-Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<MyServiceWithOptionalStruct>();
-Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<MyServiceWithOptionalString>();
-Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<MyService3>();
-Plasma.Internal.TypeAutoPlumberRegister.Register<MyService4>((c, x)=>{
-	x.Performer = c.Get<IMyPerformer>();
+Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<PlasmaTests.Sample.Class1>();
+Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<PlasmaTests.Sample.MyServiceWithStructPro>();
+Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<PlasmaTests.Sample.MyServiceWithStruct>();
+Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<PlasmaTests.Sample.MyServiceWithOptionalStruct>();
+Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<PlasmaTests.Sample.MyServiceWithOptionalString>();
+Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<PlasmaTests.Sample.MyService3>();
+Plasma.Internal.TypeAutoPlumberRegister.Register<PlasmaTests.Sample.MyService4>((c, x)=>{
+	x.Performer = c.Get<PlasmaTests.Sample.IMyPerformer>();
 });
-Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<MyService2>();
-Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<MyServiceWithString>();
+Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<PlasmaTests.Sample.MyService2>();
+Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<PlasmaTests.Sample.MyServiceWithString>();
+Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<PlasmaTests.Sample.Proxy.SuggestedProxyMembershipProvider>();
 
-		}
 	}
+}
+
+
+public class ProxyMyService3 : Plasma.Proxy.ProxyBase<PlasmaTests.Sample.IMyService3>
+{
+	public ProxyMyService3(PlasmaTests.Sample.IMyService3 originalObject) : base(originalObject)
+	{
+	}
+	public virtual bool MyMethod()
+	{
+		return Original.MyMethod();
+	}
+}
+public class ProxyMyService4 : Plasma.Proxy.ProxyBase<PlasmaTests.Sample.IMyService4>
+{
+	public ProxyMyService4(PlasmaTests.Sample.IMyService4 originalObject) : base(originalObject)
+	{
+	}
+	public virtual bool MyMethod()
+	{
+		return Original.MyMethod();
+	}
+}
+public class ProxyMyService2 : Plasma.Proxy.ProxyBase<PlasmaTests.Sample.IMyService2>
+{
+	public ProxyMyService2(PlasmaTests.Sample.IMyService2 originalObject) : base(originalObject)
+	{
+	}
+	public virtual void MyMethod2()
+	{
+		Original.MyMethod2();
+	}
+}
+public class ProxyMyService : Plasma.Proxy.ProxyBase<PlasmaTests.Sample.IMyService>
+{
+	public ProxyMyService(PlasmaTests.Sample.IMyService originalObject) : base(originalObject)
+	{
+	}
+	public virtual int MyMethod()
+	{
+		return Original.MyMethod();
+	}
+}
+public class ProxyMembershipProvider : Plasma.Proxy.ProxyBase<PlasmaTests.Sample.Proxy.IMembershipProvider>
+{
+	public ProxyMembershipProvider(PlasmaTests.Sample.Proxy.IMembershipProvider originalObject) : base(originalObject)
+	{
+	}
+	public virtual bool ValidateUser(string login, string password)
+	{
+		return Original.ValidateUser(login, password);
+	}
+	public virtual System.Collections.Generic.IEnumerable<string> ListUsers()
+	{
+		return Original.ListUsers();
+	}
+	public virtual void AddUser(string login, string password)
+	{
+		Original.AddUser(login, password);
+	}
+	public virtual void DeleteUser(string login)
+	{
+		Original.DeleteUser(login);
+	}
+}
+
+//		}
+//	}
 }
