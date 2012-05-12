@@ -36,6 +36,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="Proxy\SimpleDataForStubbing.cs" />
     <Compile Include="Proxy\SuggestedProxyMembershipProvider.cs" />
     <Compile Include="DataLazyConstructorInjection.cs" />
     <Compile Include="DataLazyPropertyInjection.cs" />

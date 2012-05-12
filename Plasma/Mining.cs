@@ -50,7 +50,7 @@ namespace Plasma
 );
 		}
 
-		public IEnumerable<Type> GetAdditionalIfaces(Type type)
+		static public IEnumerable<Type> GetAdditionalIfaces(Type type)
 		{
 			if (!type.IsInterface)
 			{
@@ -60,6 +60,20 @@ namespace Plasma
 					yield return ifaces[0];
 				}
 			}
+		}
+
+		static public IEnumerable<Type> GetAllIfaces(Type type)
+		{
+			var ifaces = type.GetInterfaces();
+			foreach (var iface in ifaces)
+			{
+				yield return iface;
+				foreach (var subFace in GetAllIfaces(iface))
+				{
+					yield return subFace;
+				}
+			}
+
 		}
 
 		public ConstructorInfo GetConstructor(Type type)

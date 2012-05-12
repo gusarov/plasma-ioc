@@ -15,3 +15,5 @@
 // TODO !! satic code should not register everything in container!!! it is just factories!!
 
 // TODO investigate critical bug in MetaCreator .CSharpTypeIdentifier - with overlapped namespaces PlasmaTests.Sample.Proxy.SuggestedProxyMembershipProvider and Plasma.Proxy.ProxyBase
+
+// TODO generate set of assemblies or modules automatically to improve compilation performance

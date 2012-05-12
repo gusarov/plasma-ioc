@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 
 using MetaCreator;
 
@@ -121,34 +122,96 @@ public static class PlasmaRegistration
 
 			foreach (var type in types.Where(x => x.IsInterface))
 			{
-				var methods = type.GetMethods().Where(x => !x.IsSpecialName);
-
-				if (!methods.Any())
-				{
-					continue;
-				}
-
-				var name = type.Name.StartsWith("I") ? type.Name.Substring(1) : type.Name;
-
-				writer.WriteLine("public class Proxy{0} : Plasma.Proxy.ProxyBase<{1}>", name, type.CSharpTypeIdentifier(false));
-				writer.WriteLine("{");
-				writer.WriteLine("\tpublic Proxy{0}({1} originalObject) : base(originalObject)", name, type.CSharpTypeIdentifier(false));
-				writer.WriteLine("\t{");
-				writer.WriteLine("\t}");
-
-				foreach (var method in methods)
-				{
-					writer.WriteLine("\tpublic virtual {0} {1}{2}({3})", method.ReturnType.CSharpTypeIdentifier(false), method.Name, null, string.Join(", ", method.GetParameters().Select(x => x.ParameterType.CSharpTypeIdentifier(false) + " " + x.Name)));
-					writer.WriteLine("\t{");
-					writer.WriteLine("\t\t{0}Original.{1}({2});", method.ReturnType == typeof(void) ? "" : "return ", method.Name, string.Join(", ", method.GetParameters().Select(x => x.Name)));
-					writer.WriteLine("\t}");
-				}
-
-				writer.WriteLine("}");
+				GenerateProxy(writer, type);
+				GenerateStub(writer, type);
+				GenerateNullObject(writer, type);
 			}
 		}
 
+		static void GenerateNullObject(IMetaWriter writer, Type type)
+		{
+			
+		}
 
+		static void GenerateStub(IMetaWriter writer, Type type)
+		{
+			
+		}
+
+		static void GenerateProxy(IMetaWriter writer, Type type)
+		{
+//			writer.WriteLine("// iface - " + type.Name);
+//			writer.WriteLine("// all ifaces - " + string.Join(", ", Mining.GetAllIfaces(type).Distinct().Select(x => x.Name)));
+
+			var members = type.GetMembers().Concat(Mining.GetAllIfaces(type).Distinct().SelectMany(x => x.GetMembers())).ToArray();
+
+			if (!members.Any())
+			{
+				return;
+			}
+
+			var name = type.Name.StartsWith("I") ? type.Name.Substring(1) : type.Name;
+
+			writer.WriteLine("public class Proxy{0} : Plasma.Proxy.ProxyBase<{1}>, {1}", name, type.CSharpTypeIdentifier(false));
+			writer.WriteLine("{");
+
+			writer.Write("\tpublic Proxy{0}({1} originalObject) : base(originalObject)", name, type.CSharpTypeIdentifier(false));
+			writer.Write("\t{");
+			writer.WriteLine("\t}");
+
+			foreach (var method in members.Where(x => x.MemberType == MemberTypes.Method).Cast<MethodInfo>().Where(x=>!x.IsSpecialName))
+			{
+				writer.Write("\tpublic virtual {0} {1}{2}({3})", method.ReturnType.CSharpTypeIdentifier(false), method.Name, null, string.Join(", ", method.GetParameters().Select(x => x.ParameterType.CSharpTypeIdentifier(false) + " " + x.Name)));
+				writer.Write(" { ");
+				writer.Write("{0}Original.{1}({2});", method.ReturnType == typeof(void) ? "" : "return ", method.Name, string.Join(", ", method.GetParameters().Select(x => x.Name)));
+				writer.WriteLine(" }");
+			}
+
+			foreach (var eventInfo in members.Where(x => x.MemberType == MemberTypes.Event).Cast<EventInfo>())
+			{
+				writer.Write("\tpublic virtual event {0} {1}", eventInfo.EventHandlerType.CSharpTypeIdentifier(false), eventInfo.Name);
+				writer.Write(" { ");
+				writer.Write(" add { ");
+				writer.Write("Original.{0} += value;", eventInfo.Name);
+				writer.Write(" }");
+				writer.Write(" remove { ");
+				writer.Write("Original.{0} -= value;", eventInfo.Name);
+				writer.Write(" }");
+				writer.WriteLine(" }");
+			}
+
+			foreach (var pro in members.Where(x => x.MemberType == MemberTypes.Property).Cast<PropertyInfo>())
+			{
+				var isIndexer = pro.GetIndexParameters().Any();
+
+				var indexerParameters = string.Join(", ", pro.GetIndexParameters().Select(x => x.ParameterType.CSharpTypeIdentifier() + " " + x.Name));
+				indexerParameters = indexerParameters.Any() ? " [" + indexerParameters + "]" : null;
+
+				var indexerArguments = string.Join(", ", pro.GetIndexParameters().Select(x => x.Name));
+				indexerArguments = indexerArguments.Any() ? "[" + indexerArguments + "]" : null;
+
+				var myProName = isIndexer ? "this" : pro.Name;
+				var orProName = isIndexer ? "" : "."+pro.Name;
+
+				writer.Write("\tpublic virtual {0} {1}{2}", pro.PropertyType.CSharpTypeIdentifier(false), myProName, indexerParameters);
+				writer.Write(" { ");
+				if (pro.CanRead)
+				{
+					writer.Write(" get { ");
+					writer.Write("return Original{0}{1};", orProName, indexerArguments);
+					writer.Write(" }");
+				}
+				if (pro.CanWrite)
+				{
+					writer.Write(" set { ");
+					writer.Write("Original{0}{1} = value;", orProName, indexerArguments);
+					writer.Write(" }");
+				}
+				writer.WriteLine(" }");
+			}
+
+			writer.WriteLine("}");
+		}
 	}
 }
 
