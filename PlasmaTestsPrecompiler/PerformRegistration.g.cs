@@ -122,14 +122,6 @@ public class ProxyMyService : Plasma.Proxy.ProxyBase<PlasmaTests.Sample.IMyServi
 	public ProxyMyService(PlasmaTests.Sample.IMyService originalObject) : base(originalObject)	{	}
 	public virtual int MyMethod() { return Original.MyMethod(); }
 }
-public class ProxyMembershipProvider : Plasma.Proxy.ProxyBase<PlasmaTests.Sample.Proxy.IMembershipProvider>, PlasmaTests.Sample.Proxy.IMembershipProvider
-{
-	public ProxyMembershipProvider(PlasmaTests.Sample.Proxy.IMembershipProvider originalObject) : base(originalObject)	{	}
-	public virtual bool ValidateUser(string login, string password) { return Original.ValidateUser(login, password); }
-	public virtual System.Collections.Generic.IEnumerable<string> ListUsers() { return Original.ListUsers(); }
-	public virtual void AddUser(string login, string password) { Original.AddUser(login, password); }
-	public virtual void DeleteUser(string login) { Original.DeleteUser(login); }
-}
 public class ProxySimpleDataForStubbing : Plasma.Proxy.ProxyBase<PlasmaTests.Sample.Proxy.ISimpleDataForStubbing>, PlasmaTests.Sample.Proxy.ISimpleDataForStubbing
 {
 	public ProxySimpleDataForStubbing(PlasmaTests.Sample.Proxy.ISimpleDataForStubbing originalObject) : base(originalObject)	{	}
@@ -182,6 +174,14 @@ public class ProxyComplexStubbingDerived3 : Plasma.Proxy.ProxyBase<PlasmaTests.S
 	public virtual int Test3 {  set { Original.Test3 = value; } }
 	public virtual System.Action DelegateProperty {  get { return Original.DelegateProperty; } set { Original.DelegateProperty = value; } }
 	public virtual string this [Guid g, int r] {  get { return Original[g, r]; } set { Original[g, r] = value; } }
+}
+public class ProxyMembershipProvider : Plasma.Proxy.ProxyBase<PlasmaTests.Sample.Proxy.IMembershipProvider>, PlasmaTests.Sample.Proxy.IMembershipProvider
+{
+	public ProxyMembershipProvider(PlasmaTests.Sample.Proxy.IMembershipProvider originalObject) : base(originalObject)	{	}
+	public virtual bool ValidateUser(string login, string password) { return Original.ValidateUser(login, password); }
+	public virtual System.Collections.Generic.IEnumerable<string> ListUsers() { return Original.ListUsers(); }
+	public virtual void AddUser(string login, string password) { Original.AddUser(login, password); }
+	public virtual void DeleteUser(string login) { Original.DeleteUser(login); }
 }
 
 //		}

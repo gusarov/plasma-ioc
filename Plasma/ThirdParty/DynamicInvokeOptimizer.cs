@@ -6,6 +6,10 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 
+#if NET3
+using MyUtils;
+#endif
+
 namespace Plasma.ThirdParty
 {
 	static class DynamicInvokeOptimizer

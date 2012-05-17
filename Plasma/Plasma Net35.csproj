@@ -38,10 +38,14 @@
     <NoConfig>true</NoConfig>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="mscorlib" />
-    <Reference Include="MyUtils Mobile, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="MetaCreator, Version=1.6.4488.40548, Culture=neutral, PublicKeyToken=e1cf46ee434cd7e7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\_distrib\MyUtils\MyUtils Mobile.dll</HintPath>
+      <HintPath>..\_components\MetaCreator\MetaCreator.dll</HintPath>
+    </Reference>
+    <Reference Include="mscorlib" />
+    <Reference Include="MyUtils3, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9ccf460fa6b88228, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_components\MyUtils\MyUtils3.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -50,11 +54,8 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Compile Include="..\_rootNamespace\DefaultImplAttribute.root.cs">
-      <Link>_root\DefaultImplAttribute.root.cs</Link>
-    </Compile>
-    <Compile Include="..\_rootNamespace\PlasmaContainerExt.root.cs">
-      <Link>_root\PlasmaContainerExt.root.cs</Link>
+    <Compile Include="..\_rootNamespace\root.cs">
+      <Link>_root\root.cs</Link>
     </Compile>
     <Compile Include="Aop\AspectAttribute.cs" />
     <Compile Include="Aop\CacheAdvise.cs" />
@@ -63,7 +64,11 @@
     <Compile Include="Aop\IMethodIntercepAdvise.cs" />
     <Compile Include="DefaultConstructorAttribute.cs" />
     <Compile Include="Internal\PlasmaConfigSection.cs" />
+    <Compile Include="Meta\PlasmaMetaRegisterExtension.cs" />
+    <Compile Include="Meta\ProxyGenerator.cs" />
     <Compile Include="ReflectionMining.cs" />
+    <Compile Include="StaticMining.cs" />
+    <Compile Include="ThirdParty\DynamicInvokeOptimizer.cs" />
     <Compile Include="ThirdParty\ThisNamespaceExists.cs" />
     <Compile Include="IPlasmaContainer.cs" />
     <Compile Include="IPlasmaProvider.cs" />
@@ -74,6 +79,7 @@
     <Compile Include="Mining.cs" />
     <Compile Include="RegisterServiceAttribute.cs" />
     <Compile Include="Internal\TypeAutoPlumber.cs" />
+    <Compile Include="ThirdParty\UtilsExt.cs" />
     <Compile Include="TypedLazyWrapper.cs" />
     <Compile Include="_todo.cs" />
   </ItemGroup>

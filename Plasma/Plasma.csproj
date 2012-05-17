@@ -41,14 +41,8 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\_rootNamespace\DefaultImplAttribute.root.cs">
-      <Link>_root\DefaultImplAttribute.root.cs</Link>
-    </Compile>
-    <Compile Include="..\_rootNamespace\PlasmaContainerExt.root.cs">
-      <Link>_root\PlasmaContainerExt.root.cs</Link>
-    </Compile>
-    <Compile Include="..\_rootNamespace\PlasmaMetaRegisterExtension.root.cs">
-      <Link>_root\PlasmaMetaRegisterExtension.root.cs</Link>
+    <Compile Include="..\_rootNamespace\root.cs">
+      <Link>_root\root.cs</Link>
     </Compile>
     <Compile Include="Aop\AspectAttribute.cs" />
     <Compile Include="Aop\CacheAdvise.cs" />

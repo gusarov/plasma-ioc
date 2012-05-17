@@ -28,7 +28,7 @@ namespace Plasma
 		protected override object DefaultFactoryCore(Type type)
 		{
 			var ci = GetConstructor(type);
-			var arguments = string.Join(", ", GetConstructorArguments(ci));
+            var arguments = string.Join(", ", GetConstructorArguments(ci).Select(x => x == null ? null : x.ToString()).ToArray());
 			return string.Format("c => new {0}({1})", type.CSharpTypeIdentifier(false), arguments);
 		}
 

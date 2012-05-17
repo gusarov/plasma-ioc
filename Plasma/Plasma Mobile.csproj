@@ -49,7 +49,7 @@
     <Reference Include="mscorlib" />
     <Reference Include="MyUtils Mobile, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\_distrib\MyUtils\MyUtils Mobile.dll</HintPath>
+      <HintPath>..\_components\MyUtils\MyUtils Mobile.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core, Version=3.5.0.0, Culture=neutral, PublicKeyToken=969db8053d3322ac, processorArchitecture=MSIL">
@@ -59,11 +59,8 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Compile Include="..\_rootNamespace\DefaultImplAttribute.root.cs">
-      <Link>_root\DefaultImplAttribute.root.cs</Link>
-    </Compile>
-    <Compile Include="..\_rootNamespace\PlasmaContainerExt.root.cs">
-      <Link>_root\PlasmaContainerExt.root.cs</Link>
+    <Compile Include="..\_rootNamespace\root.cs">
+      <Link>_root\root.cs</Link>
     </Compile>
     <Compile Include="Aop\AspectAttribute.cs" />
     <Compile Include="Aop\CacheAdvise.cs" />

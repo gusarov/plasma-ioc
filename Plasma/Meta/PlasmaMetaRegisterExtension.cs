@@ -34,7 +34,9 @@ public static class PlasmaRegistration
 				       && !x.FullName.StartsWith("MetaCreator,")
 				       && !x.FullName.StartsWith("Plasma,")
 				       && !x.FullName.StartsWith("Accessibility,")
+#if !NET3
 				       && !x.IsDynamic // not sure
+#endif
 				);
 
 #if DEBUG
