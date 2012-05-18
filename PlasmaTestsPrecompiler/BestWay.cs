@@ -12,6 +12,10 @@ namespace PlasmaTests.Precompiler
 	{
 		public static void Perform()
 		{
+//			var q1 = typeof(Plasma.Proxy.ProxyBase<>);
+//			var q2 = typeof(PlasmaTests.Sample.Proxy.IMembershipProvider);
+//			var q3 = typeof(Proxy.IMembershipProvider);
+
 			var c = PlasmaContainer.Root;
 			c.Add<MyWorker>(new Lazy<MyWorker>());
 			c.Add<DataLazyConstructorInjection>();

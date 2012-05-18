@@ -35,6 +35,11 @@
             </summary>
             <exception cref="T:Plasma.PlasmaException">Service is not registered</exception>
         </member>
+        <member name="M:Plasma.IPlasmaProvider.Get(System.Type,System.Type)">
+            <summary>
+            Get a service of registered type. If service does not exists - create it by suggested type
+            </summary>
+        </member>
         <member name="M:Plasma.IPlasmaProvider.GetLazy(System.Type)">
             <summary>
             Get a lazy service of registered type
@@ -237,6 +242,11 @@
         <member name="T:Plasma.Internal.PlasmaConfigSection">
             <summary>
             
+            </summary>
+        </member>
+        <member name="T:Plasma.Internal.TypeFactoryRegister">
+            <summary>
+            Register of factory code
             </summary>
         </member>
     </members>

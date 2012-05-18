@@ -13,3 +13,4 @@ _components/MyUtils/MyUtils4.dll
 _components/MyUtils/MyUtils3.dll
 _components/MyUtils/MyUtils.PInvoke4.dll
 _components/MyUtils/MyUtils.PInvoke3.dll
+*.orig

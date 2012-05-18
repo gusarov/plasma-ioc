@@ -35,6 +35,11 @@
             </summary>
             <exception cref="T:Plasma.PlasmaException">Service is not registered</exception>
         </member>
+        <member name="M:Plasma.IPlasmaProvider.Get(System.Type,System.Type)">
+            <summary>
+            Get a service of registered type. If service does not exists - create it by suggested type
+            </summary>
+        </member>
         <member name="M:Plasma.IPlasmaProvider.GetLazy(System.Type)">
             <summary>
             Get a lazy service of registered type
@@ -79,18 +84,6 @@
             <summary>
             How instantiate specified type
             </summary>
-        </member>
-        <member name="T:Plasma.Meta.ProxyGenerator">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:Plasma.Meta.ProxyGenerator.UniversalProxy(MetaCreator.IMetaWriter,System.String)">
-            <summary>
-            
-            </summary>
-            <param name="writer"></param>
-            <param name="typeName"></param>
         </member>
         <member name="T:Plasma.Aop.CacheAdvise">
             <summary>
@@ -250,18 +243,6 @@
             Inject dependencies from container
             </summary>
         </member>
-        <member name="T:Plasma.Meta.PlasmaMetaRegisterExtension">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:Plasma.Meta.PlasmaMetaRegisterExtension.RegisterAll(MetaCreator.IMetaWriter,System.String)">
-            <summary>
-            
-            </summary>
-            <param name="writer"></param>
-            <param name="containerVariableName"></param>
-        </member>
         <member name="T:Plasma.DefaultConstructorAttribute">
             <summary>
             Suggest this constructor for automatic registration or instantiating
@@ -290,6 +271,11 @@
         <member name="M:Plasma.Aop.CacheAttribute.#ctor">
             <summary>
             Aspect for caching method calculations
+            </summary>
+        </member>
+        <member name="T:Plasma.Internal.TypeFactoryRegister">
+            <summary>
+            Register of factory code
             </summary>
         </member>
         <member name="T:Plasma.Internal.PlasmaConfigSection">
