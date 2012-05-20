@@ -7,7 +7,7 @@ namespace Plasma.ThirdParty
 {
 	static class UtilsExt
 	{
-		public static T Attribute<T>(this ICustomAttributeProvider cap) where T : Attribute
+		public static T Attribute2<T>(this ICustomAttributeProvider cap) where T : Attribute
 		{
 			var atrs = cap.GetCustomAttributes(typeof(T), true);
 			if (atrs.Length > 0)

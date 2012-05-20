@@ -361,7 +361,7 @@ namespace Plasma
 		/// <summary>
 		/// Get from current container or from parent chain
 		/// </summary>
-		/// <param name="type"></param>
+		/// <param _typeShortName="type"></param>
 		/// <returns></returns>
 		internal Lazy<object> TryGetLazyCore(Type type)
 		{
@@ -421,7 +421,7 @@ namespace Plasma
 		/// <summary>
 		/// reference type and not string
 		/// </summary>
-		/// <param name="type"></param>
+		/// <param _typeShortName="type"></param>
 		/// <returns></returns>
 		internal static bool IsValidImplementationType(Type type)
 		{

@@ -109,8 +109,8 @@ namespace Plasma.ThirdParty
 		/// Create lightweight method and delegate to that method.
 		/// For instance methods define another first object parameter in delegate.
 		/// </summary>
-		/// <typeparam name="TDelegate"></typeparam>
-		/// <param name="methodInfo"></param>
+		/// <typeparam _typeShortName="TDelegate"></typeparam>
+		/// <param _typeShortName="methodInfo"></param>
 		/// <returns>Compiled strongly typed delegate</returns>
 		/// <example>
 		/// <code>

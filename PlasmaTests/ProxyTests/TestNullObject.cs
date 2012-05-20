@@ -20,6 +20,7 @@ namespace PlasmaTests.Proxy
 			var enumerable = sut.ListUsers();
 			Assert.IsNotNull(enumerable);
 			Assert.IsTrue(!enumerable.Any());
+			Assert.IsTrue(!sut.ListUsers2().Any());
 			Assert.IsFalse(sut.ValidateUser("asd", "asd"));
 		}
 	}

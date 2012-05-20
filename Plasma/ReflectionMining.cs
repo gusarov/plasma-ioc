@@ -61,7 +61,7 @@ namespace Plasma
 		protected override object GetArgumentRquestAndConvert(Type parameterType, Type requestedType, ICustomAttributeProvider info, bool isOptional)
 		{
 			// request
-			var suggesstionAttribute = info.Attribute<DefaultImplAttribute>();
+			var suggesstionAttribute = info.Attribute2<DefaultImplAttribute>();
 			var suggestedType = suggesstionAttribute == null ? null : suggesstionAttribute.TargetType;
 
 			if (suggestedType != null)

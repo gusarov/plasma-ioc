@@ -65,8 +65,12 @@
     <Compile Include="DefaultConstructorAttribute.cs" />
     <Compile Include="Internal\PlasmaConfigSection.cs" />
     <Compile Include="Internal\TypeFactoryRegister.cs" />
+    <Compile Include="Meta\ClassGeneratorStrategy.cs" />
+    <Compile Include="Meta\NullObjectClassGeneratorStrategy.cs" />
     <Compile Include="Meta\PlasmaMetaRegisterExtension.cs" />
+    <Compile Include="Meta\ProxyClassGeneratorStrategy.cs" />
     <Compile Include="Meta\ProxyGenerator.cs" />
+    <Compile Include="Proxy\ProxyBase.cs" />
     <Compile Include="ReflectionMining.cs" />
     <Compile Include="StaticMining.cs" />
     <Compile Include="ThirdParty\DynamicInvokeOptimizer.cs" />
@@ -94,11 +98,10 @@
   </ProjectExtensions>
   <PropertyGroup>
     <PostBuildEvent>if "$(ConfigurationName)" == "Release" (
-  echo .pdb &gt; ~e.lst
-  xcopy /d /y /exclude:~e.lst "$(TargetDir)$(ProjectName).*" "$(SolutionDir)_release\" 
+  xcopy /d /y "$(TargetDir)$(ProjectName).*" "$(SolutionDir)_release\" 
   if exist "$(SolutionDir)..\_distrib\" (
     md "$(SolutionDir)..\_distrib\Plasma\"
-    xcopy /d /y /exclude:~e.lst "$(TargetDir)$(ProjectName).*" "$(SolutionDir)..\_distrib\Plasma\" 
+    xcopy /d /y "$(TargetDir)$(ProjectName).*" "$(SolutionDir)..\_distrib\Plasma\" 
   )
 
 )</PostBuildEvent>

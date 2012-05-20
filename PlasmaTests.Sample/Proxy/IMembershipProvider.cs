@@ -6,7 +6,9 @@ namespace PlasmaTests.Sample.Proxy
 	{
 		bool ValidateUser(string login, string password);
 		IEnumerable<string> ListUsers();
+		IList<string> ListUsers2();
 		void AddUser(string login, string password);
 		void DeleteUser(string login);
+		byte[] TestArray();
 	}
 }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel;
 using System;
 
@@ -17,7 +18,7 @@ public static class PlasmaMetaRegisterExtensionRoot
 {
     public static void RegisterAll(this IMetaWriter writer)
     {
-        PlasmaMetaRegisterExtension.RegisterAll(writer);
+        PlasmaMetaRegisterExtension.PlasmaRegisterAll(writer);
     }
 }
 #endif
@@ -135,8 +136,8 @@ public static class PlasmaContainerExt
     /// <summary>
     /// Register service with default lazy factory
     /// </summary>
-    /// <typeparam name="T">Registering type, e.g. MyServiceImpl</typeparam>
-    /// <param name="container"></param>
+    /// <typeparam _typeShortName="T">Registering type, e.g. MyServiceImpl</typeparam>
+    /// <param _typeShortName="container"></param>
     public static void Add<T>(this IPlasmaContainer container)
     {
         if (container == null)
@@ -149,9 +150,9 @@ public static class PlasmaContainerExt
     /// <summary>
     /// Register service
     /// </summary>
-    /// <typeparam name="T">Registering type, e.g. IMyService</typeparam>
-    /// <param name="container"></param>
-    /// <param name="instance">Service instance</param>
+    /// <typeparam _typeShortName="T">Registering type, e.g. IMyService</typeparam>
+    /// <param _typeShortName="container"></param>
+    /// <param _typeShortName="instance">Service instance</param>
     public static void Add<T>(this IPlasmaContainer container, T instance)
     {
         if (container == null)
@@ -164,9 +165,9 @@ public static class PlasmaContainerExt
     /// <summary>
     /// Register service factory
     /// </summary>
-    /// <typeparam name="T">Registering type, e.g. IMyService</typeparam>
-    /// <param name="container"></param>
-    /// <param name="instanceFactory">Service factory</param>
+    /// <typeparam _typeShortName="T">Registering type, e.g. IMyService</typeparam>
+    /// <param _typeShortName="container"></param>
+    /// <param _typeShortName="instanceFactory">Service factory</param>
     public static void Add<T>(this IPlasmaContainer container, Func<T> instanceFactory)
     {
         if (container == null)
@@ -179,9 +180,9 @@ public static class PlasmaContainerExt
     /// <summary>
     /// Register service lazy
     /// </summary>
-    /// <typeparam name="T">Registering type, e.g. IMyService</typeparam>
-    /// <param name="container"></param>
-    /// <param name="instanceFactory">Service lazy instance</param>
+    /// <typeparam _typeShortName="T">Registering type, e.g. IMyService</typeparam>
+    /// <param _typeShortName="container"></param>
+    /// <param _typeShortName="instanceFactory">Service lazy instance</param>
     public static void Add<T>(this IPlasmaContainer container, Lazy<T> instanceFactory)
     {
         if (container == null)
@@ -195,10 +196,10 @@ public static class PlasmaContainerExt
     /// <summary>
     /// Register service lazy
     /// </summary>
-    /// <typeparam name="T">Registering type, e.g. IMyService</typeparam>
-    /// <typeparam name="TImpl">Service implementation, e.g. MyServiceImpl</typeparam>
-    /// <param name="container"></param>
-    /// <param name="instanceFactory">Service lazy instance</param>
+    /// <typeparam _typeShortName="T">Registering type, e.g. IMyService</typeparam>
+    /// <typeparam _typeShortName="TImpl">Service implementation, e.g. MyServiceImpl</typeparam>
+    /// <param _typeShortName="container"></param>
+    /// <param _typeShortName="instanceFactory">Service lazy instance</param>
     public static void Add<T, TImpl>(this IPlasmaContainer container, Lazy<TImpl> instanceFactory)
     {
         if (container == null)
@@ -211,9 +212,9 @@ public static class PlasmaContainerExt
     /// <summary>
     /// Register service with default factory
     /// </summary>
-    /// <typeparam name="T">Registering type, e.g. IMyService</typeparam>
-    /// <typeparam name="TImpl">Service implementation, e.g. MyServiceImpl</typeparam>
-    /// <param name="container"></param>
+    /// <typeparam _typeShortName="T">Registering type, e.g. IMyService</typeparam>
+    /// <typeparam _typeShortName="TImpl">Service implementation, e.g. MyServiceImpl</typeparam>
+    /// <param _typeShortName="container"></param>
     public static void Add<T, TImpl>(this IPlasmaContainer container)
     {
         if (container == null)
@@ -256,7 +257,7 @@ public static class PlasmaContainerExt
 }
 
 /// <summary>
-/// Suggest this implementation type or assembly qualified type name.
+/// Suggest this implementation type or assembly qualified type _typeShortName.
 /// </summary>
 [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class | AttributeTargets.Parameter | AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
 public sealed class DefaultImplAttribute : Attribute
@@ -292,4 +293,39 @@ public sealed class DefaultImplAttribute : Attribute
 [AttributeUsage(AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
 public sealed class InjectAttribute : Attribute
 {
+}
+
+public static class Null
+{
+	static readonly Dictionary<Type, object> _dic = new Dictionary<Type, object>();
+
+	public static void Register<T>(T instance)
+	{
+		Register(typeof(T), instance);
+	}
+
+	public static void Register(Type type, object instance)
+	{
+		_dic[type] = instance;
+	}
+
+	public static T Object<T>()
+	{
+		return (T)Object(typeof(T));
+	}
+
+	public static object Object(Type type)
+	{
+		object value;
+		_dic.TryGetValue(type, out value);
+		return value;
+	}
+
+	static readonly object _instanceObject = new object();
+
+	public static object InstanceObject
+	{
+		get { return _instanceObject; }
+	}
+
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using PlasmaTests.Sample;
+using Plasma.Meta;
 
 namespace PlasmaTests.Precompiler
 {
@@ -12,7 +13,10 @@ namespace PlasmaTests.Precompiler
 			/*+ static object ref1 = typeof(IMyWorker); */
 			/*@ errorremap off */
 			/*@ FileInProject */
-			/*# RegisterAll */
+
+	/*# PlasmaRegisterAll */
+	/*# PlasmaGenerate */
+
 //		}
 //	}
 }

@@ -5,12 +5,4 @@ TestResults/
 *.suo
 *.user
 *.vsmdi
-_components/MyUtils/XTrace4.dll
-_components/MyUtils/CFExtension.dll
-_components/MyUtils/XTrace3.dll
-_components/MyUtils/XTrace Mobile.dll
-_components/MyUtils/MyUtils4.dll
-_components/MyUtils/MyUtils3.dll
-_components/MyUtils/MyUtils.PInvoke4.dll
-_components/MyUtils/MyUtils.PInvoke3.dll
-*.orig
+_components/
