@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System;
-
+using System.Linq;
 using Plasma;
 
 #if NET3
@@ -297,15 +297,33 @@ public sealed class InjectAttribute : Attribute
 
 public static class Null
 {
-	static readonly Dictionary<Type, object> _dic = new Dictionary<Type, object>();
+	static Null()
+	{
+		Register(new object());
+		Register(string.Empty);
+		RegisterGeneric(typeof (IEnumerable<>), t =>
+			typeof (Enumerable).GetMethod("Empty").MakeGenericMethod(t).Invoke(null, null));
+	}
 
-	public static void Register<T>(T instance)
+	static readonly Dictionary<Type, object> _dic = new Dictionary<Type, object>();
+	static readonly Dictionary<Type, Func<Type[], object>> _dicGeneric = new Dictionary<Type, Func<Type[], object>>();
+	static readonly HashSet<Type> _accessed = new HashSet<Type>();
+
+	public static void Register<T>(T instance) where T : class
 	{
 		Register(typeof(T), instance);
 	}
 
 	public static void Register(Type type, object instance)
 	{
+		object inst;
+		if (_dic.TryGetValue(type, out inst))
+		{
+			if (_accessed.Contains(type) && !ReferenceEquals(inst, instance))
+			{
+				throw new PlasmaException("Can not register null object for type that already was registered and accessed");
+			}
+		}
 		_dic[type] = instance;
 	}
 
@@ -317,15 +335,36 @@ public static class Null
 	public static object Object(Type type)
 	{
 		object value;
-		_dic.TryGetValue(type, out value);
-		return value;
+		if (_dic.TryGetValue(type, out value))
+		{
+			_accessed.Add(type);
+			return value;
+		}
+		if (type.IsGenericType)
+		{
+			var gtd = type.GetGenericTypeDefinition();
+			Func<Type[], object> fact;
+			if (_dicGeneric.TryGetValue(gtd, out fact))
+			{
+				_accessed.Add(gtd);
+				value = fact(type.GetGenericArguments());
+				Register(type, value);
+				return value;
+			}
+		}
+		throw new PlasmaException("Null object is not registered for: " + type.CSharpTypeIdentifier());
 	}
 
-	static readonly object _instanceObject = new object();
-
-	public static object InstanceObject
+	public static void RegisterGeneric(Type typeDefinition, Func<Type[], object> factory)
 	{
-		get { return _instanceObject; }
+		Func<Type[], object> fact;
+		if (_dicGeneric.TryGetValue(typeDefinition, out fact))
+		{
+			if (_accessed.Contains(typeDefinition) && !ReferenceEquals(fact, factory))
+			{
+				throw new PlasmaException("Can not register null object generic factory for generic type definition that already was registered and accessed");
+			}
+		}
+		_dicGeneric[typeDefinition] = factory;
 	}
-
 }

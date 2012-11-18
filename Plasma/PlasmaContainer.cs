@@ -432,7 +432,7 @@ namespace Plasma
 		{
 			if (!IsValidImplementationType(type))
 			{
-				throw new PlasmaException("Can not register string or value type implementation");
+				throw new PlasmaException("Can not register string or value type implementation: " + type.Name);
 			}
 		}
 

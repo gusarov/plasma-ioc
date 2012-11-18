@@ -26,8 +26,25 @@ namespace Plasma.Meta
 
 		protected override void WriteMethodBody(MethodInfo method)
 		{
-			_writer.Write("{0}Original.{1}({2});", method.ReturnType == typeof(void) ? "" : "return ", method.Name, string.Join(", ", method.GetParameters().Select(x => x.Name).ToArray()));
+			_writer.Write("{0}Original.{1}({2});", method.ReturnType == typeof(void) ? "" : "return ", method.Name, string.Join(", ", method.GetParameters().Select(ParameterCall).ToArray()));
 		}
+
+		string ParameterCall(ParameterInfo pi)
+		{
+			if(pi.ParameterType.IsByRef)
+			{
+				if (pi.IsOut)
+				{
+					return "out " + pi.Name;
+				}
+				else
+				{
+					return "ref " + pi.Name;
+				}
+			}
+			return pi.Name;
+		}
+
 		protected override void WriteEventSubscriber(EventInfo eventInfo)
 		{
 			_writer.Write("Original.{0} += value;", eventInfo.Name);

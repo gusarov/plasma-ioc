@@ -51,6 +51,7 @@ namespace Plasma.Meta
 			public string Name { get; set; }
 			public string NameGeneric { get; set; }
 			public string FullNameGeneric { get; set; }
+			public string FullNameGenericNoT { get; set; }
 		}
 
 		public TypeName GetTypeName(Type type)
@@ -65,6 +66,11 @@ namespace Plasma.Meta
 				Name = prefix + CutIfaceI(CutBackAp(type.Name)) + postfix,
 				NameGeneric = prefix + CutIfaceI(CutNamespace(type.CSharpTypeIdentifier())) + postfix,
 				FullNameGeneric = CombineNameSpace(LeaveNamespace(type.CSharpTypeIdentifier()), prefix + CutIfaceI(CutNamespace(type.CSharpTypeIdentifier()))) + postfix,
+				FullNameGenericNoT = CombineNameSpace(LeaveNamespace(type.CSharpTypeIdentifier()), prefix + CutIfaceI(CutNamespace(type.CSharpTypeIdentifier(new SharpGenerator.TypeIdentifierConfig
+				{
+					UseNamedTypeParameters = false,
+					UseEngineImports = true,
+				})))) + postfix,
 			};
 		}
 
@@ -158,7 +164,7 @@ namespace Plasma.Meta
 				}
 				else
 				{
-					writer.Write("\tpublic virtual {0} {1}{2}({3})", method.ReturnType.CSharpTypeIdentifier(), method.Name, null, string.Join(", ", method.GetParameters().Select(x => x.ParameterType.CSharpTypeIdentifier() + " " + x.Name).ToArray()));
+					writer.Write("\tpublic virtual {0} {1}{2}({3})", method.ReturnType.CSharpTypeIdentifier(), method.Name, null, string.Join(", ", method.GetParameters().Select(x => x.	CSharpTypeIdentifier() + " " + x.Name).ToArray()));
 				}
 
 

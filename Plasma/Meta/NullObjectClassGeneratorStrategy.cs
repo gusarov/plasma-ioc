@@ -24,13 +24,21 @@ namespace Plasma.Meta
 
 		protected override void WriteMethodBody(MethodInfo method)
 		{
+			foreach (var pi in method.GetParameters())
+			{
+				if (pi.IsOut)
+				{
+					_writer.WriteLine("{0} = {1};", pi.Name ,GetNullObjectExpression(pi.ParameterType.GetElementType(), pi.Info()));
+				}
+			}
+
 			var type = method.ReturnType;
 			if (type == typeof(void))
 			{
 			}
 			else
 			{
-				_writer.WriteLine("return {0};", GetNullObjectExpression(type));
+				_writer.WriteLine("return {0};", GetNullObjectExpression(type, method.Info()));
 			}
 		}
 
@@ -51,7 +59,7 @@ namespace Plasma.Meta
 		{
 //			try
 //			{
-			_writer.WriteLine("return {0};", GetNullObjectExpression(pro.PropertyType));
+			_writer.WriteLine("return {0};", GetNullObjectExpression(pro.PropertyType, pro.Info()));
 //			}
 //			catch (Exception ex)
 //			{
@@ -67,11 +75,13 @@ namespace Plasma.Meta
 		{
 		}
 
-		string GetNullObjectExpression(Type type)
+
+
+		string GetNullObjectExpression(Type type, string @where)
 		{
 			if (type == typeof(object))
 			{
-				return "string.Empty";
+				return "Null.Object<object>()";
 			}
 			if (type == typeof(string))
 			{
@@ -95,12 +105,17 @@ namespace Plasma.Meta
 				{
 					return string.Format("({0}[])Enumerable.Empty<{0}>()", type.GetElementType().CSharpTypeIdentifier());
 				}
-				throw new NotSupportedException("Array rank 1 only supported");
+				throw new NotSupportedException("NullObject proxy - Array rank 1 only supported");
 			}
 
 			if (type.IsGenericParameter)
 			{
-				return string.Format("Null.Object<{0}>()", type.Name);
+				return string.Format("Null.Object<{0}>()", type.CSharpTypeIdentifier());
+			}
+
+			if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Lazy<>))
+			{
+				return string.Format("new Lazy<{0}>(Null.Object<{0}>)", type.GetGenericArguments()[0].CSharpTypeIdentifier());
 			}
 
 			if (type.IsInterface)
@@ -120,7 +135,7 @@ namespace Plasma.Meta
 				}
 				return string.Format("{0}.Instance", GetTypeName(type).FullNameGeneric);
 			}
-			throw new NotSupportedException("Not supported return value type: " + type.Name);
+			throw new NotSupportedException(string.Format("NullObject proxy - Not supported return value type '{0}' for {1}", type.CSharpTypeIdentifier(), @where));
 			// TODO nullable - decide
 			// TODO properties - decide
 		}

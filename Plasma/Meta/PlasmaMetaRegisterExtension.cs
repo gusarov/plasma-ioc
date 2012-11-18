@@ -135,7 +135,22 @@ public static partial class PlasmaRegistration
 			}
 			foreach (var type in _nullGenerator.NullObjects.Concat(_nullGenerator.ExplicitRequests).Distinct())
 			{
-				//writer.WriteLine("Null.Register<{0}>({1}.Instance);", type.CSharpTypeIdentifier(), _nullGenerator.GetTypeName(type).FullNameGeneric);
+				if (type.IsGenericType && type.IsGenericTypeDefinition)
+				{
+					writer.WriteLine(@"Null.RegisterGeneric(typeof({0}), t =>
+	typeof ({1}).MakeGenericType(t).GetField(""Instance"").GetValue(null));", type.CSharpTypeIdentifier(new SharpGenerator.TypeIdentifierConfig
+					{
+						UseEngineImports = true,
+						UseNamedTypeParameters = false,
+					}), _nullGenerator.GetTypeName(type).FullNameGenericNoT);
+
+					//typeof (NullEnumerable<>).MakeGenericType(t).GetField("Instance").GetValue(null));
+
+				}
+				else
+				{
+					writer.WriteLine("Null.Register<{0}>({1}.Instance);", type.CSharpTypeIdentifier(), _nullGenerator.GetTypeName(type).FullNameGeneric);
+				}
 			}
 			writer.WriteLine(@"
 	}
@@ -157,7 +172,7 @@ public static partial class PlasmaRegistration
 					   && !x.FullName.StartsWith("System")
 					   && !x.FullName.StartsWith("Microsoft.")
 					   && !x.FullName.StartsWith("mscorlib")
-					   && !x.FullName.StartsWith("MetaCreator,")
+					   && !x.FullName.StartsWith("MetaCreator")
 					   && !x.FullName.StartsWith("Plasma,")
 					   && !x.FullName.StartsWith("Accessibility,")
 #if !NET3
@@ -188,14 +203,15 @@ public static partial class PlasmaRegistration
 		{
 			var types = asms.SelectMany(x => x.GetTypes())
 .Where(x =>
-x.IsPublic
-				// x.Attribute<RegisterServiceAttribute>() != null
-				//|| x.Attribute<PlasmaServiceAttribute>() != null
+	x.IsPublic
+				&& (x.Attribute2<RegisterServiceAttribute>() != null
+				|| x.IsInterface)
+				//|| x.Attribute2<PlasmaServiceAttribute>() != null
 				//|| x.Attribute<DefaultImplAttribute>() != null
 );
-
 			foreach (var type in types)
 			{
+				writer.WriteLine("// " + type.CSharpTypeIdentifier());
 				_context.Types.Add(type);
 			}
 		}

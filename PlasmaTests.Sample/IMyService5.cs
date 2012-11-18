@@ -2,13 +2,11 @@ using System.Linq;
 using System.Collections.Generic;
 using System;
 
-using Plasma;
-
 namespace PlasmaTests.Sample
 {
-	[DefaultImpl(typeof(MyService3))]
-	public interface IMyService3
+	[DefaultImpl(typeof(MyService5))]
+	public interface IMyService5
 	{
-		bool MyMethod();
+		bool MyMethod(int a, out int b);
 	}
 }

@@ -89,12 +89,12 @@ namespace Plasma
 				var ctorsDef = ctors.Where(x => x.GetCustomAttributes(typeof(DefaultConstructorAttribute), false).Any()).ToArray();
 				if (ctorsDef.Length != 1)
 				{
-					var parameterLess = ctors.Single(x => x.GetParameters().Length == 0);
+					var parameterLess = ctors.SingleOrDefault(x => x.GetParameters().Length == 0);
 					if (parameterLess != null)
 					{
 						return parameterLess;
 					}
-					throw new PlasmaException(string.Format(CultureInfo.CurrentCulture, "Ambiguous constructor for type '{0}'", type.Name));
+					throw new PlasmaException(string.Format(CultureInfo.CurrentCulture, "No parameterless constructor for type '{0}'", type.Name));
 				}
 			}
 			return ctors[0];

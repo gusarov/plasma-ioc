@@ -12,7 +12,8 @@ namespace PlasmaTests.Precompiler
 //		{
 			/*+ static object ref1 = typeof(IMyWorker); */
 			/*@ errorremap off */
-			/*@ FileInProject */
+	/*@ FileInProject */
+	/*@ CSharpVersion v4.0 */
 
 	/*# PlasmaRegisterAll */
 	/*# PlasmaGenerate */

@@ -37,5 +37,6 @@ namespace PlasmaTests
 			Assert.IsInstanceOfType(test, typeof(MyService4));
 			Assert.AreEqual(true, test.MyMethod());
 		}
+
 	}
 }

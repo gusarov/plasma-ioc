@@ -10,8 +10,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PlasmaTests.Sample</RootNamespace>
     <AssemblyName>PlasmaTests.Sample</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,6 +22,7 @@
     <DefineConstants>TRACE;DEBUG;NET4</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,6 +31,7 @@
     <DefineConstants>TRACE;NET4</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -36,7 +39,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="IMyService4.cs" />
+    <Compile Include="IMyService5.cs" />
     <Compile Include="MyGenericRole.cs" />
+    <Compile Include="MyService4.cs" />
+    <Compile Include="MyService5.cs" />
     <Compile Include="Proxy\SimpleDataForStubbing.cs" />
     <Compile Include="Proxy\SuggestedProxyMembershipProvider.cs" />
     <Compile Include="DataLazyConstructorInjection.cs" />
@@ -61,13 +68,13 @@
     <Compile Include="MyWorker.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Plasma\Plasma.csproj">
-      <Project>{7EC2C99D-CD8E-4C20-8820-8CC953F4EED1}</Project>
-      <Name>Plasma</Name>
-    </ProjectReference>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Properties\" />
+    <ProjectReference Include="..\Plasma\Plasma Net45.csproj">
+      <Project>{7ec2c99d-cd8e-4c20-8820-8cc953f4eed1}</Project>
+      <Name>Plasma Net45</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
