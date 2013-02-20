@@ -35,11 +35,11 @@ namespace Plasma
 			set { _reflectionPermission = value; }
 		}
 
-		static readonly PlasmaContainer _root = new PlasmaContainer();
+		static readonly Lazy<PlasmaContainer> _root = new Lazy<PlasmaContainer>();
 
 		public static PlasmaContainer Root
 		{
-			get { return _root; }
+			get { return _root.Value; }
 		}
 
 		public PlasmaContainer()
