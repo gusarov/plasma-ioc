@@ -34,7 +34,7 @@ namespace PlasmaTests.Proxy
 		[TestMethod]
 		public void Should_use_out()
 		{
-			var sut = Null.Object<IMyService5>();
+			var sut = Null.Object<IMyServiceComplex>();
 			int q;
 			var r = sut.MyMethod(4, out q);
 			Assert.AreEqual(0, q);
@@ -45,7 +45,7 @@ namespace PlasmaTests.Proxy
 		[ExpectedException(typeof(PlasmaException))]
 		public void Should_not_allow_register_2_times()
 		{
-			Null.Register<IMyService5>(new MyService5());
+			Null.Register<IMyServiceComplex>(new MyService5());
 		}
 
 		[TestMethod]

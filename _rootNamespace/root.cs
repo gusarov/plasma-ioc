@@ -259,7 +259,7 @@ public static class PlasmaContainerExt
 /// <summary>
 /// Suggest this implementation type or assembly qualified type _typeShortName.
 /// </summary>
-[AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class | AttributeTargets.Parameter | AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
+[AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class | AttributeTargets.Parameter | AttributeTargets.Property, Inherited = false, AllowMultiple = true)]
 public sealed class DefaultImplAttribute : Attribute
 {
     Type _type;
@@ -277,7 +277,7 @@ public sealed class DefaultImplAttribute : Attribute
 
     public Type TargetType
     {
-        get { return _type ?? (_type = Type.GetType(TypeAqn, true)); }
+        get { return _type ?? (_type = Type.GetType(TypeAqn, false)); }
     }
 
     [EditorBrowsable(EditorBrowsableState.Advanced)]

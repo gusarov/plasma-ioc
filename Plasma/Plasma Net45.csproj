@@ -60,7 +60,6 @@
     <Compile Include="Meta\ClassGeneratorStrategy.cs" />
     <Compile Include="Meta\NullObjectClassGeneratorStrategy.cs" />
     <Compile Include="Meta\ProxyClassGeneratorStrategy.cs" />
-    <Compile Include="Meta\ProxyGenerator.cs" />
     <Compile Include="Null.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Proxy\ProxyBase.cs" />
@@ -83,9 +82,9 @@
     <PostBuildEvent>if "$(ConfigurationName)" == "Release" (
   echo .pdb &gt; ~e.lst
   xcopy /i /d /y /exclude:~e.lst "$(TargetDir)$(ProjectName).*" "$(SolutionDir)_release\" 
-  if exist "$(SolutionDir)..\_distrib\" (
-    md "$(SolutionDir)..\_distrib\Plasma\"
-    xcopy /i /d /y /exclude:~e.lst "$(TargetDir)$(ProjectName).*" "$(SolutionDir)..\_distrib\Plasma\" 
+  if exist "$(SolutionDir)..\..\_distrib\" (
+    md "$(SolutionDir)..\..\_distrib\Plasma\"
+    xcopy /i /d /y /exclude:~e.lst "$(TargetDir)$(ProjectName).*" "$(SolutionDir)..\..\_distrib\Plasma\" 
   )
 )</PostBuildEvent>
   </PropertyGroup>

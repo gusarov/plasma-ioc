@@ -68,6 +68,7 @@ public static partial class PlasmaRegistration
 {
 	public static void Run()
 	{
+			Plasma.PlasmaContainer.DefaultReflectionPermission = Plasma.ReflectionPermission.Throw;
 ");
 			writer.WriteLine(); // ignore tabs
 
@@ -209,11 +210,28 @@ public static partial class PlasmaRegistration
 				//|| x.Attribute2<PlasmaServiceAttribute>() != null
 				//|| x.Attribute<DefaultImplAttribute>() != null
 );
+
+
+			writer.PlasmaRegisterType(types.ToArray());
+		}
+
+		public static void PlasmaRegisterType(this IMetaWriter writer, params Type[] types)
+		{
 			foreach (var type in types)
 			{
-				writer.WriteLine("// " + type.CSharpTypeIdentifier());
-				_context.Types.Add(type);
+				PlasmaRegisterType(writer, type);
 			}
+		}
+
+		public static void PlasmaRegisterType(this IMetaWriter writer, Type type)
+		{
+			writer.WriteLine("// " + type.CSharpTypeIdentifier());
+			_context.Types.Add(type);
+		}
+
+		public static void PlasmaRegisterType<T>(this IMetaWriter writer)
+		{
+			PlasmaRegisterType(writer, typeof (T));
 		}
 
 		static readonly ClassGeneratorStrategy _proxyGenerator = new ProxyClassGeneratorStrategy();

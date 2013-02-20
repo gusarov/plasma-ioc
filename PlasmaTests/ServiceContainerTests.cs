@@ -5,6 +5,7 @@ using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Plasma;
+using MetaCreator;
 
 using PlasmaTests.Sample;
 
@@ -429,6 +430,11 @@ namespace PlasmaTests
 		{
 			var test = _sut.Get<IMyWorker>();
 			Assert.IsNotNull(test);
+		}
+		[TestMethod]
+		public void should_()
+		{
+			Assert.AreEqual("KeyValuePair<int,int>[]", typeof(KeyValuePair<int, int>[]).CSharpTypeIdentifier());
 		}
 	}
 }

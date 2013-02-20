@@ -104,14 +104,19 @@ namespace Plasma
 		{
 			if (type.IsInterface || type.IsAbstract)
 			{
-				var dsia = (DefaultImplAttribute)type.GetCustomAttributes(typeof(DefaultImplAttribute), true).FirstOrDefault();
-				if (dsia != null)
+				var dsias = (DefaultImplAttribute[])type.GetCustomAttributes(typeof(DefaultImplAttribute), true);
+				if (dsias.Any())
 				{
+					var dsia = dsias.FirstOrDefault(x => x.TargetType != null);
+					if (dsia == null)
+					{
+						throw new PlasmaException(string.Format(CultureInfo.CurrentCulture, "Service for type '{0}' cannot be loaded by non-resolvable DefaultImpl: " + string.Join(", ", dsias.Select(x => x.TypeAqn)), type.Name));
+					}
 					type = dsia.TargetType;
 				}
 				else
 				{
-					throw new PlasmaException(string.Format(CultureInfo.CurrentCulture, "Can not register service for type '{0}'. Specify instance, factory, or use DefaultImplAttribute", type.Name));
+					throw new PlasmaException(string.Format(CultureInfo.CurrentCulture, "Cannot register service for type '{0}'. Specify instance, factory, or use DefaultImplAttribute", type.Name));
 				}
 			}
 			return type;

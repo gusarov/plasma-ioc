@@ -138,7 +138,7 @@ namespace Plasma.Meta
 			writer.WriteLine("// iface - " + type.Name);
 			//			writer.WriteLine("// all ifaces - " + string.Join(", ", Mining.GetAllIfaces(type).Distinct().Select(x => x.Name)));
 
-			var members = type.GetMembers().Concat(Mining.GetAllIfaces(type).Distinct().SelectMany(x => x.GetMembers())).ToArray();
+			var members = type.GetMembers(BindingFlags.Public | BindingFlags.Instance).Concat(Mining.GetAllIfaces(type).Distinct().SelectMany(x => x.GetMembers())).ToArray();
 
 //			if (!members.Any())
 //			{
@@ -160,11 +160,11 @@ namespace Plasma.Meta
 			{
 				if (methods.Count(x => x.Name == method.Name) > 1 /* && method.ReturnType == typeof(object) */) // todo improve by comparing signature, not just name
 				{
-					writer.Write("\t{0} {4}.{1}{2}({3})", method.ReturnType.CSharpTypeIdentifier(), method.Name, null, string.Join(", ", method.GetParameters().Select(x => x.ParameterType.CSharpTypeIdentifier() + " " + x.Name).ToArray()), method.DeclaringType.CSharpTypeIdentifier());
+					writer.Write("\t{0} {4}.{1}{2}({3})", method.ReturnType.CSharpTypeIdentifier(), method.Name, null, string.Join(", ", method.GetParameters().Select(x => x.CSharpTypeIdentifier() + " " + x.Name).ToArray()), method.DeclaringType.CSharpTypeIdentifier());
 				}
 				else
 				{
-					writer.Write("\tpublic virtual {0} {1}{2}({3})", method.ReturnType.CSharpTypeIdentifier(), method.Name, null, string.Join(", ", method.GetParameters().Select(x => x.	CSharpTypeIdentifier() + " " + x.Name).ToArray()));
+					writer.Write("\tpublic virtual {0} {1}{2}({3})", method.ReturnType.CSharpTypeIdentifier(), method.Name, null, string.Join(", ", method.GetParameters().Select(x => x.CSharpTypeIdentifier() + " " + x.Name).ToArray()));
 				}
 
 

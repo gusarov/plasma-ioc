@@ -15,8 +15,10 @@ namespace PlasmaTests.Precompiler
 	
 	
 
-	// IMyService4
-// IMyService5
+	// PlasmaTests.Sample, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+// Plasma Net45, Version=1.0.0.34766, Culture=neutral, PublicKeyToken=null
+// IMyService4
+// IMyServiceComplex
 // MyService4
 // MyService5
 // Sample.Proxy.ISimpleDataForStubbing
@@ -62,11 +64,12 @@ public class ProxyMyService4 : Plasma.Proxy.ProxyBase<IMyService4>,  IMyService4
 	public ProxyMyService4(IMyService4 originalObject) : base(originalObject)	{	}
 	public virtual bool MyMethod() { return Original.MyMethod(); }
 }
-// iface - IMyService5
-public class ProxyMyService5 : Plasma.Proxy.ProxyBase<IMyService5>,  IMyService5
+// iface - IMyServiceComplex
+public class ProxyMyServiceComplex : Plasma.Proxy.ProxyBase<IMyServiceComplex>,  IMyServiceComplex
 {
-	public ProxyMyService5(IMyService5 originalObject) : base(originalObject)	{	}
-	public virtual bool MyMethod(int a, out int b) { return Original.MyMethod(a, out b); }
+	public ProxyMyServiceComplex(IMyServiceComplex originalObject) : base(originalObject)	{	}
+	bool IMyServiceComplex.MyMethod(int a, out int b) { return Original.MyMethod(a, out b); }
+	bool IMyServiceComplex.MyMethod(Int32[] a, Object[] b, IComparable[] c) { return Original.MyMethod(a, b, c); }
 }
 // iface - ISimpleDataForStubbing
 public class ProxySimpleDataForStubbing : Plasma.Proxy.ProxyBase<Sample.Proxy.ISimpleDataForStubbing>,  Sample.Proxy.ISimpleDataForStubbing
@@ -220,11 +223,13 @@ public class NullMyService4 :  IMyService4
 	public static readonly NullMyService4 Instance = new NullMyService4();	public virtual bool MyMethod() { return default(bool);
  }
 }
-// iface - IMyService5
-public class NullMyService5 :  IMyService5
+// iface - IMyServiceComplex
+public class NullMyServiceComplex :  IMyServiceComplex
 {
-	public static readonly NullMyService5 Instance = new NullMyService5();	public virtual bool MyMethod(int a, out int b) { b = default(int);
+	public static readonly NullMyServiceComplex Instance = new NullMyServiceComplex();	bool IMyServiceComplex.MyMethod(int a, out int b) { b = default(int);
 return default(bool);
+ }
+	bool IMyServiceComplex.MyMethod(Int32[] a, Object[] b, IComparable[] c) { return default(bool);
  }
 }
 // iface - ISimpleDataForStubbing
@@ -457,6 +462,7 @@ public static partial class PlasmaRegistration
 {
 	public static void Run()
 	{
+			Plasma.PlasmaContainer.DefaultReflectionPermission = Plasma.ReflectionPermission.Throw;
 
 
 Plasma.Internal.TypeFactoryRegister.Add<MyService4>(c => new MyService4());
@@ -514,7 +520,7 @@ Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<MyServiceWithSeveralCtors>(
 Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<MySubGroup>();
 Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<MyWorker>();
 Null.Register<IMyService4>(NullMyService4.Instance);
-Null.Register<IMyService5>(NullMyService5.Instance);
+Null.Register<IMyServiceComplex>(NullMyServiceComplex.Instance);
 Null.Register<Sample.Proxy.ISimpleDataForStubbing>(NullSimpleDataForStubbing.Instance);
 Null.Register<Sample.Proxy.IComplexStubbing>(NullComplexStubbing.Instance);
 Null.Register<Sample.Proxy.IComplexStubbingDerived>(NullComplexStubbingDerived.Instance);

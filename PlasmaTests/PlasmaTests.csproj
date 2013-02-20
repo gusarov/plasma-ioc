@@ -11,9 +11,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PlasmaTests</RootNamespace>
     <AssemblyName>PlasmaTests</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -23,6 +24,7 @@
     <DefineConstants>TRACE;DEBUG;NET4</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -31,8 +33,13 @@
     <DefineConstants>TRACE;NET4</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MetaCreator_4.5, Version=1.6.4705.17405, Culture=neutral, PublicKeyToken=e1cf46ee434cd7e7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_components\MetaCreator\MetaCreator_4.5.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -56,17 +63,17 @@
     <Compile Include="_AssemblyInit1.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PlasmaTests.Sample\PlasmaTests.Sample.csproj">
-      <Project>{FB7D6860-E28A-4F27-AA08-C5850D2AEB4F}</Project>
-      <Name>PlasmaTests.Sample</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Plasma\Plasma.csproj">
-      <Project>{7EC2C99D-CD8E-4C20-8820-8CC953F4EED1}</Project>
-      <Name>Plasma</Name>
-    </ProjectReference>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Properties\" />
+    <ProjectReference Include="..\PlasmaTests.Sample\PlasmaTests.Sample.csproj">
+      <Project>{fb7d6860-e28a-4f27-aa08-c5850d2aeb4f}</Project>
+      <Name>PlasmaTests.Sample</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Plasma\Plasma Net45.csproj">
+      <Project>{7ec2c99d-cd8e-4c20-8820-8cc953f4eed1}</Project>
+      <Name>Plasma Net45</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

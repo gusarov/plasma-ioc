@@ -21,7 +21,7 @@ namespace Plasma
 	/// </summary>
 	public sealed class PlasmaContainer : IPlasmaContainer
 	{
-		static ReflectionPermission _defaultReflectionPermission = ReflectionPermission.DebuggerBreakIfAttached;
+		static ReflectionPermission _defaultReflectionPermission = ReflectionPermission.Allow;
 		public static ReflectionPermission DefaultReflectionPermission
 		{
 			get { return _defaultReflectionPermission; }
