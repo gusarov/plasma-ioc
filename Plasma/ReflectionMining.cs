@@ -113,6 +113,10 @@ namespace Plasma
 			{
 				return value;
 			}
+			else if (value != null)
+			{
+				throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, "Can not provide value for {0}. {1} does not implement {0}", parameterType.Name, value.GetType().Name));
+			}
 			throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, "Can not provide value for {0}", parameterType));
 		}
 	}
