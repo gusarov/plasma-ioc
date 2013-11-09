@@ -30,6 +30,11 @@ namespace Plasma.Meta
 			_context = new Context();
 		}
 
+		private static SharpGenerator.TypeIdentifierConfig _omitTypeDef = new SharpGenerator.TypeIdentifierConfig
+		{
+			UseNamedTypeParameters = false,
+		};
+
 		/// <summary>
 		/// Finally write all code
 		/// End your file with that line
@@ -133,11 +138,11 @@ public static partial class PlasmaRegistration
 						// todo remove extra cast in plumber
 						// todo remove dependancy on 'c'
 						writer.WriteLine(@"Plasma.Internal.TypeAutoPlumberRegister.Register<{0}>((c, x)=>{{
-{1}}});", type.CSharpTypeIdentifier(), plumbing);
+{1}}});", type.CSharpTypeIdentifier(_omitTypeDef), plumbing);
 					}
 					else
 					{
-						writer.WriteLine("Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<{0}>();", type.CSharpTypeIdentifier());
+						writer.WriteLine("Plasma.Internal.TypeAutoPlumberRegister.RegisterNone(typeof({0}));", type.CSharpTypeIdentifier(_omitTypeDef));
 					}
 				}
 			}

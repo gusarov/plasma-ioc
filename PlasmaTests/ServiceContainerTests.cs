@@ -438,7 +438,19 @@ namespace PlasmaTests
 		[TestMethod]
 		public void Should_generate_type_name_correctly_for_kvp()
 		{
-			Assert.AreEqual("KeyValuePair<int,int>[]", typeof(KeyValuePair<int, int>[]).CSharpTypeIdentifier("MySpace", "System.Collections.Generic"));
+			Assert.AreEqual("KeyValuePair<int, int>[]", typeof(KeyValuePair<int, int>[]).CSharpTypeIdentifier("MySpace", "System.Collections.Generic"));
+		}
+
+		[TestMethod]
+		public void Should_generate_type_name_correctly_for_kvp_type_def()
+		{
+			Assert.AreEqual("KeyValuePair<, >", typeof(KeyValuePair<,>).CSharpTypeIdentifier(new SharpGenerator.TypeIdentifierConfig
+			{
+				Imports = new[]{
+					"System.Collections.Generic",
+				},
+				UseNamedTypeParameters = false,
+			}));
 		}
 
 		[TestMethod]

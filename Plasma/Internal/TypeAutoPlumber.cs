@@ -19,20 +19,21 @@ namespace Plasma.Internal
 			_plumbers[typeof(T)] = (c, x) => action(c, (T)x);
 		}
 
+		/*
 		/// <summary>
 		/// Add an action for property injection
 		/// </summary>
-		public static void Register<T>(Action<IPlasmaContainer, object> action)
+		public static void Register(Type type, Action<IPlasmaContainer, object> action)
 		{
-			_plumbers[typeof(T)] = action;
+			_plumbers[type] = action;
 		}
-
+		*/
 		/// <summary>
 		/// Express the fact that no property injection exists for this type
 		/// </summary>
-		public static void RegisterNone<T>()
+		public static void RegisterNone(Type type)
 		{
-			_plumbers[typeof(T)] = delegate { }; // todo remove extra delegate instance
+			_plumbers[type] = delegate { }; // todo remove extra delegate instance
 		}
 
 		/// <summary>

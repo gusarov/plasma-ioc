@@ -34,6 +34,7 @@ namespace PlasmaTests
 			Assert.AreNotSame(group1.Worker, group2.Worker);
 		}
 
+		[Ignore]
 		[TestMethod]
 		public void Should_allow_instantiate_private_scope_of_container()
 		{

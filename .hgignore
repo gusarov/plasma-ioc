@@ -6,3 +6,6 @@ TestResults/
 *.user
 *.vsmdi
 _components/
+packages/
+*.bak
+*.nupkg

@@ -16,9 +16,12 @@ namespace PlasmaTests.Precompiler
 	
 
 	// PlasmaTests.Sample, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-// Plasma Net45, Version=1.0.0.34766, Culture=neutral, PublicKeyToken=null
+// Class1
 // IMyService4
 // IMyServiceComplex
+// MyGenericRole<T>
+// MyGenericRoleNonePlumbing<T>
+// MyGenericMethod
 // MyService4
 // MyService5
 // Sample.Proxy.ISimpleDataForStubbing
@@ -26,6 +29,7 @@ namespace PlasmaTests.Precompiler
 // Sample.Proxy.IComplexStubbingDerived
 // Sample.Proxy.IComplexStubbingDerived2
 // Sample.Proxy.IComplexStubbingDerived3
+// Sample.Proxy.SuggestedProxyMembershipProvider
 // DataLazyConstructorInjection
 // DataFuncConstructorInjection
 // DataLazyPropertyInjection
@@ -36,11 +40,18 @@ namespace PlasmaTests.Precompiler
 // IMyService2
 // IMyService3
 // IMyStorage
+// MyInmemStorage
+// MyPipeStorage
+// MyFileStorage
 // MyNodeHost
 // MyObjectMan
 // IMyWorker
 // MyPerformer
 // MyService
+// MyService6WithoutInterface
+// MyService7Dependency
+// MyBadServiceDep
+// MyBadService
 // MyService2
 // MyService3
 // IMyServiceWithOptionalArguments
@@ -53,10 +64,6 @@ namespace PlasmaTests.Precompiler
 // MyServiceWithSeveralCtors
 // MySubGroup
 // MyWorker
-// Plasma.Aop.IAdvise
-// Plasma.Aop.IMethodIntercepAdvise
-// Plasma.IPlasmaProvider
-// Plasma.IPlasmaContainer
 
 	// iface - IMyService4
 public class ProxyMyService4 : Plasma.Proxy.ProxyBase<IMyService4>,  IMyService4
@@ -69,7 +76,7 @@ public class ProxyMyServiceComplex : Plasma.Proxy.ProxyBase<IMyServiceComplex>, 
 {
 	public ProxyMyServiceComplex(IMyServiceComplex originalObject) : base(originalObject)	{	}
 	bool IMyServiceComplex.MyMethod(int a, out int b) { return Original.MyMethod(a, out b); }
-	bool IMyServiceComplex.MyMethod(Int32[] a, Object[] b, IComparable[] c) { return Original.MyMethod(a, b, c); }
+	bool IMyServiceComplex.MyMethod(int[] a, object[] b, IComparable[] c) { return Original.MyMethod(a, b, c); }
 }
 // iface - ISimpleDataForStubbing
 public class ProxySimpleDataForStubbing : Plasma.Proxy.ProxyBase<Sample.Proxy.ISimpleDataForStubbing>,  Sample.Proxy.ISimpleDataForStubbing
@@ -138,7 +145,7 @@ public class ProxyMembershipProvider : Plasma.Proxy.ProxyBase<Sample.Proxy.IMemb
 	public virtual IList<string> ListUsers2() { return Original.ListUsers2(); }
 	public virtual void AddUser(string login, string password) { Original.AddUser(login, password); }
 	public virtual void DeleteUser(string login) { Original.DeleteUser(login); }
-	public virtual Byte[] TestArray() { return Original.TestArray(); }
+	public virtual byte[] TestArray() { return Original.TestArray(); }
 }
 // iface - IMyPerformer
 public class ProxyMyPerformer : Plasma.Proxy.ProxyBase<IMyPerformer>,  IMyPerformer
@@ -182,41 +189,6 @@ public class ProxyMyServiceWithOptionalArguments : Plasma.Proxy.ProxyBase<IMySer
 	public virtual IMyStorage Storage {  get { return Original.Storage; } }
 	public virtual IMyWorker Worker {  get { return Original.Worker; } }
 }
-// iface - IAdvise
-public class ProxyAdvise : Plasma.Proxy.ProxyBase<Plasma.Aop.IAdvise>,  Plasma.Aop.IAdvise
-{
-	public ProxyAdvise(Plasma.Aop.IAdvise originalObject) : base(originalObject)	{	}
-}
-// iface - IMethodIntercepAdvise
-public class ProxyMethodIntercepAdvise : Plasma.Proxy.ProxyBase<Plasma.Aop.IMethodIntercepAdvise>,  Plasma.Aop.IMethodIntercepAdvise
-{
-	public ProxyMethodIntercepAdvise(Plasma.Aop.IMethodIntercepAdvise originalObject) : base(originalObject)	{	}
-	public virtual object Invoke(Func<Object[], object> body, Object[] args) { return Original.Invoke(body, args); }
-}
-// iface - IPlasmaProvider
-public class ProxyPlasmaProvider : Plasma.Proxy.ProxyBase<Plasma.IPlasmaProvider>,  Plasma.IPlasmaProvider
-{
-	public ProxyPlasmaProvider(Plasma.IPlasmaProvider originalObject) : base(originalObject)	{	}
-	object Plasma.IPlasmaProvider.Get(Type type) { return Original.Get(type); }
-	object Plasma.IPlasmaProvider.Get(Type type, Type suggestedImpl) { return Original.Get(type, suggestedImpl); }
-	public virtual Lazy<object> GetLazy(Type type) { return Original.GetLazy(type); }
-	public virtual object TryGet(Type type) { return Original.TryGet(type); }
-	public virtual Lazy<object> TryGetLazy(Type type) { return Original.TryGetLazy(type); }
-}
-// iface - IPlasmaContainer
-public class ProxyPlasmaContainer : Plasma.Proxy.ProxyBase<Plasma.IPlasmaContainer>,  Plasma.IPlasmaContainer
-{
-	public ProxyPlasmaContainer(Plasma.IPlasmaContainer originalObject) : base(originalObject)	{	}
-	void Plasma.IPlasmaContainer.Add(Type type) { Original.Add(type); }
-	void Plasma.IPlasmaContainer.Add(Type type, Type implementation) { Original.Add(type, implementation); }
-	void Plasma.IPlasmaContainer.Add(Type type, Lazy<object> instanceFactory) { Original.Add(type, instanceFactory); }
-	object Plasma.IPlasmaProvider.Get(Type type) { return Original.Get(type); }
-	object Plasma.IPlasmaProvider.Get(Type type, Type suggestedImpl) { return Original.Get(type, suggestedImpl); }
-	public virtual Lazy<object> GetLazy(Type type) { return Original.GetLazy(type); }
-	public virtual object TryGet(Type type) { return Original.TryGet(type); }
-	public virtual Lazy<object> TryGetLazy(Type type) { return Original.TryGetLazy(type); }
-	public virtual void Dispose() { Original.Dispose(); }
-}
 // iface - IMyService4
 public class NullMyService4 :  IMyService4
 {
@@ -229,7 +201,7 @@ public class NullMyServiceComplex :  IMyServiceComplex
 	public static readonly NullMyServiceComplex Instance = new NullMyServiceComplex();	bool IMyServiceComplex.MyMethod(int a, out int b) { b = default(int);
 return default(bool);
  }
-	bool IMyServiceComplex.MyMethod(Int32[] a, Object[] b, IComparable[] c) { return default(bool);
+	bool IMyServiceComplex.MyMethod(int[] a, object[] b, IComparable[] c) { return default(bool);
  }
 }
 // iface - ISimpleDataForStubbing
@@ -317,7 +289,7 @@ public class NullMembershipProvider :  Sample.Proxy.IMembershipProvider
  }
 	public virtual void AddUser(string login, string password) {  }
 	public virtual void DeleteUser(string login) {  }
-	public virtual Byte[] TestArray() { return (byte[])Enumerable.Empty<byte>();
+	public virtual byte[] TestArray() { return (byte[])Enumerable.Empty<byte>();
  }
 }
 // iface - IMyPerformer
@@ -360,48 +332,6 @@ public class NullMyServiceWithOptionalArguments :  IMyServiceWithOptionalArgumen
  } }
 	public virtual IMyWorker Worker {  get { return NullMyWorker.Instance;
  } }
-}
-// iface - IAdvise
-public class NullAdvise :  Plasma.Aop.IAdvise
-{
-	public static readonly NullAdvise Instance = new NullAdvise();}
-// iface - IMethodIntercepAdvise
-public class NullMethodIntercepAdvise :  Plasma.Aop.IMethodIntercepAdvise
-{
-	public static readonly NullMethodIntercepAdvise Instance = new NullMethodIntercepAdvise();	public virtual object Invoke(Func<Object[], object> body, Object[] args) { return Null.Object<object>();
- }
-}
-// iface - IPlasmaProvider
-public class NullPlasmaProvider :  Plasma.IPlasmaProvider
-{
-	public static readonly NullPlasmaProvider Instance = new NullPlasmaProvider();	object Plasma.IPlasmaProvider.Get(Type type) { return Null.Object<object>();
- }
-	object Plasma.IPlasmaProvider.Get(Type type, Type suggestedImpl) { return Null.Object<object>();
- }
-	public virtual Lazy<object> GetLazy(Type type) { return new Lazy<object>(Null.Object<object>);
- }
-	public virtual object TryGet(Type type) { return Null.Object<object>();
- }
-	public virtual Lazy<object> TryGetLazy(Type type) { return new Lazy<object>(Null.Object<object>);
- }
-}
-// iface - IPlasmaContainer
-public class NullPlasmaContainer :  Plasma.IPlasmaContainer
-{
-	public static readonly NullPlasmaContainer Instance = new NullPlasmaContainer();	void Plasma.IPlasmaContainer.Add(Type type) {  }
-	void Plasma.IPlasmaContainer.Add(Type type, Type implementation) {  }
-	void Plasma.IPlasmaContainer.Add(Type type, Lazy<object> instanceFactory) {  }
-	object Plasma.IPlasmaProvider.Get(Type type) { return Null.Object<object>();
- }
-	object Plasma.IPlasmaProvider.Get(Type type, Type suggestedImpl) { return Null.Object<object>();
- }
-	public virtual Lazy<object> GetLazy(Type type) { return new Lazy<object>(Null.Object<object>);
- }
-	public virtual object TryGet(Type type) { return Null.Object<object>();
- }
-	public virtual Lazy<object> TryGetLazy(Type type) { return new Lazy<object>(Null.Object<object>);
- }
-	public virtual void Dispose() {  }
 }
 // iface - IEnumerable`1
 public class NullEnumerable<T> :  IEnumerable<T>
@@ -465,16 +395,26 @@ public static partial class PlasmaRegistration
 			Plasma.PlasmaContainer.DefaultReflectionPermission = Plasma.ReflectionPermission.Throw;
 
 
+Plasma.Internal.TypeFactoryRegister.Add<Class1>(c => new Class1());
+Plasma.Internal.TypeFactoryRegister.Add<MyGenericMethod>(c => new MyGenericMethod());
 Plasma.Internal.TypeFactoryRegister.Add<MyService4>(c => new MyService4());
 Plasma.Internal.TypeFactoryRegister.Add<MyService5>(c => new MyService5());
+Plasma.Internal.TypeFactoryRegister.Add<Sample.Proxy.SuggestedProxyMembershipProvider>(c => new Sample.Proxy.SuggestedProxyMembershipProvider(c.Get<Sample.Proxy.IMembershipProvider>()));
 Plasma.Internal.TypeFactoryRegister.Add<DataLazyConstructorInjection>(c => new DataLazyConstructorInjection(new Lazy<IMyService>(c.Get<IMyService>)));
 Plasma.Internal.TypeFactoryRegister.Add<DataFuncConstructorInjection>(c => new DataFuncConstructorInjection(c.Get<IMyService>));
 Plasma.Internal.TypeFactoryRegister.Add<DataLazyPropertyInjection>(c => new DataLazyPropertyInjection());
 Plasma.Internal.TypeFactoryRegister.Add<DataFuncPropertyInjection>(c => new DataFuncPropertyInjection());
+Plasma.Internal.TypeFactoryRegister.Add<MyInmemStorage>(c => new MyInmemStorage());
+Plasma.Internal.TypeFactoryRegister.Add<MyPipeStorage>(c => new MyPipeStorage());
+Plasma.Internal.TypeFactoryRegister.Add<MyFileStorage>(c => new MyFileStorage());
 Plasma.Internal.TypeFactoryRegister.Add<MyNodeHost>(c => new MyNodeHost());
 Plasma.Internal.TypeFactoryRegister.Add<MyObjectMan>(c => new MyObjectMan(c.Get<IMyStorage, MyPipeStorage>()));
 Plasma.Internal.TypeFactoryRegister.Add<MyPerformer>(c => new MyPerformer());
 Plasma.Internal.TypeFactoryRegister.Add<MyService>(c => new MyService());
+Plasma.Internal.TypeFactoryRegister.Add<MyService6WithoutInterface>(c => new MyService6WithoutInterface(c.Get<MyService7Dependency>()));
+Plasma.Internal.TypeFactoryRegister.Add<MyService7Dependency>(c => new MyService7Dependency());
+#warning No constructor for type 'MyBadServiceDep'
+Plasma.Internal.TypeFactoryRegister.Add<MyBadService>(c => new MyBadService(c.Get<MyBadServiceDep>()));
 Plasma.Internal.TypeFactoryRegister.Add<MyService2>(c => new MyService2(c.Get<IMyService>()));
 Plasma.Internal.TypeFactoryRegister.Add<MyService3>(c => new MyService3(c.Get<IMyPerformer>()));
 Plasma.Internal.TypeFactoryRegister.Add<MyServiceWithOptionalArguments>(c => new MyServiceWithOptionalArguments(c.Get<IMyStorage>(), c.TryGet<IMyWorker>()));
@@ -483,42 +423,54 @@ Plasma.Internal.TypeFactoryRegister.Add<MyServiceWithStruct>(c => new MyServiceW
 Plasma.Internal.TypeFactoryRegister.Add<MyServiceWithOptionalStruct>(c => new MyServiceWithOptionalStruct());
 Plasma.Internal.TypeFactoryRegister.Add<MyServiceWithOptionalString>(c => new MyServiceWithOptionalString());
 Plasma.Internal.TypeFactoryRegister.Add<MyServiceWithStructPro>(c => new MyServiceWithStructPro());
-Plasma.Internal.TypeFactoryRegister.Add<MyServiceWithSeveralCtors>(c => new MyServiceWithSeveralCtors(c.Get<IMyService>(), c.Get<IMyService>(), c.Get<IMyService>()));
+Plasma.Internal.TypeFactoryRegister.Add<MyServiceWithSeveralCtors>(c => new MyServiceWithSeveralCtors(c.Get<IMyService>(), c.Get<IMyService>()));
 Plasma.Internal.TypeFactoryRegister.Add<MySubGroup>(c => new MySubGroup(c.Get<Plasma.IPlasmaProvider>()));
 Plasma.Internal.TypeFactoryRegister.Add<MyWorker>(c => new MyWorker());
 
 // Property injectors optimization
-Plasma.Internal.TypeAutoPlumberRegister.Register<MyService4>((c, x)=>{
+Plasma.Internal.TypeAutoPlumberRegister.RegisterNone(typeof(PlasmaTests.Sample.Class1));
+Plasma.Internal.TypeAutoPlumberRegister.RegisterNone(typeof(PlasmaTests.Sample.MyGenericRole<>));
+Plasma.Internal.TypeAutoPlumberRegister.RegisterNone(typeof(PlasmaTests.Sample.MyGenericRoleNonePlumbing<>));
+Plasma.Internal.TypeAutoPlumberRegister.RegisterNone(typeof(PlasmaTests.Sample.MyGenericMethod));
+Plasma.Internal.TypeAutoPlumberRegister.Register<PlasmaTests.Sample.MyService4>((c, x)=>{
 	x.Performer = c.Get<IMyPerformer>();
 });
-Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<MyService5>();
-Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<DataLazyConstructorInjection>();
-Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<DataFuncConstructorInjection>();
-Plasma.Internal.TypeAutoPlumberRegister.Register<DataLazyPropertyInjection>((c, x)=>{
+Plasma.Internal.TypeAutoPlumberRegister.RegisterNone(typeof(PlasmaTests.Sample.MyService5));
+Plasma.Internal.TypeAutoPlumberRegister.RegisterNone(typeof(PlasmaTests.Sample.Proxy.SuggestedProxyMembershipProvider));
+Plasma.Internal.TypeAutoPlumberRegister.RegisterNone(typeof(PlasmaTests.Sample.DataLazyConstructorInjection));
+Plasma.Internal.TypeAutoPlumberRegister.RegisterNone(typeof(PlasmaTests.Sample.DataFuncConstructorInjection));
+Plasma.Internal.TypeAutoPlumberRegister.Register<PlasmaTests.Sample.DataLazyPropertyInjection>((c, x)=>{
 	x.LazyService = new Lazy<IMyService>(c.Get<IMyService>);
 });
-Plasma.Internal.TypeAutoPlumberRegister.Register<DataFuncPropertyInjection>((c, x)=>{
+Plasma.Internal.TypeAutoPlumberRegister.Register<PlasmaTests.Sample.DataFuncPropertyInjection>((c, x)=>{
 	x.LazyService = c.Get<IMyService>;
 });
-Plasma.Internal.TypeAutoPlumberRegister.Register<MyNodeHost>((c, x)=>{
+Plasma.Internal.TypeAutoPlumberRegister.RegisterNone(typeof(PlasmaTests.Sample.MyInmemStorage));
+Plasma.Internal.TypeAutoPlumberRegister.RegisterNone(typeof(PlasmaTests.Sample.MyPipeStorage));
+Plasma.Internal.TypeAutoPlumberRegister.RegisterNone(typeof(PlasmaTests.Sample.MyFileStorage));
+Plasma.Internal.TypeAutoPlumberRegister.Register<PlasmaTests.Sample.MyNodeHost>((c, x)=>{
 	x.Storage = c.Get<IMyStorage, MyFileStorage>();
 });
-Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<MyObjectMan>();
-Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<MyPerformer>();
-Plasma.Internal.TypeAutoPlumberRegister.Register<MyService>((c, x)=>{
+Plasma.Internal.TypeAutoPlumberRegister.RegisterNone(typeof(PlasmaTests.Sample.MyObjectMan));
+Plasma.Internal.TypeAutoPlumberRegister.RegisterNone(typeof(PlasmaTests.Sample.MyPerformer));
+Plasma.Internal.TypeAutoPlumberRegister.Register<PlasmaTests.Sample.MyService>((c, x)=>{
 	x.Worker = c.Get<IMyWorker>();
 });
-Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<MyService2>();
-Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<MyService3>();
-Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<MyServiceWithOptionalArguments>();
-Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<MyServiceWithString>();
-Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<MyServiceWithStruct>();
-Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<MyServiceWithOptionalStruct>();
-Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<MyServiceWithOptionalString>();
-Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<MyServiceWithStructPro>();
-Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<MyServiceWithSeveralCtors>();
-Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<MySubGroup>();
-Plasma.Internal.TypeAutoPlumberRegister.RegisterNone<MyWorker>();
+Plasma.Internal.TypeAutoPlumberRegister.RegisterNone(typeof(PlasmaTests.Sample.MyService6WithoutInterface));
+Plasma.Internal.TypeAutoPlumberRegister.RegisterNone(typeof(PlasmaTests.Sample.MyService7Dependency));
+Plasma.Internal.TypeAutoPlumberRegister.RegisterNone(typeof(PlasmaTests.Sample.MyBadServiceDep));
+Plasma.Internal.TypeAutoPlumberRegister.RegisterNone(typeof(PlasmaTests.Sample.MyBadService));
+Plasma.Internal.TypeAutoPlumberRegister.RegisterNone(typeof(PlasmaTests.Sample.MyService2));
+Plasma.Internal.TypeAutoPlumberRegister.RegisterNone(typeof(PlasmaTests.Sample.MyService3));
+Plasma.Internal.TypeAutoPlumberRegister.RegisterNone(typeof(PlasmaTests.Sample.MyServiceWithOptionalArguments));
+Plasma.Internal.TypeAutoPlumberRegister.RegisterNone(typeof(PlasmaTests.Sample.MyServiceWithString));
+Plasma.Internal.TypeAutoPlumberRegister.RegisterNone(typeof(PlasmaTests.Sample.MyServiceWithStruct));
+Plasma.Internal.TypeAutoPlumberRegister.RegisterNone(typeof(PlasmaTests.Sample.MyServiceWithOptionalStruct));
+Plasma.Internal.TypeAutoPlumberRegister.RegisterNone(typeof(PlasmaTests.Sample.MyServiceWithOptionalString));
+Plasma.Internal.TypeAutoPlumberRegister.RegisterNone(typeof(PlasmaTests.Sample.MyServiceWithStructPro));
+Plasma.Internal.TypeAutoPlumberRegister.RegisterNone(typeof(PlasmaTests.Sample.MyServiceWithSeveralCtors));
+Plasma.Internal.TypeAutoPlumberRegister.RegisterNone(typeof(PlasmaTests.Sample.MySubGroup));
+Plasma.Internal.TypeAutoPlumberRegister.RegisterNone(typeof(PlasmaTests.Sample.MyWorker));
 Null.Register<IMyService4>(NullMyService4.Instance);
 Null.Register<IMyServiceComplex>(NullMyServiceComplex.Instance);
 Null.Register<Sample.Proxy.ISimpleDataForStubbing>(NullSimpleDataForStubbing.Instance);
@@ -534,10 +486,6 @@ Null.Register<IMyService3>(NullMyService3.Instance);
 Null.Register<IMyStorage>(NullMyStorage.Instance);
 Null.Register<IMyWorker>(NullMyWorker.Instance);
 Null.Register<IMyServiceWithOptionalArguments>(NullMyServiceWithOptionalArguments.Instance);
-Null.Register<Plasma.Aop.IAdvise>(NullAdvise.Instance);
-Null.Register<Plasma.Aop.IMethodIntercepAdvise>(NullMethodIntercepAdvise.Instance);
-Null.Register<Plasma.IPlasmaProvider>(NullPlasmaProvider.Instance);
-Null.Register<Plasma.IPlasmaContainer>(NullPlasmaContainer.Instance);
 Null.RegisterGeneric(typeof(IEnumerable<>), t =>
 	typeof (NullEnumerable<>).MakeGenericType(t).GetField("Instance").GetValue(null));
 Null.RegisterGeneric(typeof(IList<>), t =>
