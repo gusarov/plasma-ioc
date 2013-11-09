@@ -9,3 +9,4 @@ _components/
 packages/
 *.bak
 *.nupkg
+*.log
