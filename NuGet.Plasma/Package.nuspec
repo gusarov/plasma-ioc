@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>Plasma</id>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
     <title>Plasma IoC Container</title>
     <authors>Dmitry Gusarov</authors>
     <owners></owners>
@@ -18,7 +18,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <dependencies>
       <group targetFramework="net40">
-        <dependency id="MetaCreator" version="1.0.0" />
+        <dependency id="MetaCreator" version="1.6.0" />
       </group>
     </dependencies>
     <references></references>
