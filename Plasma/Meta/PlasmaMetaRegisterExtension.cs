@@ -76,7 +76,14 @@ public static partial class PlasmaRegistration
 
 			foreach (var type in types.Where(x => !x.IsAbstract && !x.IsInterface && !x.IsGenericTypeDefinition && x.IsPublic))
 			{
-				writer.WriteLine("Plasma.Internal.TypeFactoryRegister.Add<{0}>({1});", type.CSharpTypeIdentifier(), Mining.DefaultFactory(type));
+				try
+				{
+					writer.WriteLine("Plasma.Internal.TypeFactoryRegister.Add<{0}>({1});", type.CSharpTypeIdentifier(), Mining.DefaultFactory(type));
+				}
+				catch (StaticCompilerWarning ex)
+				{
+					writer.WriteLine("#warning " + ex.Message);
+				}
 			}
 
 			foreach (var type in types)
@@ -175,6 +182,7 @@ public static partial class PlasmaRegistration
 					   && !x.FullName.StartsWith("mscorlib")
 					   && !x.FullName.StartsWith("MetaCreator")
 					   && !x.FullName.StartsWith("Plasma,")
+					   && !x.FullName.StartsWith("Plasma ")
 					   && !x.FullName.StartsWith("Accessibility,")
 #if !NET3
 				       && !x.IsDynamic // not sure
@@ -205,8 +213,10 @@ public static partial class PlasmaRegistration
 			var types = asms.SelectMany(x => x.GetTypes())
 .Where(x =>
 	x.IsPublic
-				&& (x.Attribute2<RegisterServiceAttribute>() != null
-				|| x.IsInterface)
+				/*&& (
+				x.Attribute2<RegisterServiceAttribute>() != null
+				|| x.IsInterface
+				)*/
 				//|| x.Attribute2<PlasmaServiceAttribute>() != null
 				//|| x.Attribute<DefaultImplAttribute>() != null
 );

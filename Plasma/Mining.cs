@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -87,6 +88,20 @@ namespace Plasma
 				}
 
 				var ctorsDef = ctors.Where(x => x.GetCustomAttributes(typeof(DefaultConstructorAttribute), false).Any()).ToArray();
+				if (ctorsDef.Length > 1)
+				{
+					throw new PlasmaException(string.Format(CultureInfo.CurrentCulture, "Multiple default constructor attribute for type '{0}'", type.Name));
+				}
+				if(ctorsDef.Length == 1)
+				{
+					return ctorsDef[0];
+				}
+				// try to get the most detailed constructor
+				// todo do the same in static generator!
+				Trace.TraceError(string.Format("Plasma: Several constructors detected for type {0}. Please, specify default constructor. A first most detailed constructor is used", type.Name));
+				var ctor = ctors.OrderBy(x => x.GetParameters().Length).First();
+				return ctor;
+				/*
 				if (ctorsDef.Length != 1)
 				{
 					var parameterLess = ctors.SingleOrDefault(x => x.GetParameters().Length == 0);
@@ -96,6 +111,7 @@ namespace Plasma
 					}
 					throw new PlasmaException(string.Format(CultureInfo.CurrentCulture, "No parameterless constructor for type '{0}'", type.Name));
 				}
+				*/
 			}
 			return ctors[0];
 		}

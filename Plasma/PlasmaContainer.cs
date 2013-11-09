@@ -402,7 +402,7 @@ namespace Plasma
 			if (result == null)
 			{
 				// try register in current container
-				if (tryAutoReg && type.IsInterface)
+				if (tryAutoReg)
 				{
 					//try {
 						Add(type, suggestedImpl ?? type);

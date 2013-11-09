@@ -27,9 +27,22 @@ namespace Plasma
 
 		protected override object DefaultFactoryCore(Type type)
 		{
-			var ci = GetConstructor(type);
-            var arguments = string.Join(", ", GetConstructorArguments(ci).Select(x => x == null ? null : x.ToString()).ToArray());
-			return string.Format("c => new {0}({1})", type.CSharpTypeIdentifier(), arguments);
+			try
+			{
+				var ci = GetConstructor(type);
+				var arguments = string.Join(", ", GetConstructorArguments(ci).Select(x => x == null ? null : x.ToString()).ToArray());
+				return string.Format("c => new {0}({1})", type.CSharpTypeIdentifier(), arguments);
+			}
+			catch (PlasmaException ex)
+			{
+				// this is really exception if that clas was intended for registration explicitly
+				if (type.GetCustomAttribute<RegisterServiceAttribute>() != null)
+				{
+					throw;
+				}
+				// but let's leave other types as is
+				throw new StaticCompilerWarning(ex.Message, ex);
+			}
 		}
 
 		protected override object GetArgumentDefaultOptional(object defaultValue)

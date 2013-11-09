@@ -28,6 +28,7 @@ namespace PlasmaTests
 			Assert.AreSame(ms, _sut.Get<IMyService>());
 		}
 
+		[Ignore] // disabled
 		[TestMethod]
 		[ExpectedException(typeof(PlasmaException))]
 		public void Should_throw_on_unknown_service()
@@ -57,6 +58,7 @@ namespace PlasmaTests
 		[ExpectedException(typeof(PlasmaException))]
 		public void Should_not_allow_access_instance_by_class()
 		{
+			Assert.Inconclusive("Produce warning instead! Or exception with smart detailed explanation");
 			// Setup
 			var ms = new MyService();
 			_sut.Add<IMyService>(ms); // register this service instance by type
@@ -160,6 +162,7 @@ namespace PlasmaTests
 		{
 			
 		}
+
 		class MyDisposable : IMyDisposable, IDisposable
 		{
 			public bool IsDisposed { get; private set; }
@@ -431,10 +434,19 @@ namespace PlasmaTests
 			var test = _sut.Get<IMyWorker>();
 			Assert.IsNotNull(test);
 		}
+
 		[TestMethod]
-		public void should_()
+		public void Should_generate_type_name_correctly_for_kvp()
 		{
-			Assert.AreEqual("KeyValuePair<int,int>[]", typeof(KeyValuePair<int, int>[]).CSharpTypeIdentifier());
+			Assert.AreEqual("KeyValuePair<int,int>[]", typeof(KeyValuePair<int, int>[]).CSharpTypeIdentifier("MySpace", "System.Collections.Generic"));
+		}
+
+		[TestMethod]
+		public void Should_instantiate_service_without_interface()
+		{
+			var svc = _sut.Get<MyService6WithoutInterface>();
+			Assert.IsNotNull(svc);
+			Assert.IsNotNull(svc.Service);
 		}
 	}
 }

@@ -33,5 +33,29 @@ namespace PlasmaTests
 
 			Assert.AreNotSame(group1.Worker, group2.Worker);
 		}
+
+		[TestMethod]
+		public void Should_allow_instantiate_private_scope_of_container()
+		{
+			var svc1 = _sut.Get<MyServiceWithScope>();
+			var svc2 = _sut.Get<IMyService>();
+
+			Assert.AreNotEqual(svc2, svc1.Service);
+		}
+
+		public class MyServiceWithScope
+		{
+			private readonly IMyService _service;
+
+			public IMyService Service
+			{
+				get { return _service; }
+			}
+
+			public MyServiceWithScope(IPlasmaContainer container)
+			{
+				_service = container.Get<IMyService>();
+			}
+		}
 	}
 }
