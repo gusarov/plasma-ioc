@@ -240,8 +240,11 @@ public static partial class PlasmaRegistration
 
 		public static void PlasmaRegisterType(this IMetaWriter writer, Type type)
 		{
-			writer.WriteLine("// " + type.CSharpTypeIdentifier());
-			_context.Types.Add(type);
+			if (PlasmaContainer.IsValidImplementationType(type))
+			{
+				writer.WriteLine("// " + type.CSharpTypeIdentifier());
+				_context.Types.Add(type);
+			}
 		}
 
 		public static void PlasmaRegisterType<T>(this IMetaWriter writer)

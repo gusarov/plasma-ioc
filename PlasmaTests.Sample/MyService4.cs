@@ -15,5 +15,18 @@ namespace PlasmaTests.Sample
 		{
 			return Performer != null;
 		}
+
+		public MyEnum MyEnum { get; set; }
+		public int MyInt { get; set; }
+	}
+
+	public struct MyStruct
+	{
+		
+	}
+
+	public enum MyEnum
+	{
+		a,b,c
 	}
 }

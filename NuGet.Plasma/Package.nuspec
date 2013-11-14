@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>Plasma</id>
-    <version>1.0.4</version>
+    <version>1.0.7</version>
     <title>Plasma IoC Container</title>
     <authors>Dmitry Gusarov</authors>
     <owners></owners>
@@ -16,11 +16,13 @@
     <language>en-US</language>
     <projectUrl>https://code.google.com/p/turbofac/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <!--
     <dependencies>
       <group targetFramework="net40">
         <dependency id="MetaCreator" version="1.6.0" />
       </group>
     </dependencies>
+	-->
     <references></references>
     <tags>ioc plasma aop proxy dynamicproxy di autofac ninject castle structuremap spring ninfu unity</tags>
   </metadata>
