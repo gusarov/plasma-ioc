@@ -35,6 +35,24 @@ namespace Plasma.Meta
 			UseNamedTypeParameters = false,
 		};
 
+		private static bool _enableNullObject;
+
+		/// <summary>
+		/// Enable or disable NullObject feature
+		/// </summary>
+		public static void PlasmaNullObject(this IMetaWriter writer, bool enabled)
+		{
+			_enableNullObject = enabled;
+		}
+
+		/// <summary>
+		/// Enable or disable NullObject feature
+		/// </summary>
+		public static void PlasmaNullObject(this IMetaWriter writer, string enabled)
+		{
+			PlasmaNullObject(writer, bool.Parse(enabled));
+		}
+
 		/// <summary>
 		/// Finally write all code
 		/// End your file with that line
@@ -55,16 +73,19 @@ namespace Plasma.Meta
 
 			#region Null
 
-			var req = types.Where(x => x.IsInterface);
-			do
+			if (_enableNullObject)
 			{
-				foreach (var type in req.ToArray())
+				var req = types.Where(x => x.IsInterface);
+				do
 				{
-					_nullGenerator.Generate(writer, type);
-				}
-				req = _nullGenerator.RequestedObjects.Except(_nullGenerator.NullObjects).ToArray();
-				_nullGenerator.RequestedObjects.Clear();
-			} while (req.Any());
+					foreach (var type in req.ToArray())
+					{
+						_nullGenerator.Generate(writer, type);
+					}
+					req = _nullGenerator.RequestedObjects.Except(_nullGenerator.NullObjects).ToArray();
+					_nullGenerator.RequestedObjects.Clear();
+				} while (req.Any());
+			}
 
 			#endregion
 
@@ -146,23 +167,26 @@ public static partial class PlasmaRegistration
 					}
 				}
 			}
-			foreach (var type in _nullGenerator.NullObjects.Concat(_nullGenerator.ExplicitRequests).Distinct())
+			if (_enableNullObject)
 			{
-				if (type.IsGenericType && type.IsGenericTypeDefinition)
+				foreach (var type in _nullGenerator.NullObjects.Concat(_nullGenerator.ExplicitRequests).Distinct())
 				{
-					writer.WriteLine(@"Null.RegisterGeneric(typeof({0}), t =>
-	typeof ({1}).MakeGenericType(t).GetField(""Instance"").GetValue(null));", type.CSharpTypeIdentifier(new SharpGenerator.TypeIdentifierConfig
+					if (type.IsGenericType && type.IsGenericTypeDefinition)
 					{
-						UseEngineImports = true,
-						UseNamedTypeParameters = false,
-					}), _nullGenerator.GetTypeName(type).FullNameGenericNoT);
+						writer.WriteLine(@"Null.RegisterGeneric(typeof({0}), t =>
+	typeof ({1}).MakeGenericType(t).GetField(""Instance"").GetValue(null));", type.CSharpTypeIdentifier(new SharpGenerator.TypeIdentifierConfig
+						{
+							UseEngineImports = true,
+							UseNamedTypeParameters = false,
+						}), _nullGenerator.GetTypeName(type).FullNameGenericNoT);
 
-					//typeof (NullEnumerable<>).MakeGenericType(t).GetField("Instance").GetValue(null));
+						//typeof (NullEnumerable<>).MakeGenericType(t).GetField("Instance").GetValue(null));
 
-				}
-				else
-				{
-					writer.WriteLine("Null.Register<{0}>({1}.Instance);", type.CSharpTypeIdentifier(), _nullGenerator.GetTypeName(type).FullNameGeneric);
+					}
+					else
+					{
+						writer.WriteLine("Null.Register<{0}>({1}.Instance);", type.CSharpTypeIdentifier(), _nullGenerator.GetTypeName(type).FullNameGeneric);
+					}
 				}
 			}
 			writer.WriteLine(@"
