@@ -1,0 +1,85 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleProduction", "SampleProduction\SampleProduction.csproj", "{B44C92D6-F448-419B-B697-C5D9183E81B6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleProductionTests", "SampleProductionTests\SampleProductionTests.csproj", "{83AF3208-2056-4823-B14F-C79BE020E6FA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C0D436A1-3113-41A4-B5D8-5539BEF376C9}"
+	ProjectSection(SolutionItems) = preProject
+		Local.testsettings = Local.testsettings
+		Plasma.vsmdi = Plasma.vsmdi
+		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plasma", "Plasma\Plasma.csproj", "{7EC2C99D-CD8E-4C20-8820-8CC953F4EED1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlasmaTests", "PlasmaTests\PlasmaTests.csproj", "{26144301-219F-4A21-9EAD-91DA823C3A08}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlasmaTestsPrecompiled", "PlasmaTests\PlasmaTestsPrecompiled.csproj", "{801595E2-88F2-4E76-81D0-D7AEB48C2B20}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlasmaTests.Precompiler", "PlasmaTestsPrecompiler\PlasmaTests.Precompiler.csproj", "{3E063343-E863-48BC-A45D-5CD79CF79A0B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlasmaTests.Sample", "PlasmaTests.Sample\PlasmaTests.Sample.csproj", "{FB7D6860-E28A-4F27-AA08-C5850D2AEB4F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{1BB13E9A-5F79-4555-B5A6-D77062847A00}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unit Runtime", "Unit Runtime", "{0F8FEA6F-FBEB-4D5D-BF8A-13220103FDD0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unit Precompiled", "Unit Precompiled", "{8B1677F9-163E-483C-8E9D-A4978B507EB4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ProductionSample", "ProductionSample", "{E2DE44F4-80E2-4D90-8C3B-8C37F026EF99}"
+EndProject
+Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = Plasma.vsmdi
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B44C92D6-F448-419B-B697-C5D9183E81B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B44C92D6-F448-419B-B697-C5D9183E81B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B44C92D6-F448-419B-B697-C5D9183E81B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B44C92D6-F448-419B-B697-C5D9183E81B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83AF3208-2056-4823-B14F-C79BE020E6FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83AF3208-2056-4823-B14F-C79BE020E6FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83AF3208-2056-4823-B14F-C79BE020E6FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83AF3208-2056-4823-B14F-C79BE020E6FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7EC2C99D-CD8E-4C20-8820-8CC953F4EED1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7EC2C99D-CD8E-4C20-8820-8CC953F4EED1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7EC2C99D-CD8E-4C20-8820-8CC953F4EED1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7EC2C99D-CD8E-4C20-8820-8CC953F4EED1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26144301-219F-4A21-9EAD-91DA823C3A08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26144301-219F-4A21-9EAD-91DA823C3A08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26144301-219F-4A21-9EAD-91DA823C3A08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26144301-219F-4A21-9EAD-91DA823C3A08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{801595E2-88F2-4E76-81D0-D7AEB48C2B20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{801595E2-88F2-4E76-81D0-D7AEB48C2B20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{801595E2-88F2-4E76-81D0-D7AEB48C2B20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{801595E2-88F2-4E76-81D0-D7AEB48C2B20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E063343-E863-48BC-A45D-5CD79CF79A0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E063343-E863-48BC-A45D-5CD79CF79A0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E063343-E863-48BC-A45D-5CD79CF79A0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E063343-E863-48BC-A45D-5CD79CF79A0B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB7D6860-E28A-4F27-AA08-C5850D2AEB4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB7D6860-E28A-4F27-AA08-C5850D2AEB4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB7D6860-E28A-4F27-AA08-C5850D2AEB4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB7D6860-E28A-4F27-AA08-C5850D2AEB4F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E2DE44F4-80E2-4D90-8C3B-8C37F026EF99} = {1BB13E9A-5F79-4555-B5A6-D77062847A00}
+		{0F8FEA6F-FBEB-4D5D-BF8A-13220103FDD0} = {1BB13E9A-5F79-4555-B5A6-D77062847A00}
+		{8B1677F9-163E-483C-8E9D-A4978B507EB4} = {1BB13E9A-5F79-4555-B5A6-D77062847A00}
+		{FB7D6860-E28A-4F27-AA08-C5850D2AEB4F} = {1BB13E9A-5F79-4555-B5A6-D77062847A00}
+		{B44C92D6-F448-419B-B697-C5D9183E81B6} = {E2DE44F4-80E2-4D90-8C3B-8C37F026EF99}
+		{83AF3208-2056-4823-B14F-C79BE020E6FA} = {E2DE44F4-80E2-4D90-8C3B-8C37F026EF99}
+		{26144301-219F-4A21-9EAD-91DA823C3A08} = {0F8FEA6F-FBEB-4D5D-BF8A-13220103FDD0}
+		{3E063343-E863-48BC-A45D-5CD79CF79A0B} = {8B1677F9-163E-483C-8E9D-A4978B507EB4}
+		{801595E2-88F2-4E76-81D0-D7AEB48C2B20} = {8B1677F9-163E-483C-8E9D-A4978B507EB4}
+	EndGlobalSection
+EndGlobal

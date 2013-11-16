@@ -1,0 +1,12 @@
+syntax: glob
+bin/
+obj/
+TestResults/
+*.suo
+*.user
+*.vsmdi
+_components/
+packages/
+*.bak
+*.nupkg
+*.log

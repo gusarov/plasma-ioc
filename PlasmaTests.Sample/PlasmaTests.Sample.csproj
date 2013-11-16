@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{FB7D6860-E28A-4F27-AA08-C5850D2AEB4F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PlasmaTests.Sample</RootNamespace>
+    <AssemblyName>PlasmaTests.Sample</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;NET4</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;NET4</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Class1.cs" />
+    <Compile Include="IMyService4.cs" />
+    <Compile Include="IMyService5.cs" />
+    <Compile Include="MyGenericRole.cs" />
+    <Compile Include="MyService4.cs" />
+    <Compile Include="MyService5.cs" />
+    <Compile Include="Proxy\SimpleDataForStubbing.cs" />
+    <Compile Include="Proxy\SuggestedProxyMembershipProvider.cs" />
+    <Compile Include="DataLazyConstructorInjection.cs" />
+    <Compile Include="DataLazyPropertyInjection.cs" />
+    <Compile Include="Proxy\IMembershipProvider.cs" />
+    <Compile Include="IMyPerformer.cs" />
+    <Compile Include="IMyService.cs" />
+    <Compile Include="IMyService2.cs" />
+    <Compile Include="IMyService3.cs" />
+    <Compile Include="IMyStorage.cs" />
+    <Compile Include="IMyWorker.cs" />
+    <Compile Include="MyPerformer.cs" />
+    <Compile Include="MyService.cs" />
+    <Compile Include="MyService2.cs" />
+    <Compile Include="MyService3.cs" />
+    <Compile Include="MyServiceWithOptionalArguments.cs" />
+    <Compile Include="MyServiceWithString.cs" />
+    <Compile Include="MyServiceWithStruct.cs" />
+    <Compile Include="MyServiceWithStructPro.cs" />
+    <Compile Include="MyServiceWithTwoCtors.cs" />
+    <Compile Include="MySubGroup.cs" />
+    <Compile Include="MyWorker.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Plasma\Plasma Net45.csproj">
+      <Project>{7ec2c99d-cd8e-4c20-8820-8cc953f4eed1}</Project>
+      <Name>Plasma Net45</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

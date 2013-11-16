@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>Plasma</id>
+    <version>1.0.7</version>
+    <title>Plasma IoC Container</title>
+    <authors>Dmitry Gusarov</authors>
+    <owners></owners>
+    <description>
+			A lot of popular frameworks is depended on Castle Dynamic Proxy Generator, but the last one is very slow. I suggest a replacement with compile time proxy and plumbing code generator.
+		</description>
+    <releaseNotes></releaseNotes>
+    <summary>
+			Compile-time proxies for AOP and for fast instantiating container members. Easy and straightforward syntax.
+		</summary>
+    <language>en-US</language>
+    <projectUrl>https://code.google.com/p/turbofac/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <!--
+    <dependencies>
+      <group targetFramework="net40">
+        <dependency id="MetaCreator" version="1.6.0" />
+      </group>
+    </dependencies>
+	-->
+    <references></references>
+    <tags>ioc plasma aop proxy dynamicproxy di autofac ninject castle structuremap spring ninfu unity</tags>
+  </metadata>
+  <files>
+    <file src="bin\lib\" target="lib" />
+  </files>
+</package>
