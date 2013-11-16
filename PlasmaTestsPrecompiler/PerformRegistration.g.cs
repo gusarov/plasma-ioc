@@ -18,8 +18,7 @@ namespace PlasmaTests.Precompiler
 	
 	
 
-	// PlasmaTests.Sample, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-// Class1
+	// Class1
 // IMyService4
 // IMyServiceComplex
 // MyGenericRole<T>
@@ -28,6 +27,8 @@ namespace PlasmaTests.Precompiler
 // MyService4
 // MyService5
 // MyServiceWithAutomaticSetterOnlyInjection
+// IMyServiceWithMatchedIface
+// MyServiceWithMatchedIface
 // Sample.Proxy.ISimpleDataForStubbing
 // Sample.Proxy.IComplexStubbing
 // Sample.Proxy.IComplexStubbingDerived
@@ -81,6 +82,11 @@ public class ProxyMyServiceComplex : Plasma.Proxy.ProxyBase<IMyServiceComplex>, 
 	public ProxyMyServiceComplex(IMyServiceComplex originalObject) : base(originalObject)	{	}
 	bool IMyServiceComplex.MyMethod(int a, out int b) { return Original.MyMethod(a, out b); }
 	bool IMyServiceComplex.MyMethod(int[] a, object[] b, IComparable[] c) { return Original.MyMethod(a, b, c); }
+}
+// iface - IMyServiceWithMatchedIface
+public class ProxyMyServiceWithMatchedIface : Plasma.Proxy.ProxyBase<IMyServiceWithMatchedIface>,  IMyServiceWithMatchedIface
+{
+	public ProxyMyServiceWithMatchedIface(IMyServiceWithMatchedIface originalObject) : base(originalObject)	{	}
 }
 // iface - ISimpleDataForStubbing
 public class ProxySimpleDataForStubbing : Plasma.Proxy.ProxyBase<Sample.Proxy.ISimpleDataForStubbing>,  Sample.Proxy.ISimpleDataForStubbing
@@ -208,6 +214,10 @@ return default(bool);
 	bool IMyServiceComplex.MyMethod(int[] a, object[] b, IComparable[] c) { return default(bool);
  }
 }
+// iface - IMyServiceWithMatchedIface
+public class NullMyServiceWithMatchedIface :  IMyServiceWithMatchedIface
+{
+	public static readonly NullMyServiceWithMatchedIface Instance = new NullMyServiceWithMatchedIface();}
 // iface - ISimpleDataForStubbing
 public class NullSimpleDataForStubbing :  Sample.Proxy.ISimpleDataForStubbing
 {
@@ -404,6 +414,7 @@ Plasma.Internal.TypeFactoryRegister.Add<MyGenericMethod>(c => new MyGenericMetho
 Plasma.Internal.TypeFactoryRegister.Add<MyService4>(c => new MyService4());
 Plasma.Internal.TypeFactoryRegister.Add<MyService5>(c => new MyService5());
 Plasma.Internal.TypeFactoryRegister.Add<MyServiceWithAutomaticSetterOnlyInjection>(c => new MyServiceWithAutomaticSetterOnlyInjection());
+Plasma.Internal.TypeFactoryRegister.Add<MyServiceWithMatchedIface>(c => new MyServiceWithMatchedIface());
 Plasma.Internal.TypeFactoryRegister.Add<Sample.Proxy.SuggestedProxyMembershipProvider>(c => new Sample.Proxy.SuggestedProxyMembershipProvider(c.Get<Sample.Proxy.IMembershipProvider>()));
 Plasma.Internal.TypeFactoryRegister.Add<DataLazyConstructorInjection>(c => new DataLazyConstructorInjection(new Lazy<IMyService>(c.Get<IMyService>)));
 Plasma.Internal.TypeFactoryRegister.Add<DataFuncConstructorInjection>(c => new DataFuncConstructorInjection(c.Get<IMyService>));
@@ -444,6 +455,7 @@ Plasma.Internal.TypeAutoPlumberRegister.RegisterNone(typeof(PlasmaTests.Sample.M
 Plasma.Internal.TypeAutoPlumberRegister.Register<PlasmaTests.Sample.MyServiceWithAutomaticSetterOnlyInjection>((c, x)=>{
 	x.Service = c.Get<IMyService>();
 });
+Plasma.Internal.TypeAutoPlumberRegister.RegisterNone(typeof(PlasmaTests.Sample.MyServiceWithMatchedIface));
 Plasma.Internal.TypeAutoPlumberRegister.RegisterNone(typeof(PlasmaTests.Sample.Proxy.SuggestedProxyMembershipProvider));
 Plasma.Internal.TypeAutoPlumberRegister.RegisterNone(typeof(PlasmaTests.Sample.DataLazyConstructorInjection));
 Plasma.Internal.TypeAutoPlumberRegister.RegisterNone(typeof(PlasmaTests.Sample.DataFuncConstructorInjection));
@@ -481,6 +493,7 @@ Plasma.Internal.TypeAutoPlumberRegister.RegisterNone(typeof(PlasmaTests.Sample.M
 Plasma.Internal.TypeAutoPlumberRegister.RegisterNone(typeof(PlasmaTests.Sample.MyWorker));
 Null.Register<IMyService4>(NullMyService4.Instance);
 Null.Register<IMyServiceComplex>(NullMyServiceComplex.Instance);
+Null.Register<IMyServiceWithMatchedIface>(NullMyServiceWithMatchedIface.Instance);
 Null.Register<Sample.Proxy.ISimpleDataForStubbing>(NullSimpleDataForStubbing.Instance);
 Null.Register<Sample.Proxy.IComplexStubbing>(NullComplexStubbing.Instance);
 Null.Register<Sample.Proxy.IComplexStubbingDerived>(NullComplexStubbingDerived.Instance);

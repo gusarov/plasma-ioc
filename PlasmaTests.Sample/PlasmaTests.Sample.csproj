@@ -44,6 +44,7 @@
     <Compile Include="MyGenericRole.cs" />
     <Compile Include="MyService4.cs" />
     <Compile Include="MyService5.cs" />
+    <Compile Include="MyServiceWithMatchedIface.cs" />
     <Compile Include="Proxy\SimpleDataForStubbing.cs" />
     <Compile Include="Proxy\SuggestedProxyMembershipProvider.cs" />
     <Compile Include="DataLazyConstructorInjection.cs" />

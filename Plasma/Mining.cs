@@ -132,7 +132,25 @@ namespace Plasma
 				}
 				else
 				{
-					throw new PlasmaException(string.Format(CultureInfo.CurrentCulture, "Cannot register service for type '{0}'. Specify instance, factory, or use DefaultImplAttribute", type.Name));
+					Exception exinner = null;
+					try
+					{
+						if (type.IsInterface && type.Name.StartsWith("I"))
+						{
+							var expectedName = type.Name.Substring(1);
+							var matched = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes()).SingleOrDefault(x => x.Name == expectedName);
+							if (matched != null)
+							{
+								return matched;
+							}
+						}
+					}
+					catch (Exception ex)
+					{
+						exinner = ex;
+					}
+
+					throw new PlasmaException(string.Format(CultureInfo.CurrentCulture, "Cannot register service for type '{0}'. Specify instance, factory, use DefaultImplAttribute or just call class the same as interface", type.Name), exinner);
 				}
 			}
 			return type;
