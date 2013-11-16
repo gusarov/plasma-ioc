@@ -16,6 +16,7 @@ namespace PlasmaTests.Precompiler
 	/*@ CSharpVersion v4.0 */
 
 	/*# PlasmaNullObject false */
+	/*# PlasmaProxy true */
 
 	/*# PlasmaRegisterAll */
 	/*# PlasmaGenerate */

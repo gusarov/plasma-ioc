@@ -36,6 +36,7 @@ namespace Plasma.Meta
 		};
 
 		private static bool _enableNullObject;
+		private static bool _enableProxy;
 
 		/// <summary>
 		/// Enable or disable NullObject feature
@@ -54,6 +55,22 @@ namespace Plasma.Meta
 		}
 
 		/// <summary>
+		/// Enable or disable Proxy feature
+		/// </summary>
+		public static void PlasmaProxy(this IMetaWriter writer, bool enabled)
+		{
+			_enableProxy = enabled;
+		}
+
+		/// <summary>
+		/// Enable or disable Proxy feature
+		/// </summary>
+		public static void PlasmaProxy(this IMetaWriter writer, string enabled)
+		{
+			PlasmaProxy(writer, bool.Parse(enabled));
+		}
+
+		/// <summary>
 		/// Finally write all code
 		/// End your file with that line
 		/// </summary>
@@ -63,10 +80,13 @@ namespace Plasma.Meta
 
 			#region Proxy
 
-			foreach (var type in types.Where(x => x.IsInterface))
+			if (_enableProxy)
 			{
-				_proxyGenerator.Generate(writer, type);
-				// GenerateStub(writer, type);
+				foreach (var type in types.Where(x => x.IsInterface))
+				{
+					_proxyGenerator.Generate(writer, type);
+					// GenerateStub(writer, type);
+				}
 			}
 
 			#endregion
