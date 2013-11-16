@@ -26,4 +26,15 @@ namespace PlasmaTests.Sample
 			get { throw new NotImplementedException(); }
 		}
 	}
+
+	public class MyServiceWithAutomaticSetterOnlyInjection
+	{
+		public IMyService __service;
+
+		public IMyService Service
+		{
+			private get { return __service; }
+			set { __service = value; }
+		}
+	}
 }
