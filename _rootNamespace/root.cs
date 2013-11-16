@@ -362,7 +362,7 @@ public static class Null
 		{
 			if (_accessed.Contains(typeDefinition) && !ReferenceEquals(fact, factory))
 			{
-				throw new PlasmaException("Can not register null object generic factory for generic type definition that already was registered and accessed");
+				throw new PlasmaException("Cannot register null object generic factory for generic type definition that already was registered and accessed");
 			}
 		}
 		_dicGeneric[typeDefinition] = factory;
