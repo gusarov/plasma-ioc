@@ -443,6 +443,24 @@ Plasma.Internal.TypeFactoryRegister.Add<MyServiceWithSeveralCtors>(c => new MySe
 Plasma.Internal.TypeFactoryRegister.Add<MySubGroup>(c => new MySubGroup(c.Get<Plasma.IPlasmaProvider>()));
 Plasma.Internal.TypeFactoryRegister.Add<MyWorker>(c => new MyWorker());
 
+// Iface impl
+Plasma.Internal.FaceImplRegister.Register<PlasmaTests.Sample.IMyService4, PlasmaTests.Sample.MyService4>();
+Plasma.Internal.FaceImplRegister.Register<PlasmaTests.Sample.IMyServiceComplex, PlasmaTests.Sample.MyService5>();
+Plasma.Internal.FaceImplRegister.Register<PlasmaTests.Sample.IMyServiceWithMatchedIface, PlasmaTests.Sample.MyServiceWithMatchedIface>();
+// Cannot register service for type 'ISimpleDataForStubbing'. Specify instance, factory, use DefaultImplAttribute or just call class the same as interface
+// Cannot register service for type 'IComplexStubbing'. Specify instance, factory, use DefaultImplAttribute or just call class the same as interface
+// Cannot register service for type 'IComplexStubbingDerived'. Specify instance, factory, use DefaultImplAttribute or just call class the same as interface
+// Cannot register service for type 'IComplexStubbingDerived2'. Specify instance, factory, use DefaultImplAttribute or just call class the same as interface
+// Cannot register service for type 'IComplexStubbingDerived3'. Specify instance, factory, use DefaultImplAttribute or just call class the same as interface
+// Cannot register service for type 'IMembershipProvider'. Specify instance, factory, use DefaultImplAttribute or just call class the same as interface
+Plasma.Internal.FaceImplRegister.Register<PlasmaTests.Sample.IMyPerformer, PlasmaTests.Sample.MyPerformer>();
+Plasma.Internal.FaceImplRegister.Register<PlasmaTests.Sample.IMyService, PlasmaTests.Sample.MyService>();
+Plasma.Internal.FaceImplRegister.Register<PlasmaTests.Sample.IMyService2, PlasmaTests.Sample.MyService2>();
+Plasma.Internal.FaceImplRegister.Register<PlasmaTests.Sample.IMyService3, PlasmaTests.Sample.MyService3>();
+Plasma.Internal.FaceImplRegister.Register<PlasmaTests.Sample.IMyStorage, PlasmaTests.Sample.MyInmemStorage>();
+Plasma.Internal.FaceImplRegister.Register<PlasmaTests.Sample.IMyWorker, PlasmaTests.Sample.MyWorker>();
+Plasma.Internal.FaceImplRegister.Register<PlasmaTests.Sample.IMyServiceWithOptionalArguments, PlasmaTests.Sample.MyServiceWithOptionalArguments>();
+
 // Property injectors optimization
 Plasma.Internal.TypeAutoPlumberRegister.RegisterNone(typeof(PlasmaTests.Sample.Class1));
 Plasma.Internal.TypeAutoPlumberRegister.RegisterNone(typeof(PlasmaTests.Sample.MyGenericRole<>));

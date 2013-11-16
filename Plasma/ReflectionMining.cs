@@ -39,6 +39,11 @@ namespace Plasma
 			return Activator.CreateInstance(type);
 		}
 
+		protected override void ValidateReflectionPermission()
+		{
+			_provider.ValidateReflectionPermissions();
+		}
+
 		protected override object DefaultFactoryCore(Type type)
 		{
 			_provider.ValidateReflectionPermissions();
@@ -119,5 +124,6 @@ namespace Plasma
 			}
 			throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, "Can not provide value for {0}", parameterType));
 		}
+
 	}
 }
