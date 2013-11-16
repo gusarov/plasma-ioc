@@ -167,14 +167,15 @@ namespace Plasma
 
 		internal static IEnumerable<PropertyInfo> GetPlumbingProperties(Type type)
 		{
-			foreach (var pro in type.GetProperties(BindingFlags.SetProperty | BindingFlags.GetProperty | BindingFlags.Public | BindingFlags.Instance)
+			foreach (var pro in type.GetProperties(BindingFlags.SetProperty | BindingFlags.Public | BindingFlags.Instance)
 				.Where(x =>
 				       x.GetCustomAttributes(typeof(InjectAttribute), true).Any()
 				       || x.GetCustomAttributes(typeof(DefaultImplAttribute), true).Any()
+					   || SetterOnly(x)
 				)
 				)
 			{
-				if (pro.GetIndexParameters().Length == 0 && pro.CanRead && pro.CanWrite)
+				if (pro.GetIndexParameters().Length == 0 && pro.CanWrite)
 				{
 					if (pro.PropertyType.IsInterface || pro.PropertyType.IsAbstract || IsLazyOrFunc(pro.PropertyType))
 					{
@@ -192,6 +193,15 @@ namespace Plasma
 					}
 				}
 			}
+		}
+
+		private static bool SetterOnly(PropertyInfo propertyInfo)
+		{
+			// var acc = propertyInfo.GetAccessors();
+			var setter = propertyInfo.GetSetMethod();
+			var getter = propertyInfo.GetGetMethod();
+
+			return setter != null && (getter == null || !getter.IsPublic);
 		}
 
 		static bool IsLazyOrFunc(Type propertyType)

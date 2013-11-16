@@ -1,9 +1,10 @@
-﻿using System.Linq;
+﻿using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using System;
-
+using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using Plasma;
 using PlasmaTests.Sample;
 
 namespace PlasmaTests
@@ -36,6 +37,24 @@ namespace PlasmaTests
 			var test = _sut.Get<IMyService4>();
 			Assert.IsInstanceOfType(test, typeof(MyService4));
 			Assert.AreEqual(true, test.MyMethod());
+		}
+
+		[TestMethod]
+		public void Should_glue_setter_only_injection_without_attribute()
+		{
+			var svcInj = _sut.Get<IMyService>();
+			var svc = _sut.Get<MyServiceWithAutomaticSetterOnlyInjection>();
+			Assert.AreEqual(svcInj, svc.__service);
+		}
+
+		[TestMethod]
+		public void MyTestMethod()
+		{
+			var ps = PlasmaContainer.GetPlumbingProperties(typeof(MyServiceWithAutomaticSetterOnlyInjection));
+
+			Assert.AreEqual(1, ps.Count());
+
+		
 		}
 
 	}
