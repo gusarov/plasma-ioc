@@ -441,5 +441,12 @@ namespace PlasmaTests
 			Assert.IsNotNull(svc);
 			Assert.IsNotNull(svc.Service);
 		}
+
+		[TestMethod]
+		public void Should_get_impl_by_matched_name()
+		{
+			var svc = _sut.Get<IMyServiceWithMatchedIface>();
+			Assert.IsInstanceOfType(svc, typeof(MyServiceWithMatchedIface));
+		}
 	}
 }
