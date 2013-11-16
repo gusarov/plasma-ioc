@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-
+using Plasma.Internal;
 using Plasma.ThirdParty;
 
 #if NET3
@@ -116,8 +116,30 @@ namespace Plasma
 			return ctors[0];
 		}
 
-		public Type DefaultFactoryType(Type type)
+		/// <summary>
+		/// Instantiate specified type
+		/// </summary>
+		public object CreateType(Type type)
 		{
+			type = IfaceImpl(type);
+			PlasmaContainer.ValidateImplementationType(type);
+			return DefaultFactoryCore(type);
+		}
+
+		public Type IfaceImpl(Type type)
+		{
+			var impl = FaceImplRegister.Get(type);
+			if (impl != null)
+			{
+				return impl;
+			}
+
+			if (!type.IsAbstract && type.IsClass)
+			{
+				return type;
+			}
+
+			ValidateReflectionPermission();
 			if (type.IsInterface || type.IsAbstract)
 			{
 				var dsias = (DefaultImplAttribute[])type.GetCustomAttributes(typeof(DefaultImplAttribute), true);
@@ -138,6 +160,7 @@ namespace Plasma
 						if (type.IsInterface && type.Name.StartsWith("I"))
 						{
 							var expectedName = type.Name.Substring(1);
+							// todo one way per assembly cache
 							var matched = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes()).SingleOrDefault(x => x.Name == expectedName);
 							if (matched != null)
 							{
@@ -154,17 +177,10 @@ namespace Plasma
 				}
 			}
 			return type;
+
 		}
 
-		/// <summary>
-		/// How instantiate specified type
-		/// </summary>
-		public object DefaultFactory(Type type)
-		{
-			type = DefaultFactoryType(type);
-			PlasmaContainer.ValidateImplementationType(type);
-			return DefaultFactoryCore(type);
-		}
+		protected abstract void ValidateReflectionPermission();
 
 		protected abstract object DefaultFactoryCore(Type type);
 

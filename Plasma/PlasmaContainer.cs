@@ -245,8 +245,8 @@ namespace Plasma
 			ValidateImplementationType(implementation);
 			PerformAdd(type, new ServiceEntry(this, new Lazy<object>(() =>
 			{
-				var t = Mining.DefaultFactoryType(implementation);
-				return TypeFactoryRegister.Create(this, t) ?? Mining.DefaultFactory(t);
+				var t = Mining.IfaceImpl(implementation);
+				return TypeFactoryRegister.Create(this, t) ?? Mining.CreateType(t);
 			})));
 		}
 

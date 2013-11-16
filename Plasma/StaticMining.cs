@@ -25,6 +25,11 @@ namespace Plasma
 			return "default(" + type.CSharpTypeIdentifier() + ")";
 		}
 
+		protected override void ValidateReflectionPermission()
+		{
+			
+		}
+
 		protected override object DefaultFactoryCore(Type type)
 		{
 			try

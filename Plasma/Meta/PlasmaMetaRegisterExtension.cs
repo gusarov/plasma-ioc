@@ -124,7 +124,7 @@ public static partial class PlasmaRegistration
 			{
 				try
 				{
-					writer.WriteLine("Plasma.Internal.TypeFactoryRegister.Add<{0}>({1});", type.CSharpTypeIdentifier(), Mining.DefaultFactory(type));
+					writer.WriteLine("Plasma.Internal.TypeFactoryRegister.Add<{0}>({1});", type.CSharpTypeIdentifier(), Mining.CreateType(type));
 				}
 				catch (StaticCompilerWarning ex)
 				{
@@ -132,36 +132,30 @@ public static partial class PlasmaRegistration
 				}
 			}
 
+			writer.WriteLine();
+			writer.WriteLine("// Iface impl");
+
 			foreach (var type in types)
 			{
-				continue;
-				// writer.WriteLine("// " + type.FullName);
-				var ifaces = Mining.GetAdditionalIfaces(type);
-				foreach (var iface in ifaces)
+				if (type.IsInterface)
 				{
-					//					var ci = Mining.GetConstructor(type);
-					//					var arguments = string.Join(", ", Mining.GetConstructorArguments(ci));
-					//					// todo remove dependancy on 'c'
-					//					writer.WriteLine("c_.Add<{0}>(()=>new {1}({2}));", iface.CSharpTypeIdentifier(), type.CSharpTypeIdentifier(), arguments);
+					Type defImpl = null;
+					try
+					{
+						defImpl = Mining.IfaceImpl(type);
+					}
+					catch (Exception ex)
+					{
+						writer.WriteLine("// " + ex.Message);
+					}
 
-					writer.WriteLine("Plasma.Internal.TypeFactoryRegister1.Add<{0}>({1});", iface.CSharpTypeIdentifier(), Mining.DefaultFactory(type));
-				}
-				var def = type.Attribute2<DefaultImplAttribute>();
-				if ((type.IsInterface || type.IsAbstract) && def != null)
-				{
-					typeToPlumb.Add(def.TargetType);
-					writer.WriteLine("Plasma.Internal.TypeFactoryRegister2.Add<{0}>({1});", type.CSharpTypeIdentifier(), Mining.DefaultFactory(def.TargetType));
-				}
-				if (ifaces.Count() == 0 /*&& type.Attribute<PlasmaServiceAttribute>() != null*/)
-				{
-					//					var ci = Mining.GetConstructor(type);
-					//					var arguments = string.Join(", ", Mining.GetConstructorArguments(ci));
-					//					// todo remove dependancy on 'c'
-					//					writer.WriteLine("c_.Add(()=>new {1}({2}));", null, type.CSharpTypeIdentifier(), arguments);
-
-					writer.WriteLine("Plasma.Internal.TypeFactoryRegister.Add<{0}>({1});", type.CSharpTypeIdentifier(), Mining.DefaultFactory(type));
+					if (defImpl != null)
+					{
+						writer.WriteLine("Plasma.Internal.FaceImplRegister.Register<{0}, {1}>();", type, defImpl);
+					}
 				}
 			}
+
 			writer.WriteLine();
 			writer.WriteLine("// Property injectors optimization");
 			foreach (var type in typeToPlumb)
