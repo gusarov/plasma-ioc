@@ -47,11 +47,7 @@
     <Compile Include="..\_rootNamespace\root.cs">
       <Link>_root\root.cs</Link>
     </Compile>
-    <Compile Include="Aop\AspectAttribute.cs" />
-    <Compile Include="Aop\CacheAdvise.cs" />
-    <Compile Include="Aop\CacheAttribute.cs" />
-    <Compile Include="Aop\IAdvise.cs" />
-    <Compile Include="Aop\IMethodIntercepAdvise.cs" />
+    <Compile Include="Aop\_Alliance.cs" />
     <Compile Include="DefaultConstructorAttribute.cs" />
     <Compile Include="Internal\FaceImplRegister.cs" />
     <Compile Include="Internal\PlasmaConfigSection.cs" />
