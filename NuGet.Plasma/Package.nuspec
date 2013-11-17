@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>Plasma</id>
-    <version>1.0.30</version>
+    <version>1.0.32</version>
     <title>Plasma IoC Container</title>
     <authors>Dmitry Gusarov</authors>
     <owners></owners>
@@ -14,7 +14,8 @@
 			Compile-time proxies for AOP and for fast instantiating container members. Easy and straightforward syntax.
 		</summary>
     <language>en-US</language>
-    <projectUrl>https://code.google.com/p/turbofac/</projectUrl>
+    <projectUrl>http://code.google.com/p/plasma-ioc/</projectUrl>
+    <iconUrl>http://code.google.com/p/plasma-ioc/logo</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <!--
     <dependencies>
