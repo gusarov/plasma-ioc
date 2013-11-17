@@ -42,7 +42,7 @@ namespace Plasma
 			catch (PlasmaException ex)
 			{
 				// this is really exception if that clas was intended for registration explicitly
-				if (type.GetCustomAttribute<RegisterServiceAttribute>() != null)
+				if (type.GetCustomAttributes(typeof(RegisterServiceAttribute), true).Any())
 				{
 					throw;
 				}
