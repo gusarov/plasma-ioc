@@ -29,6 +29,8 @@ namespace PlasmaTests.Precompiler
 // MyServiceWithAutomaticSetterOnlyInjection
 // IMyServiceWithMatchedIface
 // MyServiceWithMatchedIface
+// IMyUniqueIFace
+// MyServiceWithUniqueIFace
 // Sample.Proxy.ISimpleDataForStubbing
 // Sample.Proxy.IComplexStubbing
 // Sample.Proxy.IComplexStubbingDerived
@@ -87,6 +89,11 @@ public class ProxyMyServiceComplex : Plasma.Proxy.ProxyBase<IMyServiceComplex>, 
 public class ProxyMyServiceWithMatchedIface : Plasma.Proxy.ProxyBase<IMyServiceWithMatchedIface>,  IMyServiceWithMatchedIface
 {
 	public ProxyMyServiceWithMatchedIface(IMyServiceWithMatchedIface originalObject) : base(originalObject)	{	}
+}
+// iface - IMyUniqueIFace
+public class ProxyMyUniqueIFace : Plasma.Proxy.ProxyBase<IMyUniqueIFace>,  IMyUniqueIFace
+{
+	public ProxyMyUniqueIFace(IMyUniqueIFace originalObject) : base(originalObject)	{	}
 }
 // iface - ISimpleDataForStubbing
 public class ProxySimpleDataForStubbing : Plasma.Proxy.ProxyBase<Sample.Proxy.ISimpleDataForStubbing>,  Sample.Proxy.ISimpleDataForStubbing
@@ -218,6 +225,10 @@ return default(bool);
 public class NullMyServiceWithMatchedIface :  IMyServiceWithMatchedIface
 {
 	public static readonly NullMyServiceWithMatchedIface Instance = new NullMyServiceWithMatchedIface();}
+// iface - IMyUniqueIFace
+public class NullMyUniqueIFace :  IMyUniqueIFace
+{
+	public static readonly NullMyUniqueIFace Instance = new NullMyUniqueIFace();}
 // iface - ISimpleDataForStubbing
 public class NullSimpleDataForStubbing :  Sample.Proxy.ISimpleDataForStubbing
 {
@@ -415,6 +426,7 @@ Plasma.Internal.TypeFactoryRegister.Add<MyService4>(c => new MyService4());
 Plasma.Internal.TypeFactoryRegister.Add<MyService5>(c => new MyService5());
 Plasma.Internal.TypeFactoryRegister.Add<MyServiceWithAutomaticSetterOnlyInjection>(c => new MyServiceWithAutomaticSetterOnlyInjection());
 Plasma.Internal.TypeFactoryRegister.Add<MyServiceWithMatchedIface>(c => new MyServiceWithMatchedIface());
+Plasma.Internal.TypeFactoryRegister.Add<MyServiceWithUniqueIFace>(c => new MyServiceWithUniqueIFace());
 Plasma.Internal.TypeFactoryRegister.Add<Sample.Proxy.SuggestedProxyMembershipProvider>(c => new Sample.Proxy.SuggestedProxyMembershipProvider(c.Get<Sample.Proxy.IMembershipProvider>()));
 Plasma.Internal.TypeFactoryRegister.Add<DataLazyConstructorInjection>(c => new DataLazyConstructorInjection(new Lazy<IMyService>(c.Get<IMyService>)));
 Plasma.Internal.TypeFactoryRegister.Add<DataFuncConstructorInjection>(c => new DataFuncConstructorInjection(c.Get<IMyService>));
@@ -429,7 +441,11 @@ Plasma.Internal.TypeFactoryRegister.Add<MyPerformer>(c => new MyPerformer());
 Plasma.Internal.TypeFactoryRegister.Add<MyService>(c => new MyService());
 Plasma.Internal.TypeFactoryRegister.Add<MyService6WithoutInterface>(c => new MyService6WithoutInterface(c.Get<MyService7Dependency>()));
 Plasma.Internal.TypeFactoryRegister.Add<MyService7Dependency>(c => new MyService7Dependency());
-#warning No constructor for type 'MyBadServiceDep'
+#warning exception:
+/*
+No constructor for type 'MyBadServiceDep'
+Inner: No constructor for type 'MyBadServiceDep'
+*/
 Plasma.Internal.TypeFactoryRegister.Add<MyBadService>(c => new MyBadService(c.Get<MyBadServiceDep>()));
 Plasma.Internal.TypeFactoryRegister.Add<MyService2>(c => new MyService2(c.Get<IMyService>()));
 Plasma.Internal.TypeFactoryRegister.Add<MyService3>(c => new MyService3(c.Get<IMyPerformer>()));
@@ -444,22 +460,38 @@ Plasma.Internal.TypeFactoryRegister.Add<MySubGroup>(c => new MySubGroup(c.Get<Pl
 Plasma.Internal.TypeFactoryRegister.Add<MyWorker>(c => new MyWorker());
 
 // Iface impl
-Plasma.Internal.FaceImplRegister.Register<PlasmaTests.Sample.IMyService4, PlasmaTests.Sample.MyService4>();
-Plasma.Internal.FaceImplRegister.Register<PlasmaTests.Sample.IMyServiceComplex, PlasmaTests.Sample.MyService5>();
-Plasma.Internal.FaceImplRegister.Register<PlasmaTests.Sample.IMyServiceWithMatchedIface, PlasmaTests.Sample.MyServiceWithMatchedIface>();
+Plasma.Internal.FaceImplRegister.Register<IMyService4, MyService4>();
+Plasma.Internal.FaceImplRegister.Register<IMyServiceComplex, MyService5>();
+Plasma.Internal.FaceImplRegister.Register<IMyServiceWithMatchedIface, MyServiceWithMatchedIface>();
+Plasma.Internal.FaceImplRegister.Register<IMyUniqueIFace, MyServiceWithUniqueIFace>();
 // Cannot register service for type 'ISimpleDataForStubbing'. Specify instance, factory, use DefaultImplAttribute or just call class the same as interface
+#warning exception:
+/*
+Cannot register service for type 'ISimpleDataForStubbing'. Specify instance, factory, use DefaultImplAttribute or just call class the same as interface
+Inner: Object reference not set to an instance of an object.
+*/
 // Cannot register service for type 'IComplexStubbing'. Specify instance, factory, use DefaultImplAttribute or just call class the same as interface
 // Cannot register service for type 'IComplexStubbingDerived'. Specify instance, factory, use DefaultImplAttribute or just call class the same as interface
-// Cannot register service for type 'IComplexStubbingDerived2'. Specify instance, factory, use DefaultImplAttribute or just call class the same as interface
+Plasma.Internal.FaceImplRegister.Register<Sample.Proxy.IComplexStubbingDerived2, Sample.Proxy.IComplexStubbingDerived3>();
 // Cannot register service for type 'IComplexStubbingDerived3'. Specify instance, factory, use DefaultImplAttribute or just call class the same as interface
+#warning exception:
+/*
+Cannot register service for type 'IComplexStubbingDerived3'. Specify instance, factory, use DefaultImplAttribute or just call class the same as interface
+Inner: Object reference not set to an instance of an object.
+*/
 // Cannot register service for type 'IMembershipProvider'. Specify instance, factory, use DefaultImplAttribute or just call class the same as interface
-Plasma.Internal.FaceImplRegister.Register<PlasmaTests.Sample.IMyPerformer, PlasmaTests.Sample.MyPerformer>();
-Plasma.Internal.FaceImplRegister.Register<PlasmaTests.Sample.IMyService, PlasmaTests.Sample.MyService>();
-Plasma.Internal.FaceImplRegister.Register<PlasmaTests.Sample.IMyService2, PlasmaTests.Sample.MyService2>();
-Plasma.Internal.FaceImplRegister.Register<PlasmaTests.Sample.IMyService3, PlasmaTests.Sample.MyService3>();
-Plasma.Internal.FaceImplRegister.Register<PlasmaTests.Sample.IMyStorage, PlasmaTests.Sample.MyInmemStorage>();
-Plasma.Internal.FaceImplRegister.Register<PlasmaTests.Sample.IMyWorker, PlasmaTests.Sample.MyWorker>();
-Plasma.Internal.FaceImplRegister.Register<PlasmaTests.Sample.IMyServiceWithOptionalArguments, PlasmaTests.Sample.MyServiceWithOptionalArguments>();
+#warning exception:
+/*
+Cannot register service for type 'IMembershipProvider'. Specify instance, factory, use DefaultImplAttribute or just call class the same as interface
+Inner: Object reference not set to an instance of an object.
+*/
+Plasma.Internal.FaceImplRegister.Register<IMyPerformer, MyPerformer>();
+Plasma.Internal.FaceImplRegister.Register<IMyService, MyService>();
+Plasma.Internal.FaceImplRegister.Register<IMyService2, MyService2>();
+Plasma.Internal.FaceImplRegister.Register<IMyService3, MyService3>();
+Plasma.Internal.FaceImplRegister.Register<IMyStorage, MyInmemStorage>();
+Plasma.Internal.FaceImplRegister.Register<IMyWorker, MyWorker>();
+Plasma.Internal.FaceImplRegister.Register<IMyServiceWithOptionalArguments, MyServiceWithOptionalArguments>();
 
 // Property injectors optimization
 Plasma.Internal.TypeAutoPlumberRegister.RegisterNone(typeof(PlasmaTests.Sample.Class1));
@@ -474,6 +506,7 @@ Plasma.Internal.TypeAutoPlumberRegister.Register<PlasmaTests.Sample.MyServiceWit
 	x.Service = c.Get<IMyService>();
 });
 Plasma.Internal.TypeAutoPlumberRegister.RegisterNone(typeof(PlasmaTests.Sample.MyServiceWithMatchedIface));
+Plasma.Internal.TypeAutoPlumberRegister.RegisterNone(typeof(PlasmaTests.Sample.MyServiceWithUniqueIFace));
 Plasma.Internal.TypeAutoPlumberRegister.RegisterNone(typeof(PlasmaTests.Sample.Proxy.SuggestedProxyMembershipProvider));
 Plasma.Internal.TypeAutoPlumberRegister.RegisterNone(typeof(PlasmaTests.Sample.DataLazyConstructorInjection));
 Plasma.Internal.TypeAutoPlumberRegister.RegisterNone(typeof(PlasmaTests.Sample.DataFuncConstructorInjection));
@@ -512,6 +545,7 @@ Plasma.Internal.TypeAutoPlumberRegister.RegisterNone(typeof(PlasmaTests.Sample.M
 Null.Register<IMyService4>(NullMyService4.Instance);
 Null.Register<IMyServiceComplex>(NullMyServiceComplex.Instance);
 Null.Register<IMyServiceWithMatchedIface>(NullMyServiceWithMatchedIface.Instance);
+Null.Register<IMyUniqueIFace>(NullMyUniqueIFace.Instance);
 Null.Register<Sample.Proxy.ISimpleDataForStubbing>(NullSimpleDataForStubbing.Instance);
 Null.Register<Sample.Proxy.IComplexStubbing>(NullComplexStubbing.Instance);
 Null.Register<Sample.Proxy.IComplexStubbingDerived>(NullComplexStubbingDerived.Instance);

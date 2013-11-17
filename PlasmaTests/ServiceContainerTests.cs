@@ -448,5 +448,12 @@ namespace PlasmaTests
 			var svc = _sut.Get<IMyServiceWithMatchedIface>();
 			Assert.IsInstanceOfType(svc, typeof(MyServiceWithMatchedIface));
 		}
+
+		[TestMethod]
+		public void Should_get_impl_as_the_only_iface_impl()
+		{
+			var svc = _sut.Get<IMyUniqueIFace>();
+			Assert.IsInstanceOfType(svc, typeof(MyServiceWithUniqueIFace));
+		}
 	}
 }
