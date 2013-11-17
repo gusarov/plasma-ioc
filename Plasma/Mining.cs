@@ -13,6 +13,96 @@ using MyUtils;
 
 namespace Plasma
 {
+	static class AssemblyAnalyzeCache
+	{
+		static readonly Dictionary<Assembly, Dictionary<string, IEnumerable<Type>>> _map
+			= new Dictionary<Assembly, Dictionary<string, IEnumerable<Type>>>();
+
+		static readonly Dictionary<Type, IList<Type>> _mapImpls
+			= new Dictionary<Type, IList<Type>>();
+
+		static Dictionary<string, IEnumerable<Type>> GetForAsm(Assembly asm)
+		{
+			Dictionary<string, IEnumerable<Type>> result;
+			if (!_map.TryGetValue(asm, out result))
+			{
+				result = asm
+					.GetTypes()
+					.GroupBy(x => x.Name)
+					.ToDictionary(x => x.Key, x => (IEnumerable<Type>)x);
+			}
+			return result;
+		}
+
+		static IList<Type> ImplsListFor(Type type)
+		{
+			IList<Type> list;
+			if (!_mapImpls.TryGetValue(type, out list))
+			{
+				_mapImpls[type] = list = new List<Type>(4);
+			}
+			return list;
+		}
+
+		static internal void AnalyzeImpls()
+		{
+			foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+			{
+				foreach (var type in assembly.GetTypes())
+				{
+					foreach (var iface in GetAllIfaces(type).Distinct())
+					{
+						ImplsListFor(iface).Add(type);
+					}
+				}
+			}
+		}
+
+		static IEnumerable<Type> GetAllIfaces(Type type)
+		{
+			// this
+			foreach (var iface in type.GetInterfaces())
+			{
+				yield return iface;
+				foreach (var subFace in GetAllIfaces(iface))
+				{
+					yield return subFace;
+				}
+			}
+			// base
+			if (type.BaseType != null)
+			{
+				foreach (var subFace in GetAllIfaces(type.BaseType))
+				{
+					yield return subFace;
+				}
+			}
+		}
+
+		public static IEnumerable<Type> SearchFor(string name)
+		{
+			foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
+			{
+				IEnumerable<Type> result;
+				var map = GetForAsm(asm);
+				if (map.TryGetValue(name, out result))
+				{
+					foreach (var type in result)
+					{
+						yield return type;
+					}
+				}
+			}
+		}
+
+		public static IList<Type> ImplsOf(Type type)
+		{
+			IList<Type> result;
+			_mapImpls.TryGetValue(type, out result);
+			return result;
+		}
+	}
+
 	abstract class Mining
 	{
 		#region Done
@@ -160,11 +250,20 @@ namespace Plasma
 						if (type.IsInterface && type.Name.StartsWith("I"))
 						{
 							var expectedName = type.Name.Substring(1);
-							// todo one way per assembly cache
-							var matched = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes()).SingleOrDefault(x => x.Name == expectedName);
-							if (matched != null)
+
+							var matched = AssemblyAnalyzeCache.SearchFor(expectedName)
+								.Where(x => type.IsAssignableFrom(x))
+								.ToArray();
+
+							if (matched.Length == 1)
 							{
-								return matched;
+								return matched[0];
+							}
+
+							var impls = AssemblyAnalyzeCache.ImplsOf(type);
+							if (impls.Count == 1)
+							{
+								return impls[0];
 							}
 						}
 					}

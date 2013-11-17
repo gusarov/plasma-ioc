@@ -128,12 +128,17 @@ public static partial class PlasmaRegistration
 				}
 				catch (StaticCompilerWarning ex)
 				{
-					writer.WriteLine("#warning " + ex.Message);
+					writer.WriteLine("#warning exception:");
+					writer.WriteLine("/*");
+					writer.WriteLine(ExceptionAnalyzer.ExceptionDetails(ex));
+					writer.WriteLine("*/");
 				}
 			}
 
 			writer.WriteLine();
 			writer.WriteLine("// Iface impl");
+
+			AssemblyAnalyzeCache.AnalyzeImpls();
 
 			foreach (var type in types)
 			{
@@ -147,11 +152,18 @@ public static partial class PlasmaRegistration
 					catch (Exception ex)
 					{
 						writer.WriteLine("// " + ex.Message);
+						if (ex.InnerException != null)
+						{
+							writer.WriteLine("#warning exception:");
+							writer.WriteLine("/*");
+							writer.WriteLine(ExceptionAnalyzer.ExceptionDetails(ex));
+							writer.WriteLine("*/");
+						}
 					}
 
 					if (defImpl != null)
 					{
-						writer.WriteLine("Plasma.Internal.FaceImplRegister.Register<{0}, {1}>();", type, defImpl);
+						writer.WriteLine("Plasma.Internal.FaceImplRegister.Register<{0}, {1}>();", type.CSharpTypeIdentifier(), defImpl.CSharpTypeIdentifier());
 					}
 				}
 			}
