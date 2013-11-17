@@ -27,6 +27,7 @@ namespace PlasmaTests.Proxy
 		}
 	}
 
+	/*
 	public class SecurityProxy : ProxyMembershipProvider
 	{
 		public SecurityProxy(IMembershipProvider originalObject) : base(originalObject)
@@ -39,4 +40,5 @@ namespace PlasmaTests.Proxy
 			base.DeleteUser(login);
 		}
 	}
+	 * */
 }

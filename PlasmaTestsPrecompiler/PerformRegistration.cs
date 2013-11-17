@@ -6,12 +6,10 @@ using Plasma.Meta;
 
 namespace PlasmaTests.Precompiler
 {
-//	public static class PerformRegistration
-//	{
-//		public static void Perform()
-//		{
-			/*+ static object ref1 = typeof(IMyWorker); */
-			/*@ errorremap off */
+	/*+ static object ref1 = typeof(IMyWorker); */
+	/* + static object ref2 = typeof(Spring.Objects.Factory.Config.ObjectFactoryCreatingFactoryObject); */
+
+	/*@ errorremap off */
 	/*@ FileInProject */
 	/*@ CSharpVersion v4.0 */
 
@@ -21,6 +19,4 @@ namespace PlasmaTests.Precompiler
 	/*# PlasmaRegisterAll */
 	/*# PlasmaGenerate */
 
-//		}
-//	}
 }

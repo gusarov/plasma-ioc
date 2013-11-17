@@ -18,8 +18,8 @@ namespace Plasma
 		static readonly Dictionary<Assembly, Dictionary<string, IEnumerable<Type>>> _map
 			= new Dictionary<Assembly, Dictionary<string, IEnumerable<Type>>>();
 
-		static readonly Dictionary<Type, IList<Type>> _mapImpls
-			= new Dictionary<Type, IList<Type>>();
+		static readonly Dictionary<Type, HashSet<Type>> _mapImpls
+			= new Dictionary<Type, HashSet<Type>>();
 
 		static Dictionary<string, IEnumerable<Type>> GetForAsm(Assembly asm)
 		{
@@ -28,18 +28,19 @@ namespace Plasma
 			{
 				result = asm
 					.GetTypes()
+					.Where(x => x.IsPublic && x.IsClass && !x.IsAbstract)
 					.GroupBy(x => x.Name)
 					.ToDictionary(x => x.Key, x => (IEnumerable<Type>)x);
 			}
 			return result;
 		}
 
-		static IList<Type> ImplsListFor(Type type)
+		static HashSet<Type> ImplsListFor(Type type)
 		{
-			IList<Type> list;
+			HashSet<Type> list;
 			if (!_mapImpls.TryGetValue(type, out list))
 			{
-				_mapImpls[type] = list = new List<Type>(4);
+				_mapImpls[type] = list = new HashSet<Type>();
 			}
 			return list;
 		}
@@ -50,9 +51,18 @@ namespace Plasma
 			{
 				foreach (var type in assembly.GetTypes())
 				{
-					foreach (var iface in GetAllIfaces(type).Distinct())
+/*
+					if (type.Name == "GenericObjectFactory" && Debugger.IsAttached)
 					{
-						ImplsListFor(iface).Add(type);
+						Debugger.Break();
+					}
+ */
+					if (type.IsClass && !type.IsAbstract && type.IsPublic)
+					{
+						foreach (var iface in GetAllIfaces(type).Distinct())
+						{
+							ImplsListFor(iface).Add(type);
+						}
 					}
 				}
 			}
@@ -95,9 +105,9 @@ namespace Plasma
 			}
 		}
 
-		public static IList<Type> ImplsOf(Type type)
+		public static HashSet<Type> ImplsOf(Type type)
 		{
-			IList<Type> result;
+			HashSet<Type> result;
 			_mapImpls.TryGetValue(type, out result);
 			return result;
 		}
@@ -261,9 +271,17 @@ namespace Plasma
 							}
 
 							var impls = AssemblyAnalyzeCache.ImplsOf(type);
-							if (impls.Count == 1)
+							if (impls != null && impls.Count == 1)
 							{
-								return impls[0];
+								return impls.First();
+							}
+							else if (impls == null)
+							{
+								throw new Exception(string.Format("Impls of type '{0}' not registered", type));
+							}
+							else
+							{
+								throw new Exception(string.Format("Impls of type '{0}': {1}", type.CSharpTypeIdentifier(), string.Join(", ", impls.Select(x => x.CSharpTypeIdentifier()))));
 							}
 						}
 					}
