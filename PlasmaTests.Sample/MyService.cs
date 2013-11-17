@@ -23,8 +23,6 @@ namespace PlasmaTests.Sample
 
 		[Inject]
 		public IMyWorker Worker { get; set; }
-
-
 	}
 
 	public class MyService6WithoutInterface

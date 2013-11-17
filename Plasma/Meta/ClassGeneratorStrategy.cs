@@ -33,12 +33,12 @@ namespace Plasma.Meta
 //		static string ShortNameFrom(string prefix, Type type)
 //		{
 //			var i = type.Name.IndexOf('`');
-//			var _typeShortName = type.Name;
+//			var name = type.Name;
 //			if (i > 0)
 //			{
-//				_typeShortName = _typeShortName.Substring(0, i);
+//				name = name.Substring(0, i);
 //			}
-//			return prefix + (_typeShortName.StartsWith("I") ? _typeShortName.Substring(1) : type.Name);
+//			return prefix + (name.StartsWith("I") ? name.Substring(1) : type.Name);
 //		}
 
 		// context

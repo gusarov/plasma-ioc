@@ -16,8 +16,7 @@ namespace PlasmaTests.Precompiler
 	
 	
 
-	// PlasmaTests.Sample, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-// Class1
+	// Class1
 // IMyService4
 // IMyServiceComplex
 // MyGenericRole<T>
