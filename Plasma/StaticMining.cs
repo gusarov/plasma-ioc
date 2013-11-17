@@ -17,7 +17,8 @@ namespace Plasma
 
 		protected override object DefaultReferenceType(Type type)
 		{
-			return "null";
+			return "default(" + type.CSharpTypeIdentifier() + ")";
+			// return "null";
 		}
 
 		protected override object DefaultValueType(Type type)

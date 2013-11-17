@@ -100,7 +100,17 @@ namespace Plasma.Meta
 				{
 					foreach (var type in req.ToArray())
 					{
-						_nullGenerator.Generate(writer, type);
+						try
+						{
+							writer.Transactional(w => _nullGenerator.Generate(writer, type));
+						}
+						catch (Exception ex)
+						{
+							writer.WriteLine("#warning " + ex.Message);
+							writer.WriteLine("/*");
+							writer.WriteLine(ExceptionAnalyzer.ExceptionDetails(ex));
+							writer.WriteLine("*/");
+						}
 					}
 					req = _nullGenerator.RequestedObjects.Except(_nullGenerator.NullObjects).ToArray();
 					_nullGenerator.RequestedObjects.Clear();
@@ -120,7 +130,7 @@ public static partial class PlasmaRegistration
 
 			var typeToPlumb = types.ToList();
 
-			foreach (var type in types.Where(x => !x.IsAbstract && !x.IsInterface && !x.IsGenericTypeDefinition && x.IsPublic))
+			foreach (var type in types.Where(x => !x.IsAbstract && !x.IsInterface && !x.IsGenericTypeDefinition && x.IsPublic && !typeof(Delegate).IsAssignableFrom(x)))
 			{
 				try
 				{
@@ -128,7 +138,7 @@ public static partial class PlasmaRegistration
 				}
 				catch (StaticCompilerWarning ex)
 				{
-					writer.WriteLine("#warning exception:");
+					writer.WriteLine("#warning " + ex.Message);
 					writer.WriteLine("/*");
 					writer.WriteLine(ExceptionAnalyzer.ExceptionDetails(ex));
 					writer.WriteLine("*/");
@@ -142,7 +152,7 @@ public static partial class PlasmaRegistration
 
 			foreach (var type in types)
 			{
-				if (type.IsInterface)
+				if (type.IsInterface && type.IsPublic)
 				{
 					Type defImpl = null;
 					try
@@ -154,7 +164,7 @@ public static partial class PlasmaRegistration
 						writer.WriteLine("// " + ex.Message);
 						if (ex.InnerException != null)
 						{
-							writer.WriteLine("#warning exception:");
+							writer.WriteLine("#warning "+ex.Message);
 							writer.WriteLine("/*");
 							writer.WriteLine(ExceptionAnalyzer.ExceptionDetails(ex));
 							writer.WriteLine("*/");
