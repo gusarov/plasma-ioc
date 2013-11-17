@@ -136,8 +136,8 @@ public static class PlasmaContainerExt
     /// <summary>
     /// Register service with default lazy factory
     /// </summary>
-    /// <typeparam _typeShortName="T">Registering type, e.g. MyServiceImpl</typeparam>
-    /// <param _typeShortName="container"></param>
+    /// <typeparam name="T">Registering type, e.g. MyServiceImpl</typeparam>
+    /// <param name="container"></param>
     public static void Add<T>(this IPlasmaContainer container)
     {
         if (container == null)
@@ -150,9 +150,9 @@ public static class PlasmaContainerExt
     /// <summary>
     /// Register service
     /// </summary>
-    /// <typeparam _typeShortName="T">Registering type, e.g. IMyService</typeparam>
-    /// <param _typeShortName="container"></param>
-    /// <param _typeShortName="instance">Service instance</param>
+    /// <typeparam name="T">Registering type, e.g. IMyService</typeparam>
+    /// <param name="container"></param>
+    /// <param name="instance">Service instance</param>
     public static void Add<T>(this IPlasmaContainer container, T instance)
     {
         if (container == null)
@@ -162,13 +162,13 @@ public static class PlasmaContainerExt
         container.Add(typeof(T), CreateLazy(instance));
     }
 
-    /// <summary>
-    /// Register service factory
-    /// </summary>
-    /// <typeparam _typeShortName="T">Registering type, e.g. IMyService</typeparam>
-    /// <param _typeShortName="container"></param>
-    /// <param _typeShortName="instanceFactory">Service factory</param>
-    public static void Add<T>(this IPlasmaContainer container, Func<T> instanceFactory)
+	/// <summary>
+	/// Register service factory
+	/// </summary>
+	/// <typeparam name="T">Registering type, e.g. IMyService</typeparam>
+	/// <param name="container"></param>
+	/// <param name="instanceFactory">Service factory</param>
+	public static void Add<T>(this IPlasmaContainer container, Func<T> instanceFactory)
     {
         if (container == null)
         {
@@ -177,13 +177,13 @@ public static class PlasmaContainerExt
         container.Add(typeof(T), CreateLazy(instanceFactory));
     }
 
-    /// <summary>
-    /// Register service lazy
-    /// </summary>
-    /// <typeparam _typeShortName="T">Registering type, e.g. IMyService</typeparam>
-    /// <param _typeShortName="container"></param>
-    /// <param _typeShortName="instanceFactory">Service lazy instance</param>
-    public static void Add<T>(this IPlasmaContainer container, Lazy<T> instanceFactory)
+	/// <summary>
+	/// Register service lazy
+	/// </summary>
+	/// <typeparam name="T">Registering type, e.g. IMyService</typeparam>
+	/// <param name="container"></param>
+	/// <param name="instanceFactory">Service lazy instance</param>
+	public static void Add<T>(this IPlasmaContainer container, Lazy<T> instanceFactory)
     {
         if (container == null)
         {
@@ -196,10 +196,10 @@ public static class PlasmaContainerExt
     /// <summary>
     /// Register service lazy
     /// </summary>
-    /// <typeparam _typeShortName="T">Registering type, e.g. IMyService</typeparam>
-    /// <typeparam _typeShortName="TImpl">Service implementation, e.g. MyServiceImpl</typeparam>
-    /// <param _typeShortName="container"></param>
-    /// <param _typeShortName="instanceFactory">Service lazy instance</param>
+    /// <typeparam name="T">Registering type, e.g. IMyService</typeparam>
+    /// <typeparam name="TImpl">Service implementation, e.g. MyServiceImpl</typeparam>
+    /// <param name="container"></param>
+    /// <param name="instanceFactory">Service lazy instance</param>
     public static void Add<T, TImpl>(this IPlasmaContainer container, Lazy<TImpl> instanceFactory)
     {
         if (container == null)
@@ -212,9 +212,9 @@ public static class PlasmaContainerExt
     /// <summary>
     /// Register service with default factory
     /// </summary>
-    /// <typeparam _typeShortName="T">Registering type, e.g. IMyService</typeparam>
-    /// <typeparam _typeShortName="TImpl">Service implementation, e.g. MyServiceImpl</typeparam>
-    /// <param _typeShortName="container"></param>
+    /// <typeparam name="T">Registering type, e.g. IMyService</typeparam>
+    /// <typeparam name="TImpl">Service implementation, e.g. MyServiceImpl</typeparam>
+    /// <param name="container"></param>
     public static void Add<T, TImpl>(this IPlasmaContainer container)
     {
         if (container == null)
@@ -257,7 +257,7 @@ public static class PlasmaContainerExt
 }
 
 /// <summary>
-/// Suggest this implementation type or assembly qualified type _typeShortName.
+/// Suggest this implementation type or assembly qualified type name.
 /// </summary>
 [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class | AttributeTargets.Parameter | AttributeTargets.Property, Inherited = false, AllowMultiple = true)]
 public sealed class DefaultImplAttribute : Attribute
