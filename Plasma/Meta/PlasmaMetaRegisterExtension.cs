@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 
 using MetaCreator;
-
+using Plasma.Internal;
 using Plasma.ThirdParty;
 
 namespace Plasma.Meta
@@ -30,8 +30,9 @@ namespace Plasma.Meta
 			_context = new Context();
 		}
 
-		private static SharpGenerator.TypeIdentifierConfig _omitTypeDef = new SharpGenerator.TypeIdentifierConfig
+		private static readonly SharpGenerator.TypeIdentifierConfig _omitTypeDef = new SharpGenerator.TypeIdentifierConfig
 		{
+			UseEngineImports = true,
 			UseNamedTypeParameters = false,
 		};
 
@@ -121,11 +122,18 @@ namespace Plasma.Meta
 
 			writer.WriteLine(@"
 public static partial class PlasmaRegistration
-{
+{{
+	static volatile bool _executed;
+
 	public static void Run()
-	{
-			Plasma.PlasmaContainer.DefaultReflectionPermission = Plasma.ReflectionPermission.Throw;
-");
+	{{
+		if (_executed)
+		{{
+			return;
+		}}
+		_executed = true;
+		{0}.DefaultReflectionPermission = {1}.Throw;
+", typeof(PlasmaContainer), typeof(ReflectionPermission));
 			writer.WriteLine(); // ignore tabs
 
 			var typeToPlumb = types.ToList();
@@ -134,7 +142,7 @@ public static partial class PlasmaRegistration
 			{
 				try
 				{
-					writer.WriteLine("Plasma.Internal.TypeFactoryRegister.Add<{0}>({1});", type.CSharpTypeIdentifier(), Mining.CreateType(type));
+					writer.WriteLine("{2}.Add<{0}>({1});", type, Mining.CreateType(type), typeof(TypeFactoryRegister));
 				}
 				catch (StaticCompilerWarning ex)
 				{
@@ -173,7 +181,7 @@ public static partial class PlasmaRegistration
 
 					if (defImpl != null)
 					{
-						writer.WriteLine("Plasma.Internal.FaceImplRegister.Register<{0}, {1}>();", type.CSharpTypeIdentifier(), defImpl.CSharpTypeIdentifier());
+						writer.WriteLine("{2}.Register<{0}, {1}>();", type, defImpl, typeof(FaceImplRegister));
 					}
 				}
 			}
@@ -194,12 +202,12 @@ public static partial class PlasmaRegistration
 						}
 						// todo remove extra cast in plumber
 						// todo remove dependancy on 'c'
-						writer.WriteLine(@"Plasma.Internal.TypeAutoPlumberRegister.Register<{0}>((c, x)=>{{
-{1}}});", type.CSharpTypeIdentifier(_omitTypeDef), plumbing);
+						writer.WriteLine(@"{2}.Register<{0}>((c, x)=>{{
+{1}}});", type.CSharpTypeIdentifier(_omitTypeDef), plumbing, typeof(TypeAutoPlumberRegister));
 					}
 					else
 					{
-						writer.WriteLine("Plasma.Internal.TypeAutoPlumberRegister.RegisterNone(typeof({0}));", type.CSharpTypeIdentifier(_omitTypeDef));
+						writer.WriteLine("{1}.RegisterNone(typeof({0}));", type.CSharpTypeIdentifier(_omitTypeDef), typeof(TypeAutoPlumberRegister).CSharpTypeIdentifier());
 					}
 				}
 			}
@@ -210,18 +218,14 @@ public static partial class PlasmaRegistration
 					if (type.IsGenericType && type.IsGenericTypeDefinition)
 					{
 						writer.WriteLine(@"Null.RegisterGeneric(typeof({0}), t =>
-	typeof ({1}).MakeGenericType(t).GetField(""Instance"").GetValue(null));", type.CSharpTypeIdentifier(new SharpGenerator.TypeIdentifierConfig
-						{
-							UseEngineImports = true,
-							UseNamedTypeParameters = false,
-						}), _nullGenerator.GetTypeName(type).FullNameGenericNoT);
+	typeof ({1}).MakeGenericType(t).GetField(""Instance"").GetValue(null));", type.CSharpTypeIdentifier(_omitTypeDef), _nullGenerator.GetTypeName(type).FullNameGenericNoT);
 
 						//typeof (NullEnumerable<>).MakeGenericType(t).GetField("Instance").GetValue(null));
 
 					}
 					else
 					{
-						writer.WriteLine("Null.Register<{0}>({1}.Instance);", type.CSharpTypeIdentifier(), _nullGenerator.GetTypeName(type).FullNameGeneric);
+						writer.WriteLine("Null.Register<{0}>({1}.Instance);", type, _nullGenerator.GetTypeName(type).FullNameGeneric);
 					}
 				}
 			}
