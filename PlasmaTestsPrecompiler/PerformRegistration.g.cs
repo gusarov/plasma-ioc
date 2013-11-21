@@ -23,6 +23,8 @@ namespace PlasmaTests.Precompiler
 	
 
 	// Class1
+// GenericPerformer
+// HibernateCrudDao<T>
 // IMyService4
 // IMyServiceComplex
 // MyGenericRole<T>
@@ -78,7 +80,37 @@ namespace PlasmaTests.Precompiler
 // MySubGroup
 // MyWorker
 
-	// iface - IMyService4
+	// Analyze...
+// Miner request for HibernateCrudDao<IMyService>
+// Miner request for IMembershipProvider
+// Miner request for IMyService
+// Miner request for IMyService
+// Miner request for IMyStorage
+// Miner request for MyService7Dependency
+// Miner request for MyBadServiceDep
+// Miner request for IMyService
+// Miner request for IMyPerformer
+// Miner request for IMyStorage
+// Miner request for IMyWorker
+// Miner request for IMyService
+// Miner request for IMyService
+// Miner request for Plasma.IPlasmaProvider
+// Miner request for HibernateCrudDao<IMyService2>
+// Miner request for HibernateCrudDao<IMyService3>
+// Miner request for IMyPerformer
+// Miner request for IMyService
+// Miner request for IMyService
+// Miner request for IMyService
+// Miner request for IMyStorage
+// Miner request for IMyWorker
+// New requests: HibernateCrudDao<IMyService>, Plasma.IPlasmaProvider, HibernateCrudDao<IMyService2>, HibernateCrudDao<IMyService3>
+// Miner request for IMyStorage
+// Miner request for IMyStorage
+// Miner request for IMyStorage
+// New requests: Plasma.PlasmaContainer
+// New requests: 
+// Analyze completed
+// iface - IMyService4
 public class ProxyMyService4 : Plasma.Proxy.ProxyBase<IMyService4>,  IMyService4
 {
 	public ProxyMyService4(IMyService4 originalObject) : base(originalObject)	{	}
@@ -442,7 +474,10 @@ public static partial class PlasmaRegistration
 		Plasma.PlasmaContainer.DefaultReflectionPermission = Plasma.ReflectionPermission.Throw;
 
 
+
+// Factory 
 TypeFactoryRegister.Add<Class1>(c => new Class1());
+TypeFactoryRegister.Add<GenericPerformer>(c => new GenericPerformer(c.Get<HibernateCrudDao<IMyService>>()));
 TypeFactoryRegister.Add<MyGenericMethod>(c => new MyGenericMethod());
 TypeFactoryRegister.Add<MyService4>(c => new MyService4());
 TypeFactoryRegister.Add<MyService5>(c => new MyService5());
@@ -481,49 +516,46 @@ TypeFactoryRegister.Add<MyServiceWithStructPro>(c => new MyServiceWithStructPro(
 TypeFactoryRegister.Add<MyServiceWithSeveralCtors>(c => new MyServiceWithSeveralCtors(c.Get<IMyService>(), c.Get<IMyService>()));
 TypeFactoryRegister.Add<MySubGroup>(c => new MySubGroup(c.Get<Plasma.IPlasmaProvider>()));
 TypeFactoryRegister.Add<MyWorker>(c => new MyWorker());
+TypeFactoryRegister.Add<HibernateCrudDao<IMyService>>(c => new HibernateCrudDao<IMyService>());
+TypeFactoryRegister.Add<HibernateCrudDao<IMyService2>>(c => new HibernateCrudDao<IMyService2>());
+TypeFactoryRegister.Add<HibernateCrudDao<IMyService3>>(c => new HibernateCrudDao<IMyService3>());
+TypeFactoryRegister.Add<Plasma.PlasmaContainer>(c => new Plasma.PlasmaContainer());
 
 // Iface impl
 FaceImplRegister.Register<IMyService4, MyService4>();
 FaceImplRegister.Register<IMyServiceComplex, MyService5>();
 FaceImplRegister.Register<IMyServiceWithMatchedIface, MyServiceWithMatchedIface>();
 FaceImplRegister.Register<IMyUniqueIFace, MyServiceWithUniqueIFace>();
-// Cannot register service for type 'IPrivateIFace'. Specify instance, factory, use DefaultImplAttribute or just call class the same as interface
 #warning Cannot register service for type 'IPrivateIFace'. Specify instance, factory, use DefaultImplAttribute or just call class the same as interface
 /*
 Cannot register service for type 'IPrivateIFace'. Specify instance, factory, use DefaultImplAttribute or just call class the same as interface
 Inner: Impls of type 'PlasmaTests.Sample.IPrivateIFace' not registered
 */
-// Cannot register service for type 'ISimpleDataForStubbing'. Specify instance, factory, use DefaultImplAttribute or just call class the same as interface
 #warning Cannot register service for type 'ISimpleDataForStubbing'. Specify instance, factory, use DefaultImplAttribute or just call class the same as interface
 /*
 Cannot register service for type 'ISimpleDataForStubbing'. Specify instance, factory, use DefaultImplAttribute or just call class the same as interface
 Inner: Impls of type 'PlasmaTests.Sample.Proxy.ISimpleDataForStubbing' not registered
 */
-// Cannot register service for type 'IComplexStubbing'. Specify instance, factory, use DefaultImplAttribute or just call class the same as interface
 #warning Cannot register service for type 'IComplexStubbing'. Specify instance, factory, use DefaultImplAttribute or just call class the same as interface
 /*
 Cannot register service for type 'IComplexStubbing'. Specify instance, factory, use DefaultImplAttribute or just call class the same as interface
 Inner: Impls of type 'PlasmaTests.Sample.Proxy.IComplexStubbing' not registered
 */
-// Cannot register service for type 'IComplexStubbingDerived'. Specify instance, factory, use DefaultImplAttribute or just call class the same as interface
 #warning Cannot register service for type 'IComplexStubbingDerived'. Specify instance, factory, use DefaultImplAttribute or just call class the same as interface
 /*
 Cannot register service for type 'IComplexStubbingDerived'. Specify instance, factory, use DefaultImplAttribute or just call class the same as interface
 Inner: Impls of type 'PlasmaTests.Sample.Proxy.IComplexStubbingDerived' not registered
 */
-// Cannot register service for type 'IComplexStubbingDerived2'. Specify instance, factory, use DefaultImplAttribute or just call class the same as interface
 #warning Cannot register service for type 'IComplexStubbingDerived2'. Specify instance, factory, use DefaultImplAttribute or just call class the same as interface
 /*
 Cannot register service for type 'IComplexStubbingDerived2'. Specify instance, factory, use DefaultImplAttribute or just call class the same as interface
 Inner: Impls of type 'PlasmaTests.Sample.Proxy.IComplexStubbingDerived2' not registered
 */
-// Cannot register service for type 'IComplexStubbingDerived3'. Specify instance, factory, use DefaultImplAttribute or just call class the same as interface
 #warning Cannot register service for type 'IComplexStubbingDerived3'. Specify instance, factory, use DefaultImplAttribute or just call class the same as interface
 /*
 Cannot register service for type 'IComplexStubbingDerived3'. Specify instance, factory, use DefaultImplAttribute or just call class the same as interface
 Inner: Impls of type 'PlasmaTests.Sample.Proxy.IComplexStubbingDerived3' not registered
 */
-// Cannot register service for type 'IMembershipProvider'. Specify instance, factory, use DefaultImplAttribute or just call class the same as interface
 #warning Cannot register service for type 'IMembershipProvider'. Specify instance, factory, use DefaultImplAttribute or just call class the same as interface
 /*
 Cannot register service for type 'IMembershipProvider'. Specify instance, factory, use DefaultImplAttribute or just call class the same as interface
@@ -536,11 +568,14 @@ FaceImplRegister.Register<IMyService3, MyService3>();
 FaceImplRegister.Register<IMyStorage, MyInmemStorage>();
 FaceImplRegister.Register<IMyWorker, MyWorker>();
 FaceImplRegister.Register<IMyServiceWithOptionalArguments, MyServiceWithOptionalArguments>();
+FaceImplRegister.Register<Plasma.IPlasmaProvider, Plasma.PlasmaContainer>();
 
-// Property injectors optimization
+// Plumbers (Property injectors)
 TypeAutoPlumberRegister.RegisterNone(typeof(Class1));
-TypeAutoPlumberRegister.RegisterNone(typeof(MyGenericRole<>));
-TypeAutoPlumberRegister.RegisterNone(typeof(MyGenericRoleNonePlumbing<>));
+TypeAutoPlumberRegister.Register<GenericPerformer>((c, x)=>{
+	x.Sdao2 = c.Get<HibernateCrudDao<IMyService2>>();
+	x.Sdao3 = c.Get<HibernateCrudDao<IMyService3>>();
+});
 TypeAutoPlumberRegister.RegisterNone(typeof(MyGenericMethod));
 TypeAutoPlumberRegister.Register<MyService4>((c, x)=>{
 	x.Performer = c.Get<IMyPerformer>();
@@ -587,6 +622,16 @@ TypeAutoPlumberRegister.RegisterNone(typeof(MyServiceWithStructPro));
 TypeAutoPlumberRegister.RegisterNone(typeof(MyServiceWithSeveralCtors));
 TypeAutoPlumberRegister.RegisterNone(typeof(MySubGroup));
 TypeAutoPlumberRegister.RegisterNone(typeof(MyWorker));
+TypeAutoPlumberRegister.Register<HibernateCrudDao<IMyService>>((c, x)=>{
+	x.Storage = c.Get<IMyStorage>();
+});
+TypeAutoPlumberRegister.Register<HibernateCrudDao<IMyService2>>((c, x)=>{
+	x.Storage = c.Get<IMyStorage>();
+});
+TypeAutoPlumberRegister.Register<HibernateCrudDao<IMyService3>>((c, x)=>{
+	x.Storage = c.Get<IMyStorage>();
+});
+TypeAutoPlumberRegister.RegisterNone(typeof(Plasma.PlasmaContainer));
 Null.Register<IMyService4>(NullMyService4.Instance);
 Null.Register<IMyServiceComplex>(NullMyServiceComplex.Instance);
 Null.Register<IMyServiceWithMatchedIface>(NullMyServiceWithMatchedIface.Instance);

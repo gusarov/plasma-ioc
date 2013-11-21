@@ -111,10 +111,44 @@ namespace Plasma
 			_mapImpls.TryGetValue(type, out result);
 			return result;
 		}
+
+		public static void LoadAll()
+		{
+			var current = AppDomain.CurrentDomain.GetAssemblies();
+			foreach (var assembly in current)
+			{
+				LoadAll(assembly);
+			}
+		}
+
+		private static readonly HashSet<Assembly> _asms = new HashSet<Assembly>();
+
+		public static void LoadAll(Assembly assembly)
+		{
+			if (_asms.Add(assembly))
+			{
+				foreach (var referencedAssembly in assembly.GetReferencedAssemblies())
+				{
+					var asm = Assembly.Load(referencedAssembly);
+					LoadAll(asm);
+				}
+			}
+		}
 	}
 
 	abstract class Mining
 	{
+		internal event EventHandler<TypeRequestEventArg> RequestByType;
+
+		protected virtual void OnRequestByType(Type e)
+		{
+			var handler = RequestByType;
+			if (handler != null)
+			{
+				handler(this, e);
+			}
+		}
+
 		#region Done
 
 		/// <summary>

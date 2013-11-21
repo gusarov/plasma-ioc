@@ -17,7 +17,7 @@ namespace Plasma
 	{
 		public override object[] GetConstructorArguments(ConstructorInfo ci)
 		{
-			return ci.GetParameters().Select(x => GetArgument(x)).ToArray();
+			return ci.GetParameters().Select(GetArgument).ToArray();
 		}
 
 		#region Done
@@ -65,7 +65,6 @@ namespace Plasma
 
 		protected override object GetArgumentRquestAndConvert(Type parameterType, Type requestedType, ICustomAttributeProvider info, bool isOptional)
 		{
-			// request
 			var suggesstionAttribute = info.Attribute2<DefaultImplAttribute>();
 			var suggestedType = suggesstionAttribute == null ? null : suggesstionAttribute.TargetType;
 

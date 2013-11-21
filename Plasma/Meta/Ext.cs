@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Plasma.Meta
 {
-	static class ext
+	static class Ext
 	{
 		public static string Info(this ParameterInfo pi)
 		{

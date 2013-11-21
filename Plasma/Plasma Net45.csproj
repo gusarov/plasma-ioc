@@ -42,22 +42,31 @@
       <HintPath>..\packages\MetaCreator.1.6.17\lib\net40\MetaCreator_4.5.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\_rootNamespace\root.cs">
       <Link>_root\root.cs</Link>
     </Compile>
+    <Compile Include="Aop\IAopProxy.cs" />
+    <Compile Include="Aop\TransactionAttribute.cs" />
     <Compile Include="Aop\_Alliance.cs" />
+    <Compile Include="Aop\_Spring.cs" />
     <Compile Include="DefaultConstructorAttribute.cs" />
     <Compile Include="Internal\FaceImplRegister.cs" />
     <Compile Include="Internal\PlasmaConfigSection.cs" />
     <Compile Include="Internal\TypeFactoryRegister.cs" />
     <Compile Include="IPlasmaContainer.cs" />
     <Compile Include="IPlasmaProvider.cs" />
-    <Compile Include="Meta\Class1.cs" />
+    <Compile Include="Meta\Ext.cs" />
     <Compile Include="Meta\ClassGeneratorStrategy.cs" />
+    <Compile Include="Meta\FaceImplStrategy.cs" />
+    <Compile Include="Meta\FactoryStrategy.cs" />
     <Compile Include="Meta\NullObjectClassGeneratorStrategy.cs" />
+    <Compile Include="Meta\PlumbingStrategy.cs" />
     <Compile Include="Meta\ProxyClassGeneratorStrategy.cs" />
+    <Compile Include="Meta\Result.cs" />
+    <Compile Include="Meta\TypeScoutStrategy.cs" />
     <Compile Include="Null.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Proxy\ProxyBase.cs" />
@@ -73,6 +82,7 @@
     <Compile Include="RegisterServiceAttribute.cs" />
     <Compile Include="Internal\TypeAutoPlumber.cs" />
     <Compile Include="TypedLazyWrapper.cs" />
+    <Compile Include="TypeRequestEventArg.cs" />
     <Compile Include="_todo.cs" />
   </ItemGroup>
   <ItemGroup>

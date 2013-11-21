@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -19,7 +20,7 @@ namespace Plasma.Meta
 
 		static Context _context = new Context();
 
-		static readonly Mining Mining = new StaticMining();
+		static readonly StaticMining Mining = new StaticMining();
 
 		/// <summary>
 		/// Clear generation context
@@ -71,19 +72,73 @@ namespace Plasma.Meta
 			PlasmaProxy(writer, bool.Parse(enabled));
 		}
 
+		private static readonly HashSet<Type> _requestsFromMiner = new HashSet<Type>();
+		static void Miner_RequestByType(object sender, TypeRequestEventArg e)
+		{
+			_writerTmp.WriteLine("// Miner request for {0}", e.Type);
+			_requestsFromMiner.Add(e);
+		}
+
+		private static IMetaWriter _writerTmp;
+
 		/// <summary>
 		/// Finally write all code
 		/// End your file with that line
 		/// </summary>
 		public static void PlasmaGenerate(this IMetaWriter writer)
 		{
-			var types = _context.Types;
+			#region PREPARE
+
+
+			_writerTmp = writer;
+
+			var ctx = new PlasmaContainer();
+
+			AssemblyAnalyzeCache.LoadAll();
+
+			AssemblyAnalyzeCache.AnalyzeImpls();
+
+			// a set of types that is going to be asked from container
+			var requests = new HashSet<Type>(_context.Types);
+			var requestsProcessed = new HashSet<Type>();
+
+			var faceImpls = ctx.Get<FaceImplStrategy>();
+			var factory = ctx.Get<FactoryStrategy>();
+			var plumbing = ctx.Get<PlumbingStrategy>();
+
+			var miner = ctx.Get<StaticMining>();
+			miner.RequestByType += Miner_RequestByType;
+
+			writer.WriteLine("// Analyze...");
+
+			while (requests.Count > 0)
+			{
+				_requestsFromMiner.Clear(); // not necessary - just to simplify debugging
+				var fromFace = faceImpls.GetRequests(requests).ToArray();
+				var fromFact = factory.GetRequests(requests).ToArray();
+				var fromPlumb = plumbing.GetRequests(requests).ToArray();
+
+				foreach (var request in requests)
+				{
+					requestsProcessed.Add(request);
+				}
+
+				// new requests
+				requests = new HashSet<Type>(fromFace.Concat(fromFact).Concat(fromPlumb).Concat(_requestsFromMiner).Except(requestsProcessed));
+				writer.WriteLine("// New requests: {0}", string.Join(", ", requests.Select(x => x.CSharpTypeIdentifier())));
+			}
+
+			miner.RequestByType -= Miner_RequestByType;
+
+			writer.WriteLine("// Analyze completed");
+
+			#endregion
 
 			#region Proxy
 
 			if (_enableProxy)
 			{
-				foreach (var type in types.Where(x => x.IsInterface))
+				foreach (var type in _context.Types.Where(x => x.IsInterface))
 				{
 					_proxyGenerator.Generate(writer, type);
 					// GenerateStub(writer, type);
@@ -96,7 +151,7 @@ namespace Plasma.Meta
 
 			if (_enableNullObject)
 			{
-				var req = types.Where(x => x.IsInterface);
+				var req = _context.Types.Where(x => x.IsInterface);
 				do
 				{
 					foreach (var type in req.ToArray())
@@ -136,81 +191,35 @@ public static partial class PlasmaRegistration
 ", typeof(PlasmaContainer), typeof(ReflectionPermission));
 			writer.WriteLine(); // ignore tabs
 
-			var typeToPlumb = types.ToList();
+			#region Factory
 
-			foreach (var type in types.Where(x => !x.IsAbstract && !x.IsInterface && !x.IsGenericTypeDefinition && x.IsPublic && !typeof(Delegate).IsAssignableFrom(x)))
-			{
-				try
-				{
-					writer.WriteLine("{2}.Add<{0}>({1});", type, Mining.CreateType(type), typeof(TypeFactoryRegister));
-				}
-				catch (StaticCompilerWarning ex)
-				{
-					writer.WriteLine("#warning " + ex.Message);
-					writer.WriteLine("/*");
-					writer.WriteLine(ExceptionAnalyzer.ExceptionDetails(ex));
-					writer.WriteLine("*/");
-				}
-			}
+			writer.WriteLine();
+			writer.WriteLine("// Factory ");
+
+			factory.Write(writer);
+
+			#endregion
+
+			#region face impl
 
 			writer.WriteLine();
 			writer.WriteLine("// Iface impl");
 
-			AssemblyAnalyzeCache.AnalyzeImpls();
+			faceImpls.Write(writer);
 
-			foreach (var type in types)
-			{
-				if (type.IsInterface && type.IsPublic)
-				{
-					Type defImpl = null;
-					try
-					{
-						defImpl = Mining.IfaceImpl(type);
-					}
-					catch (Exception ex)
-					{
-						writer.WriteLine("// " + ex.Message);
-						if (ex.InnerException != null)
-						{
-							writer.WriteLine("#warning "+ex.Message);
-							writer.WriteLine("/*");
-							writer.WriteLine(ExceptionAnalyzer.ExceptionDetails(ex));
-							writer.WriteLine("*/");
-						}
-					}
+			#endregion
 
-					if (defImpl != null)
-					{
-						writer.WriteLine("{2}.Register<{0}, {1}>();", type, defImpl, typeof(FaceImplRegister));
-					}
-				}
-			}
+			#region plumbers
 
 			writer.WriteLine();
-			writer.WriteLine("// Property injectors optimization");
-			foreach (var type in typeToPlumb)
-			{
-				if (type.IsClass && !type.IsAbstract)
-				{
-					var plumbingPros = PlasmaContainer.GetPlumbingProperties(type).ToArray();
-					if (plumbingPros.Length > 0)
-					{
-						var plumbing = "";
-						foreach (var pi in plumbingPros)
-						{
-							plumbing += string.Format("\tx.{0} = {1};\r\n", pi.Name, Mining.GetArgument(pi));
-						}
-						// todo remove extra cast in plumber
-						// todo remove dependancy on 'c'
-						writer.WriteLine(@"{2}.Register<{0}>((c, x)=>{{
-{1}}});", type.CSharpTypeIdentifier(_omitTypeDef), plumbing, typeof(TypeAutoPlumberRegister));
-					}
-					else
-					{
-						writer.WriteLine("{1}.RegisterNone(typeof({0}));", type.CSharpTypeIdentifier(_omitTypeDef), typeof(TypeAutoPlumberRegister).CSharpTypeIdentifier());
-					}
-				}
-			}
+			writer.WriteLine("// Plumbers (Property injectors)");
+
+			plumbing.Write(writer);
+
+			#endregion
+
+			#region null object register
+
 			if (_enableNullObject)
 			{
 				foreach (var type in _nullGenerator.NullObjects.Concat(_nullGenerator.ExplicitRequests).Distinct())
@@ -229,13 +238,14 @@ public static partial class PlasmaRegistration
 					}
 				}
 			}
+
+			#endregion
+
 			writer.WriteLine(@"
 	}
 }
 
 ");
-
-
 
 
 		}
