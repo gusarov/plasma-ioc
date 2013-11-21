@@ -455,5 +455,18 @@ namespace PlasmaTests
 			var svc = _sut.Get<IMyUniqueIFace>();
 			Assert.IsInstanceOfType(svc, typeof(MyServiceWithUniqueIFace));
 		}
+
+		[TestMethod]
+		public void Should_initialize_with_two_different_generic_impls()
+		{
+			var pros = PlasmaContainer.GetPlumbingProperties(typeof(GenericPerformer));
+			Assert.AreEqual(2, pros.Count());
+
+			var test = _sut.Get<GenericPerformer>();
+			Assert.IsNotNull(test);
+			Assert.IsNotNull(test.Sdao1);
+			Assert.IsNotNull(test.Sdao2);
+			Assert.IsNotNull(test.Sdao3_);
+		}
 	}
 }

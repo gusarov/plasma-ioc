@@ -31,7 +31,19 @@ namespace Plasma
 		ReflectionPermission? _reflectionPermission;
 		public ReflectionPermission ReflectionPermission
 		{
-			get { return _reflectionPermission ?? DefaultReflectionPermission; }
+			get
+			{
+				if (_reflectionPermission == null)
+				{
+					var parent = _parentProvider as PlasmaContainer;
+					if (parent != null)
+					{
+						return parent.ReflectionPermission;
+					}
+					return DefaultReflectionPermission;
+				}
+				return _reflectionPermission.Value;
+			}
 			set { _reflectionPermission = value; }
 		}
 
@@ -180,6 +192,8 @@ namespace Plasma
 			{
 				if (pro.GetIndexParameters().Length == 0 && pro.CanWrite)
 				{
+					yield return pro;
+/*
 					if (pro.PropertyType.IsInterface || pro.PropertyType.IsAbstract || IsLazyOrFunc(pro.PropertyType))
 					{
 						// IEnumerable<T> and all generics
@@ -194,6 +208,7 @@ namespace Plasma
 						}
 						yield return pro;
 					}
+*/
 				}
 			}
 		}

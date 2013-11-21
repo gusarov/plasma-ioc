@@ -58,6 +58,7 @@ namespace Plasma
 
 		protected override object GetArgumentRquestAndConvert(Type parameterType, Type requestedType, ICustomAttributeProvider info, bool isOptional)
 		{
+			OnRequestByType(requestedType);
 			var suggested = info.Attribute2<DefaultImplAttribute>();
 			var suggestedType = suggested == null ? null : suggested.TargetType;
 
@@ -80,7 +81,7 @@ namespace Plasma
 
 		public override object[] GetConstructorArguments(ConstructorInfo ci)
 		{
-			return ci.GetParameters().Select(x => GetArgument(x)).Where(x => x != _ignoreOptionalArgument).ToArray();
+			return ci.GetParameters().Select(GetArgument).Where(x => x != _ignoreOptionalArgument).ToArray();
 		}
 
 		static readonly object _ignoreOptionalArgument = new object();
