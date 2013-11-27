@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using MetaCreator;
 using Plasma.Internal;
 using Plasma.ThirdParty;
 
@@ -112,25 +113,32 @@ namespace Plasma
 			return result;
 		}
 
-		public static void LoadAll()
+		public static void LoadAll(IMetaWriter writer)
 		{
 			var current = AppDomain.CurrentDomain.GetAssemblies();
 			foreach (var assembly in current)
 			{
-				LoadAll(assembly);
+				LoadAll(assembly, writer);
 			}
 		}
 
 		private static readonly HashSet<Assembly> _asms = new HashSet<Assembly>();
 
-		public static void LoadAll(Assembly assembly)
+		public static void LoadAll(Assembly assembly, IMetaWriter writer)
 		{
 			if (_asms.Add(assembly))
 			{
 				foreach (var referencedAssembly in assembly.GetReferencedAssemblies())
 				{
-					var asm = Assembly.Load(referencedAssembly);
-					LoadAll(asm);
+					try
+					{
+						var asm = Assembly.Load(referencedAssembly);
+						LoadAll(asm, writer);
+					}
+					catch (Exception ex)
+					{
+						writer.WriteLine("#warning DeepLoad: " + ex.Message);
+					}
 				}
 			}
 		}

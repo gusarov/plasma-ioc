@@ -23,6 +23,9 @@ namespace PlasmaTests.Precompiler
 	
 
 	// Class1
+// ISession
+// SessionFactory
+// Session
 // GenericPerformer
 // HibernateCrudDao<T>
 // IMyService4
@@ -104,12 +107,18 @@ namespace PlasmaTests.Precompiler
 // Miner request for IMyStorage
 // Miner request for IMyWorker
 // New requests: HibernateCrudDao<IMyService>, Plasma.IPlasmaProvider, HibernateCrudDao<IMyService2>, HibernateCrudDao<IMyService3>
-// Miner request for IMyStorage
-// Miner request for IMyStorage
-// Miner request for IMyStorage
+// Miner request for ISession
+// Miner request for ISession
+// Miner request for ISession
 // New requests: Plasma.PlasmaContainer
 // New requests: 
 // Analyze completed
+// iface - ISession
+public class ProxySession : Plasma.Proxy.ProxyBase<ISession>,  ISession
+{
+	public ProxySession(ISession originalObject) : base(originalObject)	{	}
+	public virtual string Config {  get { return Original.Config; } }
+}
 // iface - IMyService4
 public class ProxyMyService4 : Plasma.Proxy.ProxyBase<IMyService4>,  IMyService4
 {
@@ -248,6 +257,12 @@ public class ProxyMyServiceWithOptionalArguments : Plasma.Proxy.ProxyBase<IMySer
 	public ProxyMyServiceWithOptionalArguments(IMyServiceWithOptionalArguments originalObject) : base(originalObject)	{	}
 	public virtual IMyStorage Storage {  get { return Original.Storage; } }
 	public virtual IMyWorker Worker {  get { return Original.Worker; } }
+}
+// iface - ISession
+public class NullSession :  ISession
+{
+	public static readonly NullSession Instance = new NullSession();	public virtual string Config {  get { return string.Empty;
+ } }
 }
 // iface - IMyService4
 public class NullMyService4 :  IMyService4
@@ -464,19 +479,21 @@ public static partial class PlasmaRegistration
 {
 	static volatile bool _executed;
 
-	public static void Run()
+	public static void Run(Plasma.ReflectionPermission? reflectionPermission = null)
 	{
 		if (_executed)
 		{
 			return;
 		}
 		_executed = true;
-		Plasma.PlasmaContainer.DefaultReflectionPermission = Plasma.ReflectionPermission.Throw;
+		Plasma.PlasmaContainer.DefaultReflectionPermission = reflectionPermission ?? Plasma.ReflectionPermission.Throw;
 
 
 
 // Factory 
 TypeFactoryRegister.Add<Class1>(c => new Class1());
+TypeFactoryRegister.Add<SessionFactory>(c => new SessionFactory());
+TypeFactoryRegister.Add<Session>(c => c.Get<SessionFactory>().Create());
 TypeFactoryRegister.Add<GenericPerformer>(c => new GenericPerformer(c.Get<HibernateCrudDao<IMyService>>()));
 TypeFactoryRegister.Add<MyGenericMethod>(c => new MyGenericMethod());
 TypeFactoryRegister.Add<MyService4>(c => new MyService4());
@@ -522,6 +539,7 @@ TypeFactoryRegister.Add<HibernateCrudDao<IMyService3>>(c => new HibernateCrudDao
 TypeFactoryRegister.Add<Plasma.PlasmaContainer>(c => new Plasma.PlasmaContainer());
 
 // Iface impl
+FaceImplRegister.Register<ISession, Session>();
 FaceImplRegister.Register<IMyService4, MyService4>();
 FaceImplRegister.Register<IMyServiceComplex, MyService5>();
 FaceImplRegister.Register<IMyServiceWithMatchedIface, MyServiceWithMatchedIface>();
@@ -572,6 +590,8 @@ FaceImplRegister.Register<Plasma.IPlasmaProvider, Plasma.PlasmaContainer>();
 
 // Plumbers (Property injectors)
 TypeAutoPlumberRegister.RegisterNone(typeof(Class1));
+TypeAutoPlumberRegister.RegisterNone(typeof(SessionFactory));
+TypeAutoPlumberRegister.RegisterNone(typeof(Session));
 TypeAutoPlumberRegister.Register<GenericPerformer>((c, x)=>{
 	x.Sdao2 = c.Get<HibernateCrudDao<IMyService2>>();
 	x.Sdao3 = c.Get<HibernateCrudDao<IMyService3>>();
@@ -623,15 +643,16 @@ TypeAutoPlumberRegister.RegisterNone(typeof(MyServiceWithSeveralCtors));
 TypeAutoPlumberRegister.RegisterNone(typeof(MySubGroup));
 TypeAutoPlumberRegister.RegisterNone(typeof(MyWorker));
 TypeAutoPlumberRegister.Register<HibernateCrudDao<IMyService>>((c, x)=>{
-	x.Storage = c.Get<IMyStorage>();
+	x.Session = c.Get<ISession>();
 });
 TypeAutoPlumberRegister.Register<HibernateCrudDao<IMyService2>>((c, x)=>{
-	x.Storage = c.Get<IMyStorage>();
+	x.Session = c.Get<ISession>();
 });
 TypeAutoPlumberRegister.Register<HibernateCrudDao<IMyService3>>((c, x)=>{
-	x.Storage = c.Get<IMyStorage>();
+	x.Session = c.Get<ISession>();
 });
 TypeAutoPlumberRegister.RegisterNone(typeof(Plasma.PlasmaContainer));
+Null.Register<ISession>(NullSession.Instance);
 Null.Register<IMyService4>(NullMyService4.Instance);
 Null.Register<IMyServiceComplex>(NullMyServiceComplex.Instance);
 Null.Register<IMyServiceWithMatchedIface>(NullMyServiceWithMatchedIface.Instance);

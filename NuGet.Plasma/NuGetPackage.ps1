@@ -306,6 +306,9 @@ if ($Publish -and $global:ExitCode -eq 0) {
 	Publish
 }
 
+# Put a package to local store
+
+
 Write-Log " "
 Write-Log "Exit Code: $global:ExitCode" -ForegroundColor Gray
 
