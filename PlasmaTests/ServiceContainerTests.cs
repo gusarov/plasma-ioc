@@ -468,5 +468,14 @@ namespace PlasmaTests
 			Assert.IsNotNull(test.Sdao2);
 			Assert.IsNotNull(test.Sdao3_);
 		}
+
+		[TestMethod]
+		public void Should_provide_custom_factory()
+		{
+			var test = _sut.Get<HibernateCrudDao<IMyService>>();
+			Assert.IsNotNull(test);
+			Assert.IsNotNull(test.Session);
+			Assert.AreEqual("factored", test.Session.Config);
+		}
 	}
 }

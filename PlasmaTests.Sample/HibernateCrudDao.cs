@@ -6,7 +6,8 @@ namespace PlasmaTests.Sample
 {
 	public class HibernateCrudDao<T>
 	{
-		public IMyStorage Storage { private get; set; }
+		[Inject]
+		public ISession Session { get; set; }
 
 		public void Create(T item)
 		{

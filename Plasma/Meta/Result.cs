@@ -4,7 +4,7 @@ using System;
 
 namespace Plasma.Meta
 {
-	class Result<T>
+	internal class Result
 	{
 		private readonly Exception _ex;
 
@@ -13,6 +13,14 @@ namespace Plasma.Meta
 			get { return _ex; }
 		}
 
+		public Result(Exception ex)
+		{
+			_ex = ex;
+		}
+	}
+
+	internal class Result<T> : Result
+	{
 		private readonly T _result;
 
 		public T Res
@@ -20,14 +28,13 @@ namespace Plasma.Meta
 			get { return _result; }
 		}
 
-		public Result(T result)
+		public Result(T result) : base(null)
 		{
 			_result = result;
 		}
 
-		public Result(Exception ex)
+		public Result(Exception ex) : base(ex)
 		{
-			_ex = ex;
 		}
 	}
 }

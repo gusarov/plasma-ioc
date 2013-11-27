@@ -39,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="Class2.cs" />
     <Compile Include="GenericPerformer.cs" />
     <Compile Include="HibernateCrudDao.cs" />
     <Compile Include="IMyService4.cs" />

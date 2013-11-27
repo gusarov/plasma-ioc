@@ -432,12 +432,9 @@ namespace Plasma
 				// try register in current container
 				if (tryAutoReg)
 				{
-					//try {
-						Add(type, suggestedImpl ?? type);
-					//} catch (PlasmaException) {}
+					Add(type, suggestedImpl ?? type);
 					result = GetLazyCore(type, null, false);
 				}
-				//throw new PlasmaException("Service does not exists");
 			}
 			if (result == null)
 			{
@@ -490,6 +487,13 @@ namespace Plasma
 				}
 			}
 
+			/*
+			if (_services.ContainsKey(type))
+			{
+				throw new PlasmaException(string.Format("Service of type '{0}' is already registered.", GetTypeName(type)));
+			}
+			*/
+
 			_services[type] = entry;
 
 			RegisterTypesAutomatically(type, entry);
@@ -500,7 +504,7 @@ namespace Plasma
 			if (type.GetGenericArguments().Length > 0)
 			{
 				var main = type.Name.Substring(0, type.Name.IndexOf('`'));
-				var inner = string.Join(",", type.GetGenericArguments().Select(x=>GetTypeName(x)).ToArray());
+				var inner = string.Join(",", type.GetGenericArguments().Select(GetTypeName).ToArray());
 				return string.Format(CultureInfo.InvariantCulture, "{0}<{1}>", main, inner);
 			}
 			return type.Name;

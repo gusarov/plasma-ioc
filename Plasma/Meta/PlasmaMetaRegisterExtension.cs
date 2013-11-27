@@ -94,7 +94,7 @@ namespace Plasma.Meta
 
 			var ctx = new PlasmaContainer();
 
-			AssemblyAnalyzeCache.LoadAll();
+			// AssemblyAnalyzeCache.LoadAll(writer);
 
 			AssemblyAnalyzeCache.AnalyzeImpls();
 
@@ -180,14 +180,14 @@ public static partial class PlasmaRegistration
 {{
 	static volatile bool _executed;
 
-	public static void Run()
+	public static void Run({1}? reflectionPermission = null)
 	{{
 		if (_executed)
 		{{
 			return;
 		}}
 		_executed = true;
-		{0}.DefaultReflectionPermission = {1}.Throw;
+		{0}.DefaultReflectionPermission = reflectionPermission ?? {1}.Throw;
 ", typeof(PlasmaContainer), typeof(ReflectionPermission));
 			writer.WriteLine(); // ignore tabs
 

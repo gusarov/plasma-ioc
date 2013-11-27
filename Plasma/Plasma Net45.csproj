@@ -52,6 +52,7 @@
     <Compile Include="Aop\TransactionAttribute.cs" />
     <Compile Include="Aop\_Alliance.cs" />
     <Compile Include="Aop\_Spring.cs" />
+    <Compile Include="IFactory.cs" />
     <Compile Include="DefaultConstructorAttribute.cs" />
     <Compile Include="Internal\FaceImplRegister.cs" />
     <Compile Include="Internal\PlasmaConfigSection.cs" />
