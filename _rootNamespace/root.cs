@@ -8,21 +8,6 @@ using Plasma;
 using MyUtils;
 #endif
 
-#if !PocketPC
-using Plasma.Meta;
-using MetaCreator;
-#endif
-
-#if !PocketPC
-public static class PlasmaMetaRegisterExtensionRoot
-{
-    public static void RegisterAll(this IMetaWriter writer)
-    {
-        PlasmaMetaRegisterExtension.PlasmaRegisterAll(writer);
-    }
-}
-#endif
-
 public static class PlasmaContainerExt
 {
     /// <summary>
@@ -352,7 +337,7 @@ public static class Null
 				return value;
 			}
 		}
-		throw new PlasmaException("Null object is not registered for: " + type.CSharpTypeIdentifier());
+		throw new PlasmaException("Null object is not registered for: " + PlasmaContainer.GetTypeName(type));
 	}
 
 	public static void RegisterGeneric(Type typeDefinition, Func<Type[], object> factory)
