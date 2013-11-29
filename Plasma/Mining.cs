@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using MetaCreator;
 using Plasma.Internal;
 using Plasma.ThirdParty;
 
@@ -113,18 +112,18 @@ namespace Plasma
 			return result;
 		}
 
-		public static void LoadAll(IMetaWriter writer)
+/*		public static void LoadAll(IMetaWriter writer)
 		{
 			var current = AppDomain.CurrentDomain.GetAssemblies();
 			foreach (var assembly in current)
 			{
 				LoadAll(assembly, writer);
 			}
-		}
+		}*/
 
-		private static readonly HashSet<Assembly> _asms = new HashSet<Assembly>();
+		//private static readonly HashSet<Assembly> _asms = new HashSet<Assembly>();
 
-		public static void LoadAll(Assembly assembly, IMetaWriter writer)
+/*		public static void LoadAll(Assembly assembly, IMetaWriter writer)
 		{
 			if (_asms.Add(assembly))
 			{
@@ -141,7 +140,7 @@ namespace Plasma
 					}
 				}
 			}
-		}
+		}*/
 	}
 
 	abstract class Mining
@@ -323,7 +322,7 @@ namespace Plasma
 							}
 							else
 							{
-								throw new Exception(string.Format("Impls of type '{0}': {1}", type.CSharpTypeIdentifier(), string.Join(", ", impls.Select(x => x.CSharpTypeIdentifier()))));
+								throw new Exception(string.Format("Impls of type '{0}': {1}", PlasmaContainer.GetTypeName(type), string.Join(", ", impls.Select(PlasmaContainer.GetTypeName))));
 							}
 						}
 					}

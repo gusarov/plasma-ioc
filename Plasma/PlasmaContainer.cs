@@ -499,7 +499,7 @@ namespace Plasma
 			RegisterTypesAutomatically(type, entry);
 		}
 
-		static string GetTypeName(Type type)
+		internal static string GetTypeName(Type type)
 		{
 			if (type.GetGenericArguments().Length > 0)
 			{

@@ -37,8 +37,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MetaCreator_4.5, Version=1.6.0.0, Culture=neutral, PublicKeyToken=e1cf46ee434cd7e7, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="MetaCreator_4.5">
       <HintPath>..\packages\MetaCreator.1.6.17\lib\net40\MetaCreator_4.5.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -73,7 +72,7 @@
     <Compile Include="Proxy\ProxyBase.cs" />
     <Compile Include="ReflectionMining.cs" />
     <Compile Include="ReflectionPermission.cs" />
-    <Compile Include="StaticMining.cs" />
+    <Compile Include="Meta\StaticMining.cs" />
     <Compile Include="ThirdParty\DynamicInvokeOptimizer.cs" />
     <Compile Include="PlasmaContainer.cs" />
     <Compile Include="PlasmaException.cs" />
@@ -84,10 +83,9 @@
     <Compile Include="Internal\TypeAutoPlumber.cs" />
     <Compile Include="TypedLazyWrapper.cs" />
     <Compile Include="TypeRequestEventArg.cs" />
-    <Compile Include="_todo.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="packages.config" />
+    <Compile Include="_root\root_meta.cs" />
+    <Compile Include="_todo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
