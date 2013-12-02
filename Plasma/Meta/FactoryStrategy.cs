@@ -10,18 +10,6 @@ namespace Plasma.Meta
 	{
 		class FactoryResult : Result
 		{
-			public FactoryResult(Exception ex)
-				: base(ex)
-			{
-				
-			}
-
-			public FactoryResult()
-				: base(null)
-			{
-				
-			}
-
 			/// <summary>
 			/// usual code
 			/// </summary>
@@ -59,30 +47,31 @@ namespace Plasma.Meta
 
 		public override IEnumerable<Type> GetRequestsCore(Type type)
 		{
+			FactoryResult result= ResultFor(type);
 			try
 			{
 				var str = (string)_mining.CreateType(type);
-				var result = ResultFor(type);
 				result.FactoryCode = str;
-
-				if (typeof(IFactory).IsAssignableFrom(type))
-				{
-					// get IFactory<T>
-					var iface = type.GetInterfaces().FirstOrDefault(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IFactory<,>));
-					if (iface != null)
-					{
-						var args = iface.GetGenericArguments();
-						var targetRequest = args[0];
-						var targetResult = args[1];
-						result = ResultFor(targetResult);
-						result.FactoryFactoryCode = string.Format("c => c.Get<{0}>().Create()", type.CSharpTypeIdentifier());
-					}
-				}
 			}
 			catch (StaticCompilerWarning ex)
 			{
-				_result[type] = new FactoryResult(ex);
+				result.Ex = ex;
 			}
+
+			if (typeof(IFactory).IsAssignableFrom(type))
+			{
+				// get IFactory<T>
+				var iface = type.GetInterfaces().FirstOrDefault(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IFactory<,>));
+				if (iface != null)
+				{
+					var args = iface.GetGenericArguments();
+					var targetRequest = args[0];
+					var targetResult = args[1];
+					result = ResultFor(targetResult);
+					result.FactoryFactoryCode = string.Format("c => c.Get<{0}>().Create()", type.CSharpTypeIdentifier());
+				}
+			}
+
 			return Enumerable.Empty<Type>(); // requests from miner
 		}
 

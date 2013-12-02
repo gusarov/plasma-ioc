@@ -37,11 +37,17 @@ namespace Plasma.Meta
 			}
 			catch (Exception ex)
 			{
-				_result[type] = new Result<Type>(ex);
+				_result[type] = new Result<Type>
+				{
+					Ex = ex,
+				};
 			}
 			if (defImpl != null)
 			{
-				_result[type] = new Result<Type>(defImpl);
+				_result[type] = new Result<Type>
+				{
+					Res = defImpl,
+				};
 				yield return defImpl;
 			}
 		}

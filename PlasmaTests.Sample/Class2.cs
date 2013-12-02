@@ -32,7 +32,7 @@ namespace PlasmaTests.Sample
 			get { return _config; }
 		}
 
-		public Session(string config)
+		internal Session(string config)
 		{
 			_config = config;
 		}
